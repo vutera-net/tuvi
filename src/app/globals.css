@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFF8F0;
+  --foreground: #2D2D2D;
+  --color-primary: #C41E3A;
+  --color-secondary: #DAA520;
+  --color-kim: #C0C0C0;
+  --color-moc: #228B22;
+  --color-thuy: #1E90FF;
+  --color-hoa: #DC143C;
+  --color-tho: #DAA520;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 3px; }
+
+/* Ngu Hanh element badges */
+.element-kim { background-color: var(--color-kim); color: #333; }
+.element-moc { background-color: var(--color-moc); color: white; }
+.element-thuy { background-color: var(--color-thuy); color: white; }
+.element-hoa { background-color: var(--color-hoa); color: white; }
+.element-tho { background-color: var(--color-tho); color: #333; }
+
+/* Calendar day cells */
+.day-tot { border-left: 3px solid #228B22; }
+.day-xau { border-left: 3px solid #DC143C; }
+.day-trung { border-left: 3px solid #DAA520; }
+
+/* Tu Vi star brightness */
+.star-mieu { color: #C41E3A; font-weight: 700; }
+.star-vuong { color: #DAA520; font-weight: 600; }
+.star-hamDia { color: #999; font-style: italic; }
