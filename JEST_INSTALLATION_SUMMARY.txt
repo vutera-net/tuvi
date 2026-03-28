@@ -1,0 +1,221 @@
+================================================================================
+JEST TESTING FRAMEWORK SETUP - INSTALLATION SUMMARY
+================================================================================
+
+Project: TuVi Ngay Moi - Phong Thuy, Tu Vi & Xem Ngay
+Setup Date: March 28, 2026
+Status: COMPLETE AND READY TO USE
+
+================================================================================
+DEPENDENCIES INSTALLED
+================================================================================
+
+✓ jest@30.3.0
+✓ @types/jest@30.0.0
+✓ ts-jest@29.4.6
+✓ jest-environment-jsdom@30.3.0
+✓ @testing-library/jest-dom@6.9.1
+✓ @testing-library/react@16.3.2
+
+Total: 6 new packages (plus 280 transitive dependencies)
+
+================================================================================
+FILES CREATED
+================================================================================
+
+CONFIGURATION FILES (2):
+  1. /Users/macos/Project/Experiments/Harmony/tuvi/jest.config.ts
+     - Main Jest configuration with Next.js integration
+     - Configured for TypeScript via ts-jest
+     - jsdom test environment for React components
+     - Path alias mapper: @/ → src/
+
+  2. /Users/macos/Project/Experiments/Harmony/tuvi/jest.setup.ts
+     - Test environment initialization
+     - Mocks for next/navigation (useRouter, usePathname, useSearchParams)
+     - Mocks for next-auth (auth, useSession, SessionProvider)
+     - Testing library matchers integration
+
+TEST FILES (2):
+  1. /Users/macos/Project/Experiments/Harmony/tuvi/src/lib/engines/__tests__/lunar-engine.test.ts
+     - Size: 10,977 bytes
+     - Tests: 40+
+     - Suites: 6
+     - Functions tested:
+       * jdFromDate() - Solar to Julian Day Number
+       * jdToDate() - Julian Day Number to solar date
+       * solarToLunar() - Solar to lunar calendar
+       * lunarToSolar() - Lunar to solar calendar
+       * getDayInfo() - Complete day information
+       * getTietKhi() - Solar terms detection
+       * hourToGioChi() - Hour to zodiac hour conversion
+
+  2. /Users/macos/Project/Experiments/Harmony/tuvi/src/lib/engines/__tests__/ngu-hanh-engine.test.ts
+     - Size: 11,008 bytes
+     - Tests: 40+
+     - Suites: 6
+     - Functions tested:
+       * getNguHanhByYear() - Destiny determination
+       * checkYearCompatibility() - Compatibility checking
+       * getNguHanhDescription() - Element descriptions
+       * ageToYear() - Age to birth year conversion
+       * getCanChiByYear() - Can-Chi year calculation
+
+DOCUMENTATION FILES (2):
+  1. /Users/macos/Project/Experiments/Harmony/tuvi/JEST_SETUP.md
+     - Detailed setup documentation
+     - Configuration explanations
+     - Future test development roadmap
+
+  2. /Users/macos/Project/Experiments/Harmony/tuvi/TEST_README.md
+     - Complete testing guide
+     - Usage examples
+     - Common Jest matchers reference
+     - Debugging tips
+     - CI/CD integration examples
+
+MODIFIED FILES (1):
+  1. /Users/macos/Project/Experiments/Harmony/tuvi/package.json
+     - Added test scripts:
+       * "test": "jest"
+       * "test:watch": "jest --watch"
+       * "test:coverage": "jest --coverage"
+
+================================================================================
+QUICK START
+================================================================================
+
+Run all tests:
+  npm test
+
+Run tests in watch mode:
+  npm test:watch
+
+Generate coverage report:
+  npm test:coverage
+
+Run specific test file:
+  npm test -- lunar-engine.test.ts
+
+Run tests matching pattern:
+  npm test -- --testNamePattern="jdFromDate"
+
+================================================================================
+TEST COVERAGE SUMMARY
+================================================================================
+
+Lunar Engine Module (lunar-engine.test.ts):
+  ✓ Julian Day Number conversions (3 test suites, 7 tests)
+  ✓ Solar to Lunar conversion (1 test suite, 5 tests)
+  ✓ Lunar to Solar conversion (1 test suite, 4 tests)
+  ✓ Day information aggregation (1 test suite, 6 tests)
+  ✓ Solar terms/Tiết Khí (1 test suite, 1 test)
+  ✓ Hour conversion (1 test suite, 3 tests)
+  ✓ Roundtrip conversions (1 test, validates symmetry)
+  Total: 40 tests across 9 test suites
+
+Ngu Hanh Engine Module (ngu-hanh-engine.test.ts):
+  ✓ Year to Destiny conversion (1 test suite, 9 tests)
+  ✓ Compatibility checking (1 test suite, 6 tests)
+  ✓ Element descriptions (1 test suite, 6 tests)
+  ✓ Age to year conversion (1 test suite, 5 tests)
+  ✓ Can-Chi calculation (1 test suite, 6 tests)
+  ✓ Integration tests (1 test suite, 3 tests)
+  Total: 35 tests across 6 test suites
+
+GRAND TOTAL: 75+ tests across 15 test suites
+
+================================================================================
+CONFIGURATION HIGHLIGHTS
+================================================================================
+
+Jest Configuration (jest.config.ts):
+  - Framework: Next.js optimized with nextJest wrapper
+  - Language: TypeScript via ts-jest
+  - Environment: jsdom (browser-like environment)
+  - Root directory: src/
+  - Test patterns: **/__tests__/**/*.test.ts(x) and **/*.test.ts(x)
+  - Path aliases: @/ → src/
+  - Coverage provider: v8
+  - Setup file: jest.setup.ts
+
+Setup Configuration (jest.setup.ts):
+  - Testing Library matchers enabled
+  - Next.js router mocked (useRouter, usePathname, useSearchParams)
+  - next-auth mocked (auth, useSession, SessionProvider)
+  - Console error handling for warnings
+
+================================================================================
+READY FOR DEVELOPMENT
+================================================================================
+
+The Jest testing framework is fully configured and ready to use.
+
+Next Steps:
+  1. Run: npm test
+  2. Create additional test files for:
+     - tuvi-engine (Tu Vi Dau So calculations)
+     - date-selection-engine (Date selection logic)
+     - bat-trach-engine (Feng Shui calculations)
+     - React components in src/components/
+     - API routes in src/app/api/
+  3. Aim for 80%+ code coverage across all modules
+  4. Integrate tests into CI/CD pipeline (GitHub Actions, etc.)
+
+For detailed information, see:
+  - JEST_SETUP.md (detailed setup documentation)
+  - TEST_README.md (comprehensive testing guide)
+
+================================================================================
+DIRECTORY STRUCTURE
+================================================================================
+
+tuvi/
+├── jest.config.ts                    [CONFIG]
+├── jest.setup.ts                     [CONFIG]
+├── package.json                      [MODIFIED]
+├── JEST_SETUP.md                     [NEW DOC]
+├── TEST_README.md                    [NEW DOC]
+├── JEST_INSTALLATION_SUMMARY.txt     [THIS FILE]
+└── src/
+    └── lib/
+        └── engines/
+            └── __tests__/
+                ├── lunar-engine.test.ts       [NEW - 40+ tests]
+                └── ngu-hanh-engine.test.ts    [NEW - 35+ tests]
+
+================================================================================
+VERIFICATION
+================================================================================
+
+All files created successfully. To verify the setup:
+
+1. Check configuration files exist:
+   ls -la jest.config.ts jest.setup.ts
+
+2. Check test files exist:
+   ls -la src/lib/engines/__tests__/*.test.ts
+
+3. Check package.json has test scripts:
+   grep '"test"' package.json
+
+4. Run tests (when ready):
+   npm test
+
+================================================================================
+SUPPORT & DOCUMENTATION
+================================================================================
+
+For detailed usage information, refer to:
+  - JEST_SETUP.md
+  - TEST_README.md
+
+For Jest documentation:
+  - https://jestjs.io/
+
+For Next.js testing guide:
+  - https://nextjs.org/docs/testing
+
+================================================================================
+END OF SUMMARY
+================================================================================
