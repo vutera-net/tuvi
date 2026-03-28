@@ -34,6 +34,7 @@ export interface DayInfo {
   truc: string // 1 in 12 truc
   sao28: string // 1 in 28 sao
   sao28Rating: 'tot' | 'xau' | 'trung'
+  solarTerm?: string // Tiet khi if applicable
   ngayKy: string[] // Tam Nuong, Nguyet Ky...
   festivals: string[]
   rating: 'tot' | 'xau' | 'trung' // Overall day rating

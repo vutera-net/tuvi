@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { NgayTotForm } from '@/components/ngaytot/NgayTotForm'
+import { QuickDateCheck } from '@/components/ngaytot/QuickDateCheck'
+import { TuoiFilter } from '@/components/ngaytot/TuoiFilter'
 
 export const metadata: Metadata = {
   title: 'Xem Ngày Tốt Xấu',
@@ -9,14 +11,25 @@ export const metadata: Metadata = {
 
 export default function XemNgayPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6 text-center">
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-800">Xem Ngày Tốt Xấu</h1>
         <p className="mt-2 text-gray-600">
           Tìm ngày tốt cho sự kiện quan trọng dựa trên Trực, 28 Sao, Hoàng Đạo
         </p>
       </div>
-      <NgayTotForm />
+
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Main form */}
+        <div className="lg:col-span-2">
+          <NgayTotForm />
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          <QuickDateCheck />
+        </div>
+      </div>
     </div>
   )
 }

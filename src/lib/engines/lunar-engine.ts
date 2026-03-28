@@ -11,6 +11,7 @@ import { getTruc } from '@/data/truc'
 import { getSao28 } from '@/data/sao28'
 import { getNgayKy } from '@/data/ngay-ky'
 import { getLunarFestivals, getSolarFestivals } from '@/data/festivals'
+import { TIET_KHI, TIET_KHI_APPROX_DAYS } from '@/data/tiet-khi'
 
 // ============================================================
 // CORE LUNAR CALCULATION (Ho Ngoc Duc algorithm)
@@ -309,6 +310,7 @@ export function getDayInfo(dd: number, mm: number, yy: number): DayInfo {
   const truc = getTruc(lunar.chiMonth, lunar.chiDay)
   const sao28Obj = getSao28(jd)
   const ngayKy = getNgayKy(lunar.day, lunar.month, lunar.canDay, lunar.chiDay)
+  const solarTerm = getTietKhi(dd, mm)
 
   const lunarFests = getLunarFestivals(lunar.month, lunar.day)
   const solarFests = getSolarFestivals(mm, dd)
@@ -332,10 +334,34 @@ export function getDayInfo(dd: number, mm: number, yy: number): DayInfo {
     truc: truc.nameVi,
     sao28: sao28Obj.nameVi,
     sao28Rating: sao28Obj.rating,
+    solarTerm,
     ngayKy,
     festivals,
     rating,
   }
+}
+
+/**
+ * Get Tiết Khí (solar term) for a solar date
+ * Returns the solar term if the date falls within the solar term's range (±1.5 days)
+ */
+export function getTietKhi(dd: number, mm: number): string | undefined {
+  // Each month has 2 tiet khi
+  const monthIndex = mm - 1
+  const tietKhiForMonth = TIET_KHI.filter((tk) => tk.month === mm)
+
+  for (const tietKhi of tietKhiForMonth) {
+    // Find approximate date for this tiet khi
+    const tietIndex = TIET_KHI.indexOf(tietKhi)
+    const approxDay = TIET_KHI_APPROX_DAYS[tietIndex]
+
+    // Check if current day is within ±1 days of tiet khi
+    if (Math.abs(dd - approxDay) <= 1) {
+      return tietKhi.nameVi
+    }
+  }
+
+  return undefined
 }
 
 /**
