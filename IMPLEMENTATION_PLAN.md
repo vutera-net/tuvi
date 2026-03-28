@@ -1,6 +1,6 @@
 # Implementation Plan: TuVi Ngay Moi
 
-**Current Status: Autonomous Week 2+ Execution (~96% Overall)**
+**Current Status: Autonomous Week 2+ Execution (~97% Overall)**
 - ✅ Phase 1 (Setup): 100% - Database, Auth, Google OAuth provider
 - ✅ Phase 2 (Calendar + Ngu Hanh): 100%
 - ✅ Phase 3 (Tu Vi Engine): 100% - All 14 chinh-tinh with 504+ palace meanings
@@ -9,9 +9,9 @@
 - ✅ Phase 6 (UI/UX): 95% - All major pages built
 - ✅ Phase 7 (API Routes): 100% - Added checkout + webhook endpoints
 - ✅ Phase 8 (Daily Horoscope): 100%
-- ✅ Phase 9 (Monetization): 80% - Stripe integration complete, awaiting credentials
+- ✅ Phase 9 (Monetization): 85% - Stripe + feature-gate middleware implemented
 - ⏳ Phase 10 (SEO): 45% - JSON-LD + meta helpers added, blog system pending
-- ✅ Phase 11 (Testing): 40% - Jest setup + 35+ tests on core engines
+- ✅ Phase 11 (Testing): 50% - Jest setup + 85+ tests (pricing, tu-vi, lunar, ngu-hanh)
 - ⏳ Phase 12 (Deployment): 0% - Ready for Vercel
 
 **Build Status:** ✅ Successful (0 TypeScript errors, 31 routes deployed)
@@ -330,10 +330,10 @@
 ### 9.2 Feature Gating
 - [x] Create feature gating library - **[NEW]** feature-gating.ts with 25+ gates
 - [x] Define feature requirements by tier - All core features mapped to tiers
-- [ ] Implement free tier limits (3 Tu Vi charts/month counter)
-- [ ] Create "upgrade to premium" prompts at gate points
-- [ ] Add feature gating middleware to protected endpoints
-- [ ] Track usage per user
+- [x] Implement free tier limits (3 Tu Vi charts/month counter) - **[NEW]** feature-gate-middleware.ts
+- [x] Create "upgrade to premium" prompts at gate points - getTierUpgradeMessage()
+- [x] Add feature gating middleware to protected endpoints - **[NEW]** withFeatureGate wrapper
+- [x] Track usage per user - checkUsageLimit() function
 
 ### 9.3 Advertising
 - [ ] Integrate Google AdSense
@@ -385,11 +385,12 @@
 - [x] Jest framework setup - **[NEW]** jest.config.ts + jest.setup.ts + test scripts
 - [x] Lunar engine tests - **[NEW]** lunar-engine.test.ts with 20+ test cases
 - [x] Ngu Hanh engine tests - **[NEW]** ngu-hanh-engine.test.ts with 15+ test cases
-- [ ] Tu Vi engine tests - star placement validation
+- [x] Tu Vi engine tests - **[NEW]** tuvi-engine.test.ts with 40+ test cases
+- [x] Pricing & Monetization tests - **[NEW]** pricing.test.ts with 45+ test cases
 - [ ] Date selection tests - Tam Nuong, Nguyet Ky, Sat Chu checks
 - [ ] Bat Trach tests - all 8 cung menh calculations
 - [ ] Cuu Cung tests - flying star pattern validation
-- [x] Target: Start with 35+ tests on lunar & ngu-hanh engines
+- [x] Target: 85+ tests on core engines (lunar, ngu-hanh, tu-vi, pricing)
 
 ### 11.2 Integration Tests
 - [ ] API routes: all endpoints with valid/invalid inputs
