@@ -1,0 +1,816 @@
+/**
+ * Tu Vi Dau So - Star Meanings by Palace
+ * Detailed interpretations for each of 14 main stars in each of 12 palaces
+ */
+
+export interface StarMeaning {
+  starName: string
+  palaceName: string
+  positive: string
+  negative: string
+  summary: string
+}
+
+// Tu Vi Star meanings in each palace
+const tuViMeanings: StarMeaning[] = [
+  // Tu Vi (紫微) - Emperor Star
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Menh',
+    positive: 'Natural leader, authoritative, ambitious, dignified bearing',
+    negative: 'Proud, stubborn, overly serious, difficulty adapting',
+    summary: 'Strong leadership and authority in life direction',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Huong De',
+    positive: 'Harmonious family relationships, good sibling bonds',
+    negative: 'Family conflicts, generational gaps',
+    summary: 'Family leadership and harmony',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Phu The',
+    positive: 'Strong marriage, authoritative spouse, family stability',
+    negative: 'Dominating marriage, power struggles',
+    summary: 'Marriage authority and control',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Tu Tuc',
+    positive: 'Successful children, dutiful offspring',
+    negative: 'Rebellious children, difficult parenting',
+    summary: 'Strong parental influence on children',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Tai Bach',
+    positive: 'Wealth acquisition, business success',
+    negative: 'Extravagance, overspending despite income',
+    summary: 'Financial authority and wealth potential',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Tat Ach',
+    positive: 'Resilient health, good recovery',
+    negative: 'Chronic conditions, stress-related illness',
+    summary: 'Health authority with stress factors',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Thien Di',
+    positive: 'Successful travels, auspicious relocations',
+    negative: 'Difficult moves, travel obstacles',
+    summary: 'Authority in movement and travel',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'No Boc',
+    positive: 'Influential friends, loyal companions',
+    negative: 'Friends betray or demand too much',
+    summary: 'Leadership among peers and friends',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Quan Loc',
+    positive: 'High career achievement, leadership positions',
+    negative: 'Power struggles, career instability',
+    summary: 'Career authority and leadership',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Dien Trach',
+    positive: 'Successful property ownership, home authority',
+    negative: 'Property disputes, home instability',
+    summary: 'Property and home authority',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Phuc Duc',
+    positive: 'Accumulated virtues and blessings',
+    negative: 'Self-created challenges, karmic debt',
+    summary: 'Karmic authority and virtue accumulation',
+  },
+  {
+    starName: 'Tu Vi',
+    palaceName: 'Phu Mau',
+    positive: 'Strong parental relationship, family respect',
+    negative: 'Parent-child conflict, lack of support',
+    summary: 'Filial relationship and family respect',
+  },
+
+  // Thien Co (天府) - Heaven Warehouse
+  {
+    starName: 'Thien Co',
+    palaceName: 'Menh',
+    positive: 'Generous, loyal, trustworthy character',
+    negative: 'Indecisive, easily influenced',
+    summary: 'Generous and stable life foundation',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Huong De',
+    positive: 'Close sibling bonds, family loyalty',
+    negative: 'Family obligations feel burdensome',
+    summary: 'Family warehouse and resource sharing',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Phu The',
+    positive: 'Stable marriage, devoted spouse, lasting union',
+    negative: 'Passive marriage, lack of passion',
+    summary: 'Stable and secure marriage',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Tu Tuc',
+    positive: 'Filial children, good family values',
+    negative: 'Children rely too heavily on parents',
+    summary: 'Children as family treasure',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Tai Bach',
+    positive: 'Steady wealth accumulation, savings',
+    negative: 'Conservative spending, missed opportunities',
+    summary: 'Financial warehouse and savings',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Tat Ach',
+    positive: 'Good baseline health, strong constitution',
+    negative: 'Stagnant health issues',
+    summary: 'Health warehouse and vitality reserves',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Thien Di',
+    positive: 'Safe travels, protective journeys',
+    negative: 'Slow progress, stagnation in travel',
+    summary: 'Safe but slow movement and travel',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'No Boc',
+    positive: 'Loyal friends, reliable support network',
+    negative: 'Friends burden with responsibilities',
+    summary: 'Loyal friendships and support',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Quan Loc',
+    positive: 'Stable career, reliable income',
+    negative: 'Career lacks growth and advancement',
+    summary: 'Steady but slow career progress',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Dien Trach',
+    positive: 'Property security, generational wealth',
+    negative: 'Property development is slow',
+    summary: 'Secure property and real estate',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Phuc Duc',
+    positive: 'Lasting good fortune, reliable blessings',
+    negative: 'Slow manifestation of luck',
+    summary: 'Steady luck and blessing accumulation',
+  },
+  {
+    starName: 'Thien Co',
+    palaceName: 'Phu Mau',
+    positive: 'Filial piety, parental support',
+    negative: 'Dependent on parents, slow independence',
+    summary: 'Family support and loyalty',
+  },
+
+  // Thai Duong (太陽) - Sun
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Menh',
+    positive: 'Bright, optimistic, natural warmth, leadership',
+    negative: 'Impulsive, exposes vulnerabilities',
+    summary: 'Bright and optimistic life path',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Huong De',
+    positive: 'Warm family atmosphere, generous sibling bonds',
+    negative: 'Family brightness fades in adversity',
+    summary: 'Warm and generous sibling relationships',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Phu The',
+    positive: 'Passionate marriage, bright romance',
+    negative: 'Overexposure causes burnout in marriage',
+    summary: 'Bright and passionate marriage',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Tu Tuc',
+    positive: 'Bright and successful children',
+    negative: 'Children rebel against expectations',
+    summary: 'Bright and promising children',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Tai Bach',
+    positive: 'Abundant income, visible wealth',
+    negative: 'Wealth is exposed to losses',
+    summary: 'Bright but vulnerable finances',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Tat Ach',
+    positive: 'Excellent health, vigorous energy',
+    negative: 'Overexertion leads to burnout',
+    summary: 'Excellent health with energy management needed',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Thien Di',
+    positive: 'Successful and visible travels',
+    negative: 'Travel attracts attention and problems',
+    summary: 'Bright travels with visibility',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'No Boc',
+    positive: 'Warm friendships, popular and well-liked',
+    negative: 'Popularity attracts envy',
+    summary: 'Popular and warm friendships',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Quan Loc',
+    positive: 'Bright career prospects, visible success',
+    negative: 'Success attracts competition and scrutiny',
+    summary: 'Bright career with visibility challenges',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Dien Trach',
+    positive: 'Prominent property, successful real estate',
+    negative: 'Property is visible target for problems',
+    summary: 'Bright property success',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Phuc Duc',
+    positive: 'Manifest and visible good fortune',
+    negative: 'Good fortune is unstable',
+    summary: 'Visible and bright blessings',
+  },
+  {
+    starName: 'Thai Duong',
+    palaceName: 'Phu Mau',
+    positive: 'Bright relationship with parents, visible support',
+    negative: 'Parental expectations too high',
+    summary: 'Bright parental relationships',
+  },
+
+  // Vu Khuc (武曲) - Sword
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Menh',
+    positive: 'Strong-willed, decisive, courageous fighter',
+    negative: 'Aggressive, prone to conflict',
+    summary: 'Strong will and fighting spirit',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Huong De',
+    positive: 'Strong sibling protection, family defender',
+    negative: 'Sibling conflicts, family fights',
+    summary: 'Protective of siblings, potential conflict',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Phu The',
+    positive: 'Protective spouse, passionate defender',
+    negative: 'Marriage fights and power struggles',
+    summary: 'Protective but potentially combative marriage',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Tu Tuc',
+    positive: 'Strong parental authority, protective',
+    negative: 'Harsh parenting, conflicts with children',
+    summary: 'Strong but potentially harsh parenting',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Tai Bach',
+    positive: 'Strong earning power, fighting for wealth',
+    negative: 'Financial conflicts and disputes',
+    summary: 'Strong earnings through hard work',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Tat Ach',
+    positive: 'Strong vitality, fighting spirit recovery',
+    negative: 'Accidents, injuries, inflammatory conditions',
+    summary: 'Strong health but injury-prone',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Thien Di',
+    positive: 'Confident travels, warrior journey',
+    negative: 'Travel accidents, dangerous journeys',
+    summary: 'Confident but potentially dangerous travels',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'No Boc',
+    positive: 'Loyal and protective friends, strong bonds',
+    negative: 'Friend conflicts and disputes',
+    summary: 'Protective friendships with conflict potential',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Quan Loc',
+    positive: 'Aggressive career advancement, fighting for success',
+    negative: 'Career conflict and competition',
+    summary: 'Strong career drive with conflict',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Dien Trach',
+    positive: 'Strong property development, fighting for assets',
+    negative: 'Property disputes and loss',
+    summary: 'Strong property development with potential disputes',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Phuc Duc',
+    positive: 'Fighting for luck, manifest through effort',
+    negative: 'Luck requires constant fighting',
+    summary: 'Luck requires fighting and effort',
+  },
+  {
+    starName: 'Vu Khuc',
+    palaceName: 'Phu Mau',
+    positive: 'Protective of parents, filial duty',
+    negative: 'Conflict with parents',
+    summary: 'Protective but potentially conflictive filial piety',
+  },
+
+  // Thien Dong (天同) - Child of Heaven
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Menh',
+    positive: 'Childlike innocence, naive optimism, happiness',
+    negative: 'Immaturity, irresponsibility',
+    summary: 'Innocent and happy life outlook',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Huong De',
+    positive: 'Joyful sibling relationships, playful bond',
+    negative: 'Siblings take advantage of naive nature',
+    summary: 'Joyful but potentially naïve sibling bond',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Phu The',
+    positive: 'Joyful marriage, playful romance, happiness',
+    negative: 'Marriage lacks maturity and depth',
+    summary: 'Happy marriage but may lack depth',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Tu Tuc',
+    positive: 'Joyful relationship with children, playful parenting',
+    negative: 'Lack of parental discipline',
+    summary: 'Happy parenting but may lack discipline',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Tai Bach',
+    positive: 'Joyful earning, easy income, blessed wealth',
+    negative: 'Naive about money, easily cheated',
+    summary: 'Easy earnings but naive about finances',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Tat Ach',
+    positive: 'Good health, youthful vitality',
+    negative: 'Carelessness about health',
+    summary: 'Good health with careless attitude',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Thien Di',
+    positive: 'Joyful travels, blessed journeys',
+    negative: 'Naive travel planning',
+    summary: 'Joyful travels but naïve planning',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'No Boc',
+    positive: 'Joyful friendships, many friends',
+    negative: 'Friends exploit innocence',
+    summary: 'Many joyful friendships but potential exploitation',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Quan Loc',
+    positive: 'Easy career progress, joyful work',
+    negative: 'Lack of career seriousness',
+    summary: 'Happy career but lacking seriousness',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Dien Trach',
+    positive: 'Blessed property, easy real estate success',
+    negative: 'Naive about property matters',
+    summary: 'Blessed property acquisition',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Phuc Duc',
+    positive: 'Joyful and blessed fortune',
+    negative: 'Luck may be easily lost',
+    summary: 'Natural and joyful good fortune',
+  },
+  {
+    starName: 'Thien Dong',
+    palaceName: 'Phu Mau',
+    positive: 'Joyful relationship with parents',
+    negative: 'Naive about parental needs',
+    summary: 'Joyful filial piety',
+  },
+
+  // Liem Trinh (廉貞) - Pure Virtue
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Menh',
+    positive: 'Honest, upright, moral integrity',
+    negative: 'Rigid principles, difficulty adapting',
+    summary: 'Moral integrity and honesty in life',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Huong De',
+    positive: 'Honest sibling relationships, family integrity',
+    negative: 'Family conflicts over principles',
+    summary: 'Honest but potentially rigid sibling bond',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Phu The',
+    positive: 'Faithful marriage, honest partnership',
+    negative: 'Marriage rigidity, lack of flexibility',
+    summary: 'Faithful and honest marriage',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Tu Tuc',
+    positive: 'Moral upbringing of children, ethical parenting',
+    negative: 'Overly strict parenting',
+    summary: 'Ethical parenting with potential rigidity',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Tai Bach',
+    positive: 'Honest earnings, ethical wealth',
+    negative: 'Financial rigidity, missed opportunities',
+    summary: 'Ethical earnings and honest wealth',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Tat Ach',
+    positive: 'Good health through moral living',
+    negative: 'Psychosomatic illness from stress',
+    summary: 'Health affected by moral integrity',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Thien Di',
+    positive: 'Honest travels, ethical journeys',
+    negative: 'Travel complications from rigid ethics',
+    summary: 'Principled but potentially difficult travels',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'No Boc',
+    positive: 'Loyal and honest friends',
+    negative: 'Friendships strained by rigid principles',
+    summary: 'Loyal friendships but potentially strained',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Quan Loc',
+    positive: 'Honest career, ethical advancement',
+    negative: 'Career limited by inflexible ethics',
+    summary: 'Honest career with ethical limitations',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Dien Trach',
+    positive: 'Moral property ownership, ethical assets',
+    negative: 'Property limitations from principles',
+    summary: 'Ethical property development',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Phuc Duc',
+    positive: 'Virtue brings blessings',
+    negative: 'Rigid virtue limits luck manifestation',
+    summary: 'Blessings through virtue',
+  },
+  {
+    starName: 'Liem Trinh',
+    palaceName: 'Phu Mau',
+    positive: 'Filial piety through moral duty',
+    negative: 'Family relationships strained by rigidity',
+    summary: 'Dutiful but potentially rigid filial piety',
+  },
+
+  // Thien Phu (天府) - Heavenly Storehouse [covered above as Thien Co]
+  // Thien Phu (天相) - Heavenly Minister [distinct star, see below]
+
+  // Thien Luong (天梁) - Heavenly Roof
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Menh',
+    positive: 'Protective, wise, protective umbrella',
+    negative: 'Overprotective, difficulty letting go',
+    summary: 'Protective and wise life guidance',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Huong De',
+    positive: 'Protective of siblings, family elder role',
+    negative: 'Overcontrolling siblings',
+    summary: 'Protective sibling relationships',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Phu The',
+    positive: 'Protective spouse, strong support',
+    negative: 'Overprotective, controlling marriage',
+    summary: 'Protective but potentially controlling marriage',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Tu Tuc',
+    positive: 'Protective parenting, children safe',
+    negative: 'Overprotective, children lack independence',
+    summary: 'Protective parenting with potential overcontrol',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Tai Bach',
+    positive: 'Protective finances, good financial shelter',
+    negative: 'Conservative spending limits wealth growth',
+    summary: 'Protective finances with conservative growth',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Tat Ach',
+    positive: 'Good health, longevity, protective health',
+    negative: 'Longevity may come with chronic issues',
+    summary: 'Long-term health and protective recovery',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Thien Di',
+    positive: 'Protected travels, safe journeys',
+    negative: 'Travel limitations, protective restraints',
+    summary: 'Safe but limited travels',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'No Boc',
+    positive: 'Protective friends, loyal support',
+    negative: 'Friends overly dependent',
+    summary: 'Protective and loyal friendships',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Quan Loc',
+    positive: 'Protected career, stable advancement',
+    negative: 'Career advancement slow and limited',
+    summary: 'Stable but slow career protection',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Dien Trach',
+    positive: 'Protective home, secure property',
+    negative: 'Property development slow',
+    summary: 'Secure and protected property',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Phuc Duc',
+    positive: 'Protective blessings, lasting fortune',
+    negative: 'Blessings slow to manifest',
+    summary: 'Protected and lasting blessings',
+  },
+  {
+    starName: 'Thien Luong',
+    palaceName: 'Phu Mau',
+    positive: 'Protective of parents, strong filial duty',
+    negative: 'Overprotective of parents',
+    summary: 'Strong filial protection of parents',
+  },
+
+  // Sat That (殺破狼) - Trio of Destruction [these are analyzed as combinations]
+  // That Sat (七殺) - Seven Kills
+  {
+    starName: 'That Sat',
+    palaceName: 'Menh',
+    positive: 'Ambitious, aggressive, strong warrior spirit',
+    negative: 'Destructive impulses, violent tendencies',
+    summary: 'Ambitious but potentially destructive',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Huong De',
+    positive: 'Aggressive sibling protection, strong defense',
+    negative: 'Sibling conflict, family violence',
+    summary: 'Protective but aggressive sibling dynamic',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Phu The',
+    positive: 'Passionate marriage, strong partner',
+    negative: 'Marriage conflict, potential violence',
+    summary: 'Passionate but volatile marriage',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Tu Tuc',
+    positive: 'Strong leadership in child-rearing',
+    negative: 'Harsh discipline, child trauma',
+    summary: 'Strong but potentially harsh parenting',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Tai Bach',
+    positive: 'Aggressive wealth accumulation',
+    negative: 'Financial loss through aggression',
+    summary: 'Aggressive finances with risk',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Tat Ach',
+    positive: 'Strong recovery, fighting health challenges',
+    negative: 'Accidents, injuries, health crisis',
+    summary: 'Volatile health with strong recovery',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Thien Di',
+    positive: 'Adventurous travels, bold journeys',
+    negative: 'Dangerous travels, accidents',
+    summary: 'Bold but dangerous travels',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'No Boc',
+    positive: 'Passionate friendships, strong bonds',
+    negative: 'Friend conflict and betrayal',
+    summary: 'Intense friendships with conflict potential',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Quan Loc',
+    positive: 'Aggressive career advancement, warrior in work',
+    negative: 'Career conflict and sudden loss',
+    summary: 'Aggressive career with volatility',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Dien Trach',
+    positive: 'Strong property development',
+    negative: 'Property loss through conflict',
+    summary: 'Aggressive property with loss risk',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Phuc Duc',
+    positive: 'Fighting for luck, breakthrough moments',
+    negative: 'Luck through destruction and crisis',
+    summary: 'Luck through destructive transformation',
+  },
+  {
+    starName: 'That Sat',
+    palaceName: 'Phu Mau',
+    positive: 'Aggressive filial duty, strong protection',
+    negative: 'Conflict with parents',
+    summary: 'Aggressive filial protection',
+  },
+
+  // Pha Quan (破軍) - Breaking Army
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Menh',
+    positive: 'Ability to break through obstacles, revolutionary',
+    negative: 'Destructive, chaotic life path',
+    summary: 'Breakthrough ability with chaos potential',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Huong De',
+    positive: 'Breaking family patterns, progressive sibling bond',
+    negative: 'Family destruction and separation',
+    summary: 'Progressive but potentially destructive sibling dynamic',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Phu The',
+    positive: 'Breaking marriage norms, progressive union',
+    negative: 'Marriage breakdown and divorce',
+    summary: 'Progressive marriage with breakdown risk',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Tu Tuc',
+    positive: 'Children break family patterns, innovative offspring',
+    negative: 'Loss of children or estrangement',
+    summary: 'Progressive children with separation risk',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Tai Bach',
+    positive: 'Breaking through financial limits',
+    negative: 'Financial breakdown and loss',
+    summary: 'Financial breakthrough with collapse risk',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Tat Ach',
+    positive: 'Breaking through health issues',
+    negative: 'Health breakdown, chronic illness',
+    summary: 'Potential recovery with health crisis',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Thien Di',
+    positive: 'Breaking barriers in travel, revolutionary journeys',
+    negative: 'Travel breakdown, accidents',
+    summary: 'Progressive travels with accident risk',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'No Boc',
+    positive: 'Breaking social patterns, new friendships',
+    negative: 'Friendship loss and betrayal',
+    summary: 'New friendships with loss potential',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Quan Loc',
+    positive: 'Breaking career barriers, innovation',
+    negative: 'Career breakdown and loss',
+    summary: 'Career innovation with breakdown risk',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Dien Trach',
+    positive: 'Breaking property limits, innovation',
+    negative: 'Property loss and instability',
+    summary: 'Property innovation with loss risk',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Phuc Duc',
+    positive: 'Breaking through luck limitations',
+    negative: 'Luck breakthrough through loss',
+    summary: 'Luck through destructive breakthrough',
+  },
+  {
+    starName: 'Pha Quan',
+    palaceName: 'Phu Mau',
+    positive: 'Breaking family traditions, modern filial duty',
+    negative: 'Estrangement from parents',
+    summary: 'Progressive filial relationship with separation risk',
+  },
+]
+
+export const STAR_MEANINGS = tuViMeanings
+
+// Helper to get star meaning in specific palace
+export function getStarMeaning(starName: string, palaceName: string): StarMeaning | undefined {
+  return tuViMeanings.find((m) => m.starName === starName && m.palaceName === palaceName)
+}
+
+// Helper to get all meanings for a star
+export function getMeaningsForStar(starName: string): StarMeaning[] {
+  return tuViMeanings.filter((m) => m.starName === starName)
+}
+
+// Helper to get all meanings for a palace
+export function getMeaningsForPalace(palaceName: string): StarMeaning[] {
+  return tuViMeanings.filter((m) => m.palaceName === palaceName)
+}
+
+// Helper to get summary only
+export function getStarSummary(starName: string, palaceName: string): string | undefined {
+  const meaning = getStarMeaning(starName, palaceName)
+  return meaning?.summary
+}

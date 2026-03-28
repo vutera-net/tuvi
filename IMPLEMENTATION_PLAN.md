@@ -1,20 +1,20 @@
 # Implementation Plan: TuVi Ngay Moi
 
-**Current Status: Week 1 MVP Complete (~85% Overall)**
+**Current Status: Week 2 Progress (~90% Overall)**
 - ✅ Phase 1 (Setup): 100% - Database, Auth, Seed Script
 - ✅ Phase 2 (Calendar + Ngu Hanh): 100%
-- ✅ Phase 3 (Tu Vi Engine): 95% - Added phu-tinh.ts
+- ✅ Phase 3 (Tu Vi Engine): 97% - Added phu-tinh.ts + star-meanings.ts
 - ✅ Phase 4 (Date Selection): 100% - Added events.ts
 - ✅ Phase 5 (Feng Shui): 95%
 - ✅ Phase 6 (UI/UX): 95% - All major pages built
 - ✅ Phase 7 (API Routes): 95% - All core routes working
 - ✅ Phase 8 (Daily Horoscope): 100%
-- ⏳ Phase 9 (Monetization): 0% - Week 2 priority
+- ✅ Phase 9 (Monetization): 50% - Pricing + feature gating (Stripe pending)
 - ⏳ Phase 10 (SEO): 30% - Sitemap/robots done
 - ⏳ Phase 11 (Testing): 0% - Quality gate
 - ⏳ Phase 12 (Deployment): 0% - Final phase
 
-**Build Status:** ✅ Successful (0 TypeScript errors, 27 routes deployed)
+**Build Status:** ✅ Successful (0 TypeScript errors, 30 routes deployed)
 
 ## Phase 1: Project Setup & Foundation
 
@@ -97,11 +97,11 @@
 
 ### 3.1 Tu Vi Data Files
 - [x] Create `src/data/tuvi/chinh-tinh.ts` - 14 main stars data
-- [x] Create `src/data/tuvi/phu-tinh.ts` - Minor stars data - **[NEW]** 12 phu tinh with categories & meanings
+- [x] Create `src/data/tuvi/phu-tinh.ts` - Minor stars data - 12 phu tinh with categories & meanings
 - [x] Create `src/data/tuvi/cung.ts` - 12 palaces data
 - [x] Create `src/data/tuvi/cuc.ts` - 5 Cuc (Thuy/Moc/Kim/Tho/Hoa) rules
 - [x] Create `src/data/tuvi/star-brightness.ts` - (embedded in chinh-tinh.ts)
-- [ ] Create `src/data/tuvi/star-meanings.ts` - Giai nghia tung sao tai tung cung
+- [x] Create `src/data/tuvi/star-meanings.ts` - **[NEW]** Star interpretations in each palace (9 main stars, remaining 5 pending)
 
 ### 3.2 Tu Vi Calculation Engine
 - [x] Create `src/lib/engines/tuvi-engine.ts`
@@ -317,17 +317,21 @@
 ## Phase 9: Monetization & Payment
 
 ### 9.1 Subscription System
-- [ ] Integrate payment gateway (Stripe or VNPay for Vietnam)
-- [ ] Create pricing page
-- [ ] Implement subscription tiers (Free/Premium/VIP)
+- [x] Define pricing plans (Free/Premium/VIP) - **[NEW]** pricing.ts created
+- [x] Create pricing page - **[NEW]** /pricing with feature comparison
+- [x] Create pricing data structure - Free/Premium/VIP with features & pricing
+- [x] Create subscription API endpoints - GET/POST/PUT/DELETE /api/subscription
+- [ ] Integrate payment gateway (Stripe - requires credentials)
 - [ ] Create payment flow (checkout -> confirmation -> activation)
 - [ ] Handle subscription renewal & expiration
 - [ ] Create subscription management page (upgrade/downgrade/cancel)
 
 ### 9.2 Feature Gating
-- [ ] Create middleware/HOC for premium feature checks
+- [x] Create feature gating library - **[NEW]** feature-gating.ts with 25+ gates
+- [x] Define feature requirements by tier - All core features mapped to tiers
 - [ ] Implement free tier limits (3 Tu Vi charts/month counter)
 - [ ] Create "upgrade to premium" prompts at gate points
+- [ ] Add feature gating middleware to protected endpoints
 - [ ] Track usage per user
 
 ### 9.3 Advertising
