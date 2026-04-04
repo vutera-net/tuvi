@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 // Edge-safe config: no Prisma, no bcrypt
 // Used by middleware for JWT verification only
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   session: { strategy: 'jwt' },
   pages: {
     signIn: '/dang-nhap',
