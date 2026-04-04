@@ -14,7 +14,7 @@ npm run dev
 ### Environment Variables
 ```bash
 # .env.local should have:
-DATABASE_URL="postgresql://postgres:12345678@localhost:5432/tuvingaymoi"
+DATABASE_URL="postgresql://postgres:12345678@localhost:5432/harmony-tuvi"
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-key-here"
 # Google OAuth (when ready):
@@ -40,7 +40,7 @@ npx prettier --write . # Format code
 
 ### Seed Database with Test Data
 ```bash
-DATABASE_URL="postgresql://postgres:12345678@localhost:5432/tuvingaymoi" npm run seed
+DATABASE_URL="postgresql://postgres:12345678@localhost:5432/harmony-tuvi" npm run seed
 ```
 
 ### Create New Migration
@@ -234,4 +234,4 @@ npm install
 
 ---
 
-**Need Help?** Check IMPLEMENTATION_PLAN.md or WEEK1_COMPLETION_SUMMARY.md
+**Need Help?** Check `docs/IMPLEMENTATION_PLAN.md` or `docs/PROJECT_STATUS.md`

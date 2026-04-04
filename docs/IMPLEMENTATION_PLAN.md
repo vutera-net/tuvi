@@ -1,4 +1,4 @@
-# Implementation Plan: TuVi Ngay Moi
+# Implementation Plan: Harmony Tử Vi
 
 **Current Status: Autonomous Week 2+ Execution (~97% Overall)**
 - ✅ Phase 1 (Setup): 100% - Database, Auth, Google OAuth provider

@@ -1,4 +1,4 @@
-# TuVi Ngay Moi - Project Status Report
+# Harmony Tử Vi - Project Status Report
 **Date:** March 28, 2026
 **Status:** Ready for Production Deployment (97% Complete)
 
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-**TuVi Ngay Moi** is a comprehensive Vietnamese Feng Shui, Tu Vi, and date selection platform built with Next.js, PostgreSQL, and modern web technologies. The application is **feature-complete for MVP** and ready for production deployment.
+**Harmony Tử Vi** is a comprehensive Vietnamese Feng Shui, Tu Vi, and date selection platform built with Next.js, PostgreSQL, and modern web technologies. The application is **feature-complete for MVP** and ready for production deployment.
 
 ### Key Metrics
 - **Overall Completion:** 97%
@@ -493,7 +493,7 @@ Total Project:
 
 ## Conclusion
 
-TuVi Ngay Moi is a **production-ready, feature-complete MVP** that brings Vietnamese Feng Shui, Tu Vi, and date selection to the modern web. With comprehensive calculation engines, secure payment processing, and a beautiful user interface, the application is prepared for immediate deployment and user acquisition.
+Harmony Tử Vi is a **production-ready, feature-complete MVP** that brings Vietnamese Feng Shui, Tu Vi, and date selection to the modern web. With comprehensive calculation engines, secure payment processing, and a beautiful user interface, the application is prepared for immediate deployment and user acquisition.
 
 **Current Status: ✅ Ready for Production**
 
