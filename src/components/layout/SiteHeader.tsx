@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { AuthButton } from './AuthButton'
 
 const NAV_LINKS = [
   { href: '/lich', label: 'Lịch Vạn Niên' },
@@ -45,19 +46,7 @@ export function SiteHeader() {
 
           {/* CTA */}
           <div className="hidden items-center gap-3 md:flex">
-            <Link
-              href="/dang-nhap"
-              className="text-sm font-medium text-gray-600 hover:text-red-700"
-            >
-              Đăng nhập
-            </Link>
-            <Link
-              href="/dang-ky"
-              className="rounded-full px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: 'var(--color-primary)' }}
-            >
-              Dùng miễn phí
-            </Link>
+            <AuthButton />
           </div>
 
           {/* Mobile menu button */}

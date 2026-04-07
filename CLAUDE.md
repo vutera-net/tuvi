@@ -1,8 +1,8 @@
-# PRD: TuVi Ngay Moi - Phong Thuy, Tu Vi & Xem Ngay
+# PRD: Harmony Tử Vi - Phong Thuy, Tu Vi & Xem Ngay
 
 ## 1. Product Overview
 
-**Ten san pham:** TuVi Ngay Moi
+**Ten san pham:** Harmony Tử Vi
 **Vision:** Nen tang phong thuy, tu vi va xem ngay toan dien nhat cho nguoi Viet, ket hop tri tue co truyen voi cong nghe hien dai.
 **Tagline:** "Luan menh - Chon ngay - An tam"
 
