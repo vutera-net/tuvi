@@ -23,17 +23,17 @@ const notoSerif = Noto_Serif({
 
 export const metadata: Metadata = {
   title: {
-    default: 'TuVi Ngày Mới - Phong Thủy, Tử Vi & Xem Ngày',
-    template: '%s | TuVi Ngày Mới',
+    default: 'Harmony Tử Vi - Phong Thủy, Tử Vi & Xem Ngày',
+    template: '%s | Harmony Tử Vi',
   },
   description:
     'Nền tảng phong thủy, tử vi và xem ngày tốt xấu toàn diện nhất cho người Việt. Luận mệnh Ngũ Hành, lá số Tử Vi, chọn ngày đẹp, phong thủy nhà ở.',
   keywords: ['phong thủy', 'tử vi', 'xem ngày tốt xấu', 'lịch vạn niên', 'luận mệnh', 'ngũ hành'],
-  authors: [{ name: 'TuVi Ngày Mới' }],
+  authors: [{ name: 'Harmony Tử Vi' }],
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
-    siteName: 'TuVi Ngày Mới',
+    siteName: 'Harmony Tử Vi',
   },
 }
 

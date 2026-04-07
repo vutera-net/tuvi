@@ -26,7 +26,7 @@ export function SiteHeader() {
             <span className="text-2xl">☯</span>
             <div>
               <div className="text-lg font-bold" style={{ color: 'var(--color-primary)' }}>
-                TuVi Ngày Mới
+                Harmony Tử Vi
               </div>
               <div className="text-xs text-gray-500">Luận mệnh - Chọn ngày - An tâm</div>
             </div>

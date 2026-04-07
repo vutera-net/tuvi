@@ -10,7 +10,7 @@ export function SiteFooter() {
             <div className="flex items-center gap-2">
               <span className="text-2xl">☯</span>
               <span className="font-bold" style={{ color: 'var(--color-primary)' }}>
-                TuVi Ngày Mới
+                Harmony Tử Vi
               </span>
             </div>
             <p className="mt-2 text-sm text-gray-600">
@@ -53,7 +53,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between border-t pt-8 text-sm text-gray-500 md:flex-row">
-          <p>© {new Date().getFullYear()} TuVi Ngày Mới. Bảo lưu mọi quyền.</p>
+          <p>© {new Date().getFullYear()} Harmony Tử Vi. Bảo lưu mọi quyền.</p>
           <div className="mt-4 flex gap-4 md:mt-0">
             <span className="element-kim rounded px-2 py-0.5 text-xs">Kim</span>
             <span className="element-moc rounded px-2 py-0.5 text-xs">Mộc</span>

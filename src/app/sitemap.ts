@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getAllPostsMeta } from '@/lib/blog'
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvingaymoi.vn'
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvi.vutera.net'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const today = new Date()
