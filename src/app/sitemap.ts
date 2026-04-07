@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getAllPostsMeta } from '@/lib/blog'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvingaymoi.vn'
 
@@ -33,5 +34,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...zodiacPages, ...menhPages]
+  // Blog posts
+  const blogPosts: MetadataRoute.Sitemap = getAllPostsMeta().map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
+
+  return [...staticPages, ...zodiacPages, ...menhPages, ...blogPosts]
 }

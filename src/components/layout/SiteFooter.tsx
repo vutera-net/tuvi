@@ -34,10 +34,10 @@ export function SiteFooter() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-gray-900">Kiến thức</h3>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/blog" className="hover:text-red-700">Blog Phong Thủy</Link></li>
-              <li><Link href="/blog/ngu-hanh" className="hover:text-red-700">Ngũ Hành</Link></li>
-              <li><Link href="/blog/tu-vi" className="hover:text-red-700">Tử Vi Đẩu Số</Link></li>
-              <li><Link href="/blog/bat-trach" className="hover:text-red-700">Bát Trạch</Link></li>
+              <li><Link href="/blog" className="hover:text-red-700">Blog Tử Vi</Link></li>
+              <li><Link href="/blog?category=ngu-hanh" className="hover:text-red-700">Ngũ Hành</Link></li>
+              <li><Link href="/blog?category=tu-vi" className="hover:text-red-700">Tử Vi Đẩu Số</Link></li>
+              <li><Link href="/blog?category=phong-thuy" className="hover:text-red-700">Phong Thủy</Link></li>
             </ul>
           </div>
 

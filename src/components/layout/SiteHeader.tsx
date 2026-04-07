@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '/xem-ngay', label: 'Xem Ngày' },
   { href: '/phong-thuy', label: 'Phong Thủy' },
   { href: '/tu-vi-hang-ngay', label: 'TV Hàng Ngày' },
+  { href: '/blog', label: 'Blog' },
 ]
 
 export function SiteHeader() {
