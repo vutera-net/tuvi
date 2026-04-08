@@ -65,9 +65,9 @@ export function jdToDate(jd: number): { day: number; month: number; year: number
 }
 
 /**
- * Get the Julian Day Number of new moon day k
+ * Compute raw Julian Day of new moon k (Ho Ngoc Duc algorithm)
  */
-function getNewMoonDay(k: number, timeZone: number): number {
+function newMoon(k: number): number {
   const T = k / 1236.85
   const T2 = T * T
   const T3 = T2 * T
@@ -96,30 +96,48 @@ function getNewMoonDay(k: number, timeZone: number): number {
   C1 -= 0.0006 * Math.sin((2 * F + Mpr) * dr)
   C1 += 0.001 * Math.sin((2 * F - Mpr) * dr)
   C1 += 0.0005 * Math.sin((M + 2 * Mpr) * dr)
-  const deltaT =
-    0.37 + 0.1 * T - 0.2 * T2 + 0.006 * T3
-  const JdNew = Jd1 + C1 - deltaT / 1440
-  return INT(JdNew + 0.5 + timeZone / 24)
+  // deltaT in days (Ho Ngoc Duc formula)
+  let deltat: number
+  if (T < -11) {
+    deltat =
+      0.001 +
+      0.000839 * T +
+      0.0002261 * T2 -
+      0.00000845 * T3 -
+      0.000000081 * T * T3
+  } else {
+    deltat = -0.000278 + 0.000265 * T + 0.000262 * T2
+  }
+  return Jd1 + C1 - deltat
 }
 
 /**
- * Get Sun's longitude (degrees) for Julian Day Number
+ * Get the Julian Day Number of new moon day k
+ */
+function getNewMoonDay(k: number, timeZone: number): number {
+  return INT(newMoon(k) + 0.5 + timeZone / 24)
+}
+
+/**
+ * Get Sun's longitude sector (0-11) for a Julian Day Number
+ * Includes nutation & aberration correction for accurate solar term detection
  */
 function getSunLongitude(jdn: number, timeZone: number): number {
-  const T = (jdn - 2451545.5 - timeZone / 24) / 36525
+  const T = (jdn - 0.5 - timeZone / 24 - 2451545.0) / 36525
   const T2 = T * T
   const dr = Math.PI / 180
   const M = 357.5291 + 35999.0503 * T - 0.0001559 * T2 - 0.00000048 * T * T2
-  const L0 =
-    280.46646 + 36000.76983 * T + 0.0003032 * T2
+  const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T2
   const DL =
-    (1.9146 - 0.004817 * T - 0.000014 * T2) * Math.sin(M * dr)
-  const DL2 =
-    (0.019993 - 0.000101 * T) * Math.sin(2 * M * dr)
-  const DL3 = 0.00029 * Math.sin(3 * M * dr)
-  let L = L0 + DL + DL2 + DL3
-  L -= 360 * INT(L / 360)
-  return INT(L / 30)
+    (1.9146 - 0.004817 * T - 0.000014 * T2) * Math.sin(M * dr) +
+    (0.019993 - 0.000101 * T) * Math.sin(2 * M * dr) +
+    0.00029 * Math.sin(3 * M * dr)
+  const L = L0 + DL
+  // Nutation & aberration correction
+  const theta = L - 0.00569 - 0.00478 * Math.sin(dr * (125.04 - 1934.136 * T))
+  let omega = theta - 360 * INT(theta / 360)
+  if (omega < 0) omega += 360
+  return INT(omega / 30)
 }
 
 /**
@@ -153,7 +171,7 @@ function getLeapMonthOffset(a11: number, timeZone: number): number {
 }
 
 /**
- * Convert Solar date to Lunar date
+ * Convert Solar date to Lunar date (Ho Ngoc Duc algorithm)
  */
 export function solarToLunar(
   dd: number,
@@ -167,50 +185,34 @@ export function solarToLunar(
   if (monthStart > dayNumber) {
     monthStart = getNewMoonDay(k, timeZone)
   }
-  let a11 = getLunarMonth11(yy, timeZone)
-  let b11 = a11
-  if (a11 >= monthStart) {
-    b11 = getLunarMonth11(yy - 1, timeZone)
-  } else {
-    a11 = getLunarMonth11(yy + 1, timeZone)
-  }
-  const lunarDay = dayNumber - monthStart + 1
-  const diff = INT((monthStart - b11) / 29)
-  let leapMonthDiff = 0
-  let isLeapMonth = false
-  const leapMonthOffset = getLeapMonthOffset(b11, timeZone)
 
-  let lunarMonth: number
-  if (diff >= leapMonthOffset) {
-    leapMonthDiff = 1
-    if (diff === leapMonthOffset) {
-      isLeapMonth = true
+  // a11 = tháng 11 của năm hiện tại, b11 = tháng 11 của năm kế tiếp/trước
+  const a11Initial = getLunarMonth11(yy, timeZone)
+  let a11 = a11Initial
+  let b11 = a11Initial
+  const a11FromPrevYear = a11Initial >= monthStart
+  if (a11FromPrevYear) {
+    a11 = getLunarMonth11(yy - 1, timeZone)
+  } else {
+    b11 = getLunarMonth11(yy + 1, timeZone)
+  }
+
+  const lunarDay = dayNumber - monthStart + 1
+  const diff = INT((monthStart - a11) / 29)
+  let isLeapMonth = false
+  let lunarMonth = diff + 11
+
+  // Kiểm tra tháng nhuận: năm có 13 tháng khi b11 - a11 > 365
+  if (b11 - a11 > 365) {
+    const leapMonthOffset = getLeapMonthOffset(a11, timeZone)
+    if (diff >= leapMonthOffset) {
+      lunarMonth = diff + 10
+      if (diff === leapMonthOffset) isLeapMonth = true
     }
   }
 
-  lunarMonth = diff + 11
   if (lunarMonth > 12) lunarMonth -= 12
-  if (lunarMonth >= 11 && diff < 4) {
-    lunarMonth -= leapMonthDiff
-  } else {
-    lunarMonth -= leapMonthDiff
-  }
-  // Recalculate cleanly
-  lunarMonth = ((diff + 11 - leapMonthDiff) % 12) + 1
-  // Normalize
-  if (lunarMonth > 12) lunarMonth -= 12
-
-  let lunarYear: number
-  if (lunarMonth > 10 && diff < 4) {
-    lunarYear = yy - 1
-  } else {
-    lunarYear = yy
-  }
-  if (isLeapMonth) {
-    lunarMonth = diff + 11
-    if (lunarMonth > 12) lunarMonth -= 12
-    lunarYear = lunarMonth >= 11 && diff < 4 ? yy - 1 : yy
-  }
+  const lunarYear = lunarMonth >= 11 && a11FromPrevYear ? yy - 1 : yy
 
   // Can Chi calculations
   const canYear = ((lunarYear - 4) % 10 + 10) % 10
