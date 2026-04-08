@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getDayInfo } from '@/lib/engines/lunar-engine'
 import { THIEN_CAN, DIA_CHI } from '@/data/can-chi'
+import { ConditionalAdSlot } from '@/components/common/ConditionalAdSlot'
 
 const FEATURES = [
   {
@@ -169,6 +170,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Ad slot - free tier only */}
+      <div className="flex justify-center py-2">
+        <ConditionalAdSlot size="leaderboard" />
+      </div>
 
       {/* Daily Horoscope preview */}
       <section className="mx-auto max-w-7xl px-4 py-8">

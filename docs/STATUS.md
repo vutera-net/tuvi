@@ -83,8 +83,9 @@
 
 ### Phase 9 - Monetization (10%)
 - ✅ Trang quản lý subscription `/tai-khoan` (xem gói, upgrade, cancel)
-- PDF export cho Tu Vi chart (VIP feature)
-- Google AdSense integration
+- ⚠️ **BUG:** Stripe webhook không cập nhật DB (`src/lib/stripe.ts` lines 114–159)
+- PDF export lá số Tử Vi — `@react-pdf/renderer` (VIP)
+- AdSense placeholder component `<AdSlot />` (Free tier)
 
 ### Phase 10 - SEO (55%)
 - Blog system (MDX integration) — *blog pages đã build, chưa tích hợp MDX hoàn toàn*

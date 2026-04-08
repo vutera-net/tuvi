@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { HoroscopeView } from '@/components/common/HoroscopeView'
+import { ConditionalAdSlot } from '@/components/common/ConditionalAdSlot'
 
 export const metadata: Metadata = {
   title: 'Tử Vi Hàng Ngày - 12 Con Giáp',
@@ -15,6 +16,9 @@ export default function TuViHangNgayPage() {
         <p className="mt-2 text-gray-600">Dự báo vận hàng ngày cho 12 con giáp</p>
       </div>
       <HoroscopeView />
+      <div className="mt-8 flex justify-center">
+        <ConditionalAdSlot size="leaderboard" />
+      </div>
     </div>
   )
 }

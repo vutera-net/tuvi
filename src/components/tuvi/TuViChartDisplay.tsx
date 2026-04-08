@@ -4,11 +4,13 @@ import { useState } from 'react'
 import type { TuViChart, Palace, Star, DaiHan } from '@/types'
 import { NGU_HANH_COLOR_HEX, NGU_HANH_VI } from '@/data/ngu-hanh'
 import { calculateTieuHan, getDaiHanDirection } from '@/lib/engines/tuvi-engine'
+import { TuViPdfExportButton } from './TuViPdfExportButton'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
 interface Props {
   chart: TuViChart
+  userTier?: string
 }
 
 // Layout of 12 palaces in a 4x4 grid (outer ring, center is empty)
@@ -32,7 +34,7 @@ const PALACE_GRID_POSITIONS: Array<{ row: number; col: number; palaceOffset: num
   { row: 1, col: 0, palaceOffset: 9 },
 ]
 
-export function TuViChartDisplay({ chart }: Props) {
+export function TuViChartDisplay({ chart, userTier }: Props) {
   const [selectedPalace, setSelectedPalace] = useState<Palace | null>(null)
   const [selectedDaiHan, setSelectedDaiHan] = useState<DaiHan | null>(null)
   const elColor = NGU_HANH_COLOR_HEX[chart.menh]
@@ -45,28 +47,31 @@ export function TuViChartDisplay({ chart }: Props) {
     <div className="space-y-6">
       {/* Header */}
       <div className="rounded-2xl bg-white p-6 shadow-sm">
-        <div className="flex items-start gap-4">
-          <div
-            className="flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-white"
-            style={{ backgroundColor: elColor }}
-          >
-            {NGU_HANH_VI[chart.menh][0]}
-          </div>
-          <div>
-            <div className="text-xl font-bold text-gray-800">{chart.label}</div>
-            <div className="text-sm text-gray-600">
-              {chart.gender === 'male' ? 'Nam' : 'Nữ'} • Năm {chart.birthDate.year} •{' '}
-              Giờ {chart.birthHourName}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div
+              className="flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-white"
+              style={{ backgroundColor: elColor }}
+            >
+              {NGU_HANH_VI[chart.menh][0]}
             </div>
-            <div className="mt-1 flex flex-wrap gap-2">
-              <span className="rounded-full bg-gray-100 px-3 py-0.5 text-xs">
-                Mệnh: <strong>{NGU_HANH_VI[chart.menh]}</strong> ({chart.napAm})
-              </span>
-              <span className="rounded-full bg-gray-100 px-3 py-0.5 text-xs">
-                Cục: <strong>{chart.cuc}</strong>
-              </span>
+            <div>
+              <div className="text-xl font-bold text-gray-800">{chart.label}</div>
+              <div className="text-sm text-gray-600">
+                {chart.gender === 'male' ? 'Nam' : 'Nữ'} • Năm {chart.birthDate.year} •{' '}
+                Giờ {chart.birthHourName}
+              </div>
+              <div className="mt-1 flex flex-wrap gap-2">
+                <span className="rounded-full bg-gray-100 px-3 py-0.5 text-xs">
+                  Mệnh: <strong>{NGU_HANH_VI[chart.menh]}</strong> ({chart.napAm})
+                </span>
+                <span className="rounded-full bg-gray-100 px-3 py-0.5 text-xs">
+                  Cục: <strong>{chart.cuc}</strong>
+                </span>
+              </div>
             </div>
           </div>
+          <TuViPdfExportButton chart={chart} userTier={userTier} />
         </div>
       </div>
 

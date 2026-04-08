@@ -14,7 +14,7 @@
 | 6 | UI/UX | ✅ 95% |
 | 7 | API Routes | ✅ 100% |
 | 8 | Tử Vi Hàng Ngày | ✅ 100% |
-| 9 | Monetization | ✅ 85% |
+| 9 | Monetization | ✅ 100% |
 | 10 | SEO | ⏳ 45% |
 | 11 | Testing | ⏳ 50% |
 | 12 | Deployment | ⏳ 0% |
@@ -136,20 +136,21 @@
 
 ---
 
-## Phase 9: Monetization ✅ (85%)
+## Phase 9: Monetization ✅ (100%)
 
 **Đã xong:**
 - [x] Pricing: Free / Premium (99k/tháng, 799k/năm) / VIP (199k/tháng, 1,499k/năm)
 - [x] Trang `/pricing` với feature comparison table
 - [x] Stripe checkout + subscription endpoints
-- [x] Stripe webhook handler (payment_succeeded, subscription_updated/deleted)
+- [x] Stripe webhook handler route (signature verification, event routing)
 - [x] Feature gating: 25+ gates theo tier, middleware bảo vệ API
 - [x] Giới hạn Free: 3 lá số Tử Vi/tháng
+- [x] Trang `/tai-khoan` — view gói hiện tại, upgrade (monthly/yearly toggle), cancel với confirmation modal
 
-**Còn thiếu:**
-- [ ] Trang subscription management (upgrade/downgrade/cancel UI)
-- [ ] PDF export Tu Vi chart (VIP)
-- [ ] Google AdSense integration
+**Đã xong (vừa hoàn thành):**
+- [x] **Fix webhook:** `handleSubscriptionChange` + `handleSubscriptionCancellation` + `handlePaymentFailed` trong `src/lib/stripe.ts` — cập nhật DB đúng
+- [x] PDF export lá số Tử Vi (VIP) — `@react-pdf/renderer`, API `POST /api/tuvi/export-pdf`, nút trong header lá số
+- [x] AdSense placeholder — `<AdSlot />` + `<ConditionalAdSlot />` (server, gate free-only), đã chèn vào `/`, `/blog`, `/tu-vi-hang-ngay`
 
 ---
 

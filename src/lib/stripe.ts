@@ -4,6 +4,7 @@
  */
 
 import Stripe from 'stripe'
+import { prisma } from '@/lib/prisma'
 
 // Initialize Stripe (requires STRIPE_SECRET_KEY in environment)
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
@@ -133,17 +134,29 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
     tier = 'vip'
   }
 
-  // Update user subscription in database
-  // TODO: Call API endpoint to update user subscription
-  console.log(`Subscription updated for user ${userId}:`, {
-    status,
-    tier,
-    expiresAt: currentPeriodEnd,
-  })
+  if (['active', 'trialing'].includes(status)) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        subscription: tier,
+        subExpiresAt: currentPeriodEnd,
+      },
+    })
+  } else {
+    // past_due, unpaid, paused → downgrade
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        subscription: 'free',
+        subExpiresAt: null,
+      },
+    })
+  }
 }
 
 /**
- * Handle subscription cancellation
+ * Handle subscription cancellation (customer.subscription.deleted)
+ * Fires after period end when cancel_at_period_end was set
  */
 async function handleSubscriptionCancellation(subscription: Stripe.Subscription) {
   const userId = subscription.metadata?.userId
@@ -153,44 +166,44 @@ async function handleSubscriptionCancellation(subscription: Stripe.Subscription)
     return
   }
 
-  // Downgrade user to free tier
-  // TODO: Call API endpoint to downgrade user
-  console.log(`Subscription cancelled for user ${userId}`)
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      subscription: 'free',
+      subExpiresAt: null,
+    },
+  })
 }
 
 /**
  * Handle successful payment
  */
 async function handlePaymentSuccess(invoice: Stripe.Invoice) {
-  const userId = (invoice.metadata as any)?.userId
-
-  if (!userId) {
-    console.error('No userId in invoice metadata')
-    return
-  }
-
-  console.log(`Payment succeeded for user ${userId}:`, {
-    amount: (invoice as any).amount_paid,
-    date: new Date((invoice as any).date * 1000),
-  })
-
-  // TODO: Send confirmation email, log payment
+  // Subscription renewal is handled by handleSubscriptionChange (subscription.updated event)
+  // Nothing extra needed here
 }
 
 /**
- * Handle failed payment
+ * Handle failed payment — downgrade after invoice finalization failure
  */
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
-  const userId = (invoice.metadata as any)?.userId
+  const subscriptionId = (invoice as any).subscription
+  if (!subscriptionId) return
 
-  if (!userId) {
-    console.error('No userId in invoice metadata')
-    return
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+  const userId = subscription.metadata?.userId
+  if (!userId) return
+
+  // Only downgrade if subscription is now in a bad state
+  if (['past_due', 'unpaid'].includes(subscription.status)) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        subscription: 'free',
+        subExpiresAt: null,
+      },
+    })
   }
-
-  console.log(`Payment failed for user ${userId}`)
-
-  // TODO: Send retry email, possibly downgrade after multiple failures
 }
 
 /**

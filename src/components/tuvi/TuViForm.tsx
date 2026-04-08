@@ -10,7 +10,7 @@ const HOURS = [
   'Thân (15-17h)', 'Dậu (17-19h)', 'Tuất (19-21h)', 'Hợi (21-23h)',
 ]
 
-export function TuViForm() {
+export function TuViForm({ userTier }: { userTier?: string }) {
   const [form, setForm] = useState({
     label: '', gender: 'male', birthYear: '', birthMonth: '', birthDay: '',
     birthHour: '0', isLunar: false,
@@ -142,7 +142,7 @@ export function TuViForm() {
         </form>
       </div>
 
-      {chart && <TuViChartDisplay chart={chart} />}
+      {chart && <TuViChartDisplay chart={chart} userTier={userTier} />}
     </div>
   )
 }
