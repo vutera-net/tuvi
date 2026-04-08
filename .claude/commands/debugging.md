@@ -1,1 +1,0 @@
-Tôi cung cấp ngữ cảnh lỗi như sau: $ARGUMENTS. Hãy phân tích log, stack traces và khám phá codebase để xác định nguyên nhân. Sau đó, tạo file docs/BUG_REPORT.md bao gồm: Tiêu đề, Mô tả lỗi, Các bước tái hiện, Kết quả thực tế vs Mong đợi, Phân tích nguyên nhân gốc rễ và Đề xuất sửa lỗi. Lưu ý: CHƯA thực hiện sửa code ngay
