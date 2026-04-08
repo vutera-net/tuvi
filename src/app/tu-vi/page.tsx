@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { TuViForm } from '@/components/tuvi/TuViForm'
 
 export const metadata: Metadata = {
@@ -15,6 +16,13 @@ export default function TuViPage() {
         <p className="mt-2 text-gray-600">
           Nhập thông tin để lập lá số Tử Vi với 14 chính tinh, 12 cung đầy đủ
         </p>
+        <Link
+          href="/so-sanh-la-so"
+          className="mt-3 inline-block rounded-full border px-4 py-1.5 text-sm font-medium transition hover:bg-red-50"
+          style={{ borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
+        >
+          ☯ So sánh 2 lá số →
+        </Link>
       </div>
       <TuViForm />
     </div>

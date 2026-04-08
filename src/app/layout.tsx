@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Noto_Serif } from 'next/font/google'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
@@ -15,19 +15,25 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const notoSerif = Noto_Serif({
+  variable: '--font-noto-serif',
+  subsets: ['latin', 'vietnamese'],
+  weight: ['400', '700'],
+})
+
 export const metadata: Metadata = {
   title: {
-    default: 'TuVi Ngày Mới - Phong Thủy, Tử Vi & Xem Ngày',
-    template: '%s | TuVi Ngày Mới',
+    default: 'Harmony Tử Vi - Phong Thủy, Tử Vi & Xem Ngày',
+    template: '%s | Harmony Tử Vi',
   },
   description:
     'Nền tảng phong thủy, tử vi và xem ngày tốt xấu toàn diện nhất cho người Việt. Luận mệnh Ngũ Hành, lá số Tử Vi, chọn ngày đẹp, phong thủy nhà ở.',
   keywords: ['phong thủy', 'tử vi', 'xem ngày tốt xấu', 'lịch vạn niên', 'luận mệnh', 'ngũ hành'],
-  authors: [{ name: 'TuVi Ngày Mới' }],
+  authors: [{ name: 'Harmony Tử Vi' }],
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
-    siteName: 'TuVi Ngày Mới',
+    siteName: 'Harmony Tử Vi',
   },
 }
 
@@ -37,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="vi" className={`${geistSans.variable} ${geistMono.variable} ${notoSerif.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <Providers>
           <SiteHeader />

@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '/xem-ngay', label: 'Xem Ngày' },
   { href: '/phong-thuy', label: 'Phong Thủy' },
   { href: '/tu-vi-hang-ngay', label: 'TV Hàng Ngày' },
+  { href: '/blog', label: 'Blog' },
 ]
 
 export function SiteHeader() {
@@ -25,7 +26,7 @@ export function SiteHeader() {
             <span className="text-2xl">☯</span>
             <div>
               <div className="text-lg font-bold" style={{ color: 'var(--color-primary)' }}>
-                TuVi Ngày Mới
+                Harmony Tử Vi
               </div>
               <div className="text-xs text-gray-500">Luận mệnh - Chọn ngày - An tâm</div>
             </div>

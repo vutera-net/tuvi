@@ -10,7 +10,7 @@ export function SiteFooter() {
             <div className="flex items-center gap-2">
               <span className="text-2xl">☯</span>
               <span className="font-bold" style={{ color: 'var(--color-primary)' }}>
-                TuVi Ngày Mới
+                Harmony Tử Vi
               </span>
             </div>
             <p className="mt-2 text-sm text-gray-600">
@@ -25,6 +25,7 @@ export function SiteFooter() {
               <li><Link href="/lich" className="hover:text-red-700">Lịch Vạn Niên</Link></li>
               <li><Link href="/xem-menh" className="hover:text-red-700">Xem Mệnh</Link></li>
               <li><Link href="/tu-vi" className="hover:text-red-700">Lá Số Tử Vi</Link></li>
+              <li><Link href="/so-sanh-la-so" className="hover:text-red-700">So Sánh Lá Số</Link></li>
               <li><Link href="/xem-ngay" className="hover:text-red-700">Xem Ngày Tốt</Link></li>
               <li><Link href="/phong-thuy" className="hover:text-red-700">Phong Thủy</Link></li>
             </ul>
@@ -34,10 +35,10 @@ export function SiteFooter() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-gray-900">Kiến thức</h3>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/blog" className="hover:text-red-700">Blog Phong Thủy</Link></li>
-              <li><Link href="/blog/ngu-hanh" className="hover:text-red-700">Ngũ Hành</Link></li>
-              <li><Link href="/blog/tu-vi" className="hover:text-red-700">Tử Vi Đẩu Số</Link></li>
-              <li><Link href="/blog/bat-trach" className="hover:text-red-700">Bát Trạch</Link></li>
+              <li><Link href="/blog" className="hover:text-red-700">Blog Tử Vi</Link></li>
+              <li><Link href="/blog?category=ngu-hanh" className="hover:text-red-700">Ngũ Hành</Link></li>
+              <li><Link href="/blog?category=tu-vi" className="hover:text-red-700">Tử Vi Đẩu Số</Link></li>
+              <li><Link href="/blog?category=phong-thuy" className="hover:text-red-700">Phong Thủy</Link></li>
             </ul>
           </div>
 
@@ -45,7 +46,7 @@ export function SiteFooter() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-gray-900">Hỗ trợ</h3>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/gia-ca" className="hover:text-red-700">Bảng giá</Link></li>
+              <li><Link href="/pricing" className="hover:text-red-700">Bảng giá</Link></li>
               <li><Link href="/lien-he" className="hover:text-red-700">Liên hệ</Link></li>
               <li><Link href="/chinh-sach" className="hover:text-red-700">Chính sách</Link></li>
             </ul>
@@ -53,7 +54,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between border-t pt-8 text-sm text-gray-500 md:flex-row">
-          <p>© {new Date().getFullYear()} TuVi Ngày Mới. Bảo lưu mọi quyền.</p>
+          <p>© {new Date().getFullYear()} Harmony Tử Vi. Bảo lưu mọi quyền.</p>
           <div className="mt-4 flex gap-4 md:mt-0">
             <span className="element-kim rounded px-2 py-0.5 text-xs">Kim</span>
             <span className="element-moc rounded px-2 py-0.5 text-xs">Mộc</span>

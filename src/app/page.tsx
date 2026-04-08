@@ -196,7 +196,7 @@ export default function HomePage() {
             Phong Thủy & Tử Vi cho người Việt
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            TuVi Ngày Mới là nền tảng tra cứu phong thủy, tử vi và xem ngày tốt xấu toàn diện nhất,
+            Harmony Tử Vi là nền tảng tra cứu phong thủy, tử vi và xem ngày tốt xấu toàn diện nhất,
             kết hợp tri thức cổ truyền phương Đông với công nghệ hiện đại. Từ việc luận mệnh Ngũ Hành
             theo năm sinh, lập lá số Tử Vi Đẩu Số với 14 chính tinh và 12 cung, cho đến xem ngày tốt
             cho cưới hỏi, khai trương, động thổ - tất cả được tính toán chính xác dựa trên thuật toán

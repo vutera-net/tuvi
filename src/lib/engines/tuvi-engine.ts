@@ -3,12 +3,12 @@
  * Calculates Tu Vi astrological charts
  */
 
-import type { TuViChart, Palace, Star, StarBrightness, LunarDate, DaiHan } from '@/types'
+import type { TuViChart, Palace, Star, StarBrightness, LunarDate, DaiHan, TieuHan } from '@/types'
 import { CHINH_TINH, CHINH_TINH_MAP } from '@/data/tuvi/chinh-tinh'
 import { CUNG_LIST } from '@/data/tuvi/cung'
 import { getCucNumber, getCucInfo } from '@/data/tuvi/cuc'
 import { getNapAmByYear } from '@/data/nap-am'
-import { DIA_CHI } from '@/data/can-chi'
+import { DIA_CHI, getCanChiYear } from '@/data/can-chi'
 
 // ============================================================
 // MENH CUNG CALCULATION
@@ -249,4 +249,50 @@ function calculateDaiHan(
   }
 
   return daiHan
+}
+
+// ============================================================
+// TIỂU HẠN CALCULATION
+// ============================================================
+
+const PALACE_NAMES = [
+  'Mệnh', 'Huynh Đệ', 'Phu Thê', 'Tử Tức',
+  'Tài Bạch', 'Tật Ách', 'Thiên Di', 'Nô Bộc',
+  'Quan Lộc', 'Điền Trạch', 'Phúc Đức', 'Phụ Mẫu',
+]
+
+/**
+ * Determine Đại Hạn / Tiểu Hạn direction (forward = true)
+ * Dương Nam / Âm Nữ: thuận (forward)
+ * Âm Nam / Dương Nữ: nghịch (backward)
+ */
+export function getDaiHanDirection(gender: 'male' | 'female', menhCungChi: number): boolean {
+  const isYangGender = gender === 'male'
+  const isYangChi = menhCungChi % 2 === 0
+  return (isYangGender && isYangChi) || (!isYangGender && !isYangChi)
+}
+
+/**
+ * Calculate Tiểu Hạn (yearly sub-periods) for a given Đại Hạn
+ * Each year within the Đại Hạn advances one palace in the same direction
+ */
+export function calculateTieuHan(
+  daiHan: DaiHan,
+  forward: boolean,
+  menhCungChi: number,
+): TieuHan[] {
+  const step = forward ? 1 : -1
+  const count = daiHan.endAge - daiHan.startAge + 1
+
+  return Array.from({ length: count }, (_, offset) => {
+    const palaceIndex = ((daiHan.palaceIndex + offset * step) % 12 + 12) % 12
+    return {
+      age: daiHan.startAge + offset,
+      year: daiHan.startYear + offset,
+      canChi: getCanChiYear(daiHan.startYear + offset).full,
+      palaceIndex,
+      palaceName: PALACE_NAMES[(palaceIndex - menhCungChi + 12) % 12] ?? 'Mệnh',
+      diaChi: DIA_CHI[palaceIndex],
+    }
+  })
 }

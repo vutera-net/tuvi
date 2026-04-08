@@ -142,7 +142,7 @@ export async function checkUsageLimit(
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
     const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0)
 
-    const used = user.charts.filter((chart) => {
+    const used = user.charts.filter((chart: { createdAt: string | Date }) => {
       const created = new Date(chart.createdAt)
       return created >= monthStart && created <= monthEnd
     }).length

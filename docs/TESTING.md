@@ -1,57 +1,50 @@
-# Testing Guide - Harmony Tử Vi
+# Testing - Harmony Tử Vi
 
-## Quick Start
+## Chạy tests
 
 ```bash
-npm test              # Run all tests once
-npm test:watch        # Watch mode (reruns on file changes)
-npm test:coverage     # Generate coverage report
+npm test              # Chạy tất cả tests một lần
+npm run test:watch    # Watch mode (tự chạy lại khi file thay đổi)
+npm run test:coverage # Coverage report
 ```
 
-## Current Test Coverage
+## Coverage hiện tại
 
 | Module | File | Tests |
 |--------|------|-------|
-| Lunar Calendar Engine | `src/lib/engines/__tests__/lunar-engine.test.ts` | 40+ |
-| Ngũ Hành Engine | `src/lib/engines/__tests__/ngu-hanh-engine.test.ts` | 40+ |
+| Lunar Calendar Engine | `src/lib/engines/__tests__/lunar-engine.test.ts` | 20+ |
+| Ngũ Hành Engine | `src/lib/engines/__tests__/ngu-hanh-engine.test.ts` | 15+ |
 | Tử Vi Engine | `src/lib/engines/__tests__/tuvi-engine.test.ts` | 40+ |
 | Pricing & Monetization | `src/lib/engines/__tests__/pricing.test.ts` | 45+ |
-| **Total** | | **85+** |
+| **Tổng** | | **85+** |
 
-## Configuration Files
-
-| File | Purpose |
-|------|---------|
-| `jest.config.ts` | Main Jest config (jsdom env, `@/` alias, coverage) |
-| `jest.setup.ts` | Mocks for Next.js router, next-auth, testing-library matchers |
-
-## Run Specific Tests
+## Chạy test cụ thể
 
 ```bash
-# By file pattern
+# Theo file pattern
 npm test -- lunar-engine
 npm test -- ngu-hanh
 
-# By test name
+# Theo tên test
 npm test -- --testNamePattern="jdFromDate"
 
-# With verbose output
+# Verbose output
 npm test -- --verbose
 
 # Single file
 npm test -- src/lib/engines/__tests__/lunar-engine.test.ts
 ```
 
-## Coverage Report
+## Coverage report
 
 ```bash
-npm test:coverage
+npm run test:coverage
 # HTML report: ./coverage/lcov-report/index.html
 ```
 
-## Writing New Tests
+## Viết test mới
 
-Place test files at: `src/lib/engines/__tests__/{module-name}.test.ts`
+Đặt test file tại: `src/lib/engines/__tests__/{module-name}.test.ts`
 
 ```typescript
 import { functionToTest } from '../module-name'
@@ -66,11 +59,24 @@ describe('Module Name', () => {
 })
 ```
 
-### Common Matchers
+Import dùng path alias `@/`:
+```typescript
+import { solarToLunar } from '@/lib/engines/lunar-engine'
+import type { LunarDate } from '@/types'
+```
+
+## Cấu hình
+
+| File | Mục đích |
+|------|----------|
+| `jest.config.ts` | Jest config (jsdom env, `@/` alias, coverage) |
+| `jest.setup.ts` | Mocks: next/navigation, next-auth, testing-library |
+
+## Matchers hay dùng
 
 ```typescript
-expect(value).toBe(exact)                    // Strict equality
-expect(value).toEqual(deepEqual)             // Deep equality
+expect(value).toBe(exact)
+expect(value).toEqual(deepEqual)
 expect(number).toBeGreaterThan(5)
 expect(number).toBeCloseTo(0.3, 2)
 expect(array).toHaveLength(3)
@@ -79,46 +85,16 @@ expect(text).toContain('substring')
 expect(() => fn()).toThrow('error message')
 ```
 
-## Installed Dependencies
+## TODO — Cần viết thêm
 
-```
-jest@30.3.0
-@types/jest@30.0.0
-ts-jest@29.4.6
-jest-environment-jsdom@30.3.0
-@testing-library/jest-dom@6.9.1
-@testing-library/react@16.3.2
-```
+- [ ] `date-selection-engine.test.ts` — Tam Nương, Nguyệt Kỵ, Sát Chủ
+- [ ] `bat-trach-engine.test.ts` — 8 cung mệnh
+- [ ] `cuu-cung-engine.test.ts` — flying star pattern
+- [ ] `horoscope-generator.test.ts` — daily scoring
+- [ ] Integration tests (API routes)
+- [ ] E2E tests (Playwright)
 
-## Module Path Alias
-
-Test files use `@/` alias mapping to `src/`:
-
-```typescript
-import { solarToLunar } from '@/lib/engines/lunar-engine'
-import type { LunarDate } from '@/types'
-```
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| `Cannot find module '@/'` | Check `moduleNameMapper` in `jest.config.ts` |
-| `Cannot use import statement` | Ensure `nextJest` wrapper is used in `jest.config.ts` |
-| Next.js import errors | `jest.setup.ts` mocks `next/navigation` and `next-auth` |
-| Tests timeout | Add `jest.setTimeout(10000)` in test file |
-| Clear cache | `npm test -- --clearCache` |
-
-## Planned Test Modules (TODO)
-
-- [ ] `date-selection-engine.test.ts` — Tam Nuong, Nguyet Ky, Sat Chu checks
-- [ ] `bat-trach-engine.test.ts` — all 8 cung menh calculations
-- [ ] `cuu-cung-engine.test.ts` — flying star pattern validation
-- [ ] `horoscope-generator.test.ts` — daily horoscope scoring
-- [ ] API route integration tests
-- [ ] E2E tests with Playwright
-
-## Coverage Goals
+## Mục tiêu coverage
 
 | Scope | Target |
 |-------|--------|
@@ -126,3 +102,13 @@ import type { LunarDate } from '@/types'
 | React components | 80%+ |
 | API routes | 85%+ |
 | Overall | 80%+ |
+
+## Troubleshooting
+
+| Lỗi | Giải pháp |
+|-----|-----------|
+| `Cannot find module '@/'` | Check `moduleNameMapper` trong `jest.config.ts` |
+| `Cannot use import statement` | Đảm bảo dùng `nextJest` wrapper trong `jest.config.ts` |
+| Next.js import errors | `jest.setup.ts` mock `next/navigation` và `next-auth` |
+| Tests timeout | Thêm `jest.setTimeout(10000)` trong test file |
+| Cache issues | `npm test -- --clearCache` |

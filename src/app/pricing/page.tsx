@@ -240,7 +240,7 @@ export default function PricingPage() {
         <div className="mt-16 text-center">
           <p className="text-gray-600 mb-4">Have questions about pricing?</p>
           <Link
-            href="/contact"
+            href="/lien-he"
             className="inline-block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
           >
             Contact Us

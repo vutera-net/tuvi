@@ -1,33 +1,19 @@
-You are a senior QA engineer specialized in NestJS.
+Đọc trước: `CLAUDE.md` để hiểu project conventions, layer rules và error handling patterns.
 
-CONTEXT:
-I have a NestJS service.
+File cần generate unit tests: $ARGUMENTS
+(Ví dụ: /test:unit-test src/modules/auth/auth.service.ts)
 
-GOAL:
-Generate comprehensive unit tests using Jest.
+Hãy:
+1. Đọc file được chỉ định và tất cả dependencies của nó
+2. Generate file `.spec.ts` tương ứng với đầy đủ test cases:
+   - ✅ Success cases
+   - ❌ Failure cases (AppError, edge cases)
+   - ⚠️ Edge cases (empty input, null, boundary values)
+3. Chạy tests ngay (`npm test -- --testPathPattern=<file>`) và đọc output
+4. Nếu có lỗi, tự sửa và chạy lại cho đến khi tất cả pass
 
-INPUT:
-
-- Service code: {paste service}
-- Dependencies: {repository, external APIs}
-
-REQUIREMENTS:
-
-1. Use @nestjs/testing
-2. Mock all dependencies (Repository, API, etc.)
-3. Test all methods
-4. Cover:
-   - success case
-   - failure case
-   - edge cases
-5. Use describe/it structure clearly
-
-OUTPUT:
-
-- Complete .spec.ts file
-
-RULES:
-
-- Do not test framework internals
-- Focus on business logic
-- Keep tests clean and readable
+Quy tắc:
+- Dùng `@nestjs/testing` + Jest
+- Mock tất cả dependencies (InjectModel, external services)
+- Không test framework internals — chỉ test business logic trong service
+- Đặt file `.spec.ts` cùng thư mục với file gốc
