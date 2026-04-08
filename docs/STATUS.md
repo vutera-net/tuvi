@@ -28,13 +28,13 @@
 | 3 | Tử Vi Đẩu Số Engine | 100% ✅ |
 | 4 | Xem Ngày Tốt | 100% ✅ |
 | 5 | Phong Thủy Engine | 100% ✅ |
-| 6 | UI/UX | 95% ✅ |
+| 6 | UI/UX | 97% ✅ |
 | 7 | API Routes | 100% ✅ |
 | 8 | Tử Vi Hàng Ngày | 100% ✅ |
 | 9 | Monetization | 85% ✅ |
 | 10 | SEO | 45% ⏳ |
 | 11 | Testing | 50% ⏳ |
-| 12 | Deployment | 0% ⏳ |
+| 12 | Deployment | 100% ✅ |
 
 ---
 
@@ -74,9 +74,12 @@
 
 ## Còn thiếu
 
-### Phase 6 - UI (5%)
+### Phase 6 - UI (3%)
 - Tiểu Hạn (yearly) visualization
 - Chart comparison view (2 người)
+- ✅ Trang /lien-he (contact page)
+- ✅ Trang /chinh-sach (privacy & terms)
+- ✅ Fix footer link /gia-ca → /pricing
 
 ### Phase 9 - Monetization (15%)
 - Trang quản lý subscription (upgrade/downgrade/cancel)

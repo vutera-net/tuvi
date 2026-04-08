@@ -45,7 +45,7 @@ export function SiteFooter() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-gray-900">Hỗ trợ</h3>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/gia-ca" className="hover:text-red-700">Bảng giá</Link></li>
+              <li><Link href="/pricing" className="hover:text-red-700">Bảng giá</Link></li>
               <li><Link href="/lien-he" className="hover:text-red-700">Liên hệ</Link></li>
               <li><Link href="/chinh-sach" className="hover:text-red-700">Chính sách</Link></li>
             </ul>
