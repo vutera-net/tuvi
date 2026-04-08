@@ -28,10 +28,10 @@
 | 3 | Tử Vi Đẩu Số Engine | 100% ✅ |
 | 4 | Xem Ngày Tốt | 100% ✅ |
 | 5 | Phong Thủy Engine | 100% ✅ |
-| 6 | UI/UX | 97% ✅ |
+| 6 | UI/UX | 100% ✅ |
 | 7 | API Routes | 100% ✅ |
 | 8 | Tử Vi Hàng Ngày | 100% ✅ |
-| 9 | Monetization | 85% ✅ |
+| 9 | Monetization | 90% ✅ |
 | 10 | SEO | 45% ⏳ |
 | 11 | Testing | 50% ⏳ |
 | 12 | Deployment | 100% ✅ |
@@ -74,15 +74,15 @@
 
 ## Còn thiếu
 
-### Phase 6 - UI (3%)
-- Tiểu Hạn (yearly) visualization
-- Chart comparison view (2 người)
+### Phase 6 - UI (hoàn thành ✅)
+- ✅ Tiểu Hạn (yearly) visualization
+- ✅ Chart comparison view (2 người) — trang /so-sanh-la-so
 - ✅ Trang /lien-he (contact page)
 - ✅ Trang /chinh-sach (privacy & terms)
 - ✅ Fix footer link /gia-ca → /pricing
 
-### Phase 9 - Monetization (15%)
-- Trang quản lý subscription (upgrade/downgrade/cancel)
+### Phase 9 - Monetization (10%)
+- ✅ Trang quản lý subscription `/tai-khoan` (xem gói, upgrade, cancel)
 - PDF export cho Tu Vi chart (VIP feature)
 - Google AdSense integration
 

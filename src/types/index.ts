@@ -101,6 +101,15 @@ export interface DaiHan {
   diaChi: string
 }
 
+export interface TieuHan {
+  age: number
+  year: number
+  canChi: string   // e.g. "Giáp Ngọ"
+  palaceIndex: number
+  palaceName: string
+  diaChi: string
+}
+
 export interface TuViChart {
   id?: string
   label: string

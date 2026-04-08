@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import type { TuViChart, Palace, Star } from '@/types'
+import type { TuViChart, Palace, Star, DaiHan } from '@/types'
 import { NGU_HANH_COLOR_HEX, NGU_HANH_VI } from '@/data/ngu-hanh'
+import { calculateTieuHan, getDaiHanDirection } from '@/lib/engines/tuvi-engine'
+
+const CURRENT_YEAR = new Date().getFullYear()
 
 interface Props {
   chart: TuViChart
@@ -31,7 +34,9 @@ const PALACE_GRID_POSITIONS: Array<{ row: number; col: number; palaceOffset: num
 
 export function TuViChartDisplay({ chart }: Props) {
   const [selectedPalace, setSelectedPalace] = useState<Palace | null>(null)
+  const [selectedDaiHan, setSelectedDaiHan] = useState<DaiHan | null>(null)
   const elColor = NGU_HANH_COLOR_HEX[chart.menh]
+  const forward = getDaiHanDirection(chart.gender, chart.cungMenhIndex)
 
   // Build grid: position -> palace
   const palacesByDiaChi = Object.fromEntries(chart.palaces.map((p) => [p.index, p]))
@@ -106,31 +111,58 @@ export function TuViChartDisplay({ chart }: Props) {
         <PalaceDetail palace={selectedPalace} />
       )}
 
-      {/* Dai Han */}
+      {/* Dai Han + Tieu Han */}
       <div className="rounded-2xl bg-white p-6 shadow-sm">
-        <h3 className="mb-4 font-semibold text-gray-800">Đại Hạn ({chart.cucNumber} năm/vận)</h3>
+        <h3 className="mb-1 font-semibold text-gray-800">Đại Hạn ({chart.cucNumber} năm/vận)</h3>
+        <p className="mb-4 text-xs text-gray-400">Bấm vào một vận để xem Tiểu Hạn từng năm</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b text-left text-gray-500">
                 <th className="py-2 pr-4">Tuổi</th>
-                <th className="py-2 pr-4">Năm</th>
+                <th className="py-2 pr-4">Năm bắt đầu</th>
                 <th className="py-2 pr-4">Cung</th>
-                <th className="py-2">Chi</th>
+                <th className="py-2 pr-4">Chi</th>
+                <th className="py-2 text-right"></th>
               </tr>
             </thead>
             <tbody>
-              {chart.daiHan.slice(0, 8).map((dh, i) => (
-                <tr key={i} className="border-b last:border-0">
-                  <td className="py-1.5 pr-4 font-medium">{dh.startAge}-{dh.endAge}</td>
-                  <td className="py-1.5 pr-4 text-gray-500">{dh.startYear}</td>
-                  <td className="py-1.5 pr-4">{dh.palaceName}</td>
-                  <td className="py-1.5 text-gray-500">{dh.diaChi}</td>
-                </tr>
-              ))}
+              {chart.daiHan.slice(0, 8).map((dh, i) => {
+                const isActive = CURRENT_YEAR >= dh.startYear && CURRENT_YEAR <= dh.startYear + chart.cucNumber - 1
+                const isSelected = selectedDaiHan?.startAge === dh.startAge
+                return (
+                  <tr
+                    key={i}
+                    onClick={() => setSelectedDaiHan(isSelected ? null : dh)}
+                    className={`cursor-pointer border-b last:border-0 transition-colors ${
+                      isSelected ? 'bg-amber-50' : isActive ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <td className="py-2 pr-4 font-medium">
+                      {dh.startAge}–{dh.endAge}
+                      {isActive && <span className="ml-1.5 rounded-full bg-red-500 px-1.5 py-0.5 text-xs text-white">hiện tại</span>}
+                    </td>
+                    <td className="py-2 pr-4 text-gray-500">{dh.startYear}</td>
+                    <td className="py-2 pr-4">{dh.palaceName}</td>
+                    <td className="py-2 pr-4 text-gray-500">{dh.diaChi}</td>
+                    <td className="py-2 text-right text-gray-400 text-xs">
+                      {isSelected ? '▲' : '▼'}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
+
+        {/* Tieu Han panel */}
+        {selectedDaiHan && (
+          <TieuHanPanel
+            daiHan={selectedDaiHan}
+            forward={forward}
+            menhCungChi={chart.cungMenhIndex}
+          />
+        )}
       </div>
     </div>
   )
@@ -170,6 +202,63 @@ function PalaceCell({ palace, isSelected, onClick }: {
         <div className="text-xs text-gray-400">+{palace.mainStars.length - 2}</div>
       )}
     </button>
+  )
+}
+
+function TieuHanPanel({
+  daiHan, forward, menhCungChi,
+}: {
+  daiHan: DaiHan
+  forward: boolean
+  menhCungChi: number
+}) {
+  const rows = calculateTieuHan(daiHan, forward, menhCungChi)
+
+  return (
+    <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
+      <h4 className="mb-3 font-semibold text-amber-900">
+        Tiểu Hạn — Đại Hạn {daiHan.startAge}–{daiHan.endAge} tuổi (cung {daiHan.palaceName})
+      </h4>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-amber-200 text-left text-xs text-amber-700">
+              <th className="py-1.5 pr-3">Tuổi</th>
+              <th className="py-1.5 pr-3">Năm</th>
+              <th className="py-1.5 pr-3">Can Chi</th>
+              <th className="py-1.5 pr-3">Cung</th>
+              <th className="py-1.5">Chi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((th) => {
+              const isCurrent = th.year === CURRENT_YEAR
+              return (
+                <tr
+                  key={th.age}
+                  className={`border-b border-amber-100 last:border-0 ${
+                    isCurrent ? 'bg-amber-200 font-semibold' : ''
+                  }`}
+                >
+                  <td className="py-1.5 pr-3">
+                    {th.age}
+                    {isCurrent && (
+                      <span className="ml-1.5 rounded-full bg-amber-600 px-1.5 py-0.5 text-xs text-white">
+                        nay
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-1.5 pr-3 text-amber-800">{th.year}</td>
+                  <td className="py-1.5 pr-3 text-amber-800">{th.canChi}</td>
+                  <td className="py-1.5 pr-3 font-medium text-gray-800">{th.palaceName}</td>
+                  <td className="py-1.5 text-gray-600">{th.diaChi}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }
 

@@ -25,6 +25,7 @@ export function SiteFooter() {
               <li><Link href="/lich" className="hover:text-red-700">Lịch Vạn Niên</Link></li>
               <li><Link href="/xem-menh" className="hover:text-red-700">Xem Mệnh</Link></li>
               <li><Link href="/tu-vi" className="hover:text-red-700">Lá Số Tử Vi</Link></li>
+              <li><Link href="/so-sanh-la-so" className="hover:text-red-700">So Sánh Lá Số</Link></li>
               <li><Link href="/xem-ngay" className="hover:text-red-700">Xem Ngày Tốt</Link></li>
               <li><Link href="/phong-thuy" className="hover:text-red-700">Phong Thủy</Link></li>
             </ul>
