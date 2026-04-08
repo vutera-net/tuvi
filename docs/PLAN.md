@@ -8,7 +8,7 @@
 |-------|----------|---------|
 | 1 | Project Setup | ✅ 100% |
 | 2 | Âm lịch & Ngũ Hành | ✅ 100% |
-| 3 | Tử Vi Engine | ✅ 100% |
+| 3 | Tử Vi Engine | ✅ 100% ✔ |
 | 4 | Xem Ngày Tốt | ✅ 100% |
 | 5 | Phong Thủy | ✅ 100% |
 | 6 | UI/UX | ✅ 95% |
@@ -61,9 +61,9 @@
 - [x] Đánh giá độ sáng sao (Miếu/Vượng/Đắc Địa/Bình Hòa/Hãm Địa)
 - [x] Tính Đại Hạn (10-year periods)
 - [x] Giải nghĩa cung Mệnh, tổ hợp sao
-- [ ] Tích hợp thư viện `iztro` (hiện dùng engine tự viết)
-- [ ] Tính Tiểu Hạn (yearly)
-- [ ] An phụ tinh đầy đủ (Lộc Tồn, Hóa Tinh, v.v.)
+- [x] Tích hợp thư viện `iztro` — `iztro-adapter.ts` xử lý toàn bộ: 14 chính tinh, Mệnh/Thân cung, Cục, Đại Hạn, phụ tinh (vi-VN); chỉ giữ Nạp Âm từ custom data
+- [x] An phụ tinh đầy đủ (Lộc Tồn, Kình Dương, Đà La, Văn Xương, Văn Khúc, Tả Phù, Hữu Bật, Thiên Khôi, Thiên Việt, Hỏa Tinh, Linh Tinh, Địa Không, Địa Kiếp, Thiên Mã, Hồng Loan, Thiên Hỷ, v.v.)
+- [x] Tính Tiểu Hạn (yearly) — `calculateTieuHan` + endpoint `POST /api/tuvi/tieu-han`
 
 ---
 
