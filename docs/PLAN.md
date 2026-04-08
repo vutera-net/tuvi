@@ -14,9 +14,9 @@
 | 6 | UI/UX | ✅ 95% |
 | 7 | API Routes | ✅ 100% |
 | 8 | Tử Vi Hàng Ngày | ✅ 100% |
-| 9 | Monetization | ✅ 85% |
-| 10 | SEO | ⏳ 45% |
-| 11 | Testing | ⏳ 50% |
+| 9 | Monetization | ✅ 100% |
+| 10 | SEO | ✅ 100% |
+| 11 | Testing | ⏳ 75% |
 | 12 | Deployment | ⏳ 0% |
 
 ---
@@ -136,37 +136,39 @@
 
 ---
 
-## Phase 9: Monetization ✅ (85%)
+## Phase 9: Monetization ✅ (100%)
 
 **Đã xong:**
 - [x] Pricing: Free / Premium (99k/tháng, 799k/năm) / VIP (199k/tháng, 1,499k/năm)
 - [x] Trang `/pricing` với feature comparison table
 - [x] Stripe checkout + subscription endpoints
-- [x] Stripe webhook handler (payment_succeeded, subscription_updated/deleted)
+- [x] Stripe webhook handler route (signature verification, event routing)
 - [x] Feature gating: 25+ gates theo tier, middleware bảo vệ API
 - [x] Giới hạn Free: 3 lá số Tử Vi/tháng
+- [x] Trang `/tai-khoan` — view gói hiện tại, upgrade (monthly/yearly toggle), cancel với confirmation modal
 
-**Còn thiếu:**
-- [ ] Trang subscription management (upgrade/downgrade/cancel UI)
-- [ ] PDF export Tu Vi chart (VIP)
-- [ ] Google AdSense integration
+**Đã xong (vừa hoàn thành):**
+- [x] **Fix webhook:** `handleSubscriptionChange` + `handleSubscriptionCancellation` + `handlePaymentFailed` trong `src/lib/stripe.ts` — cập nhật DB đúng
+- [x] PDF export lá số Tử Vi (VIP) — `@react-pdf/renderer`, API `POST /api/tuvi/export-pdf`, nút trong header lá số
+- [x] AdSense placeholder — `<AdSlot />` + `<ConditionalAdSlot />` (server, gate free-only), đã chèn vào `/`, `/blog`, `/tu-vi-hang-ngay`
 
 ---
 
-## Phase 10: SEO ⏳ (45%)
+## Phase 10: SEO ✅ (100%)
 
 **Đã xong:**
 - [x] `sitemap.xml` tự động generate
 - [x] `robots.txt`
 - [x] Open Graph + Twitter Card meta tags
 - [x] JSON-LD schema generators (FAQPage, Article, WebApplication, BreadcrumbList)
-
-**Còn thiếu:**
-- [ ] Dynamic SEO pages: `/lich/[year]/[month]/[day]`, `/tu-vi/[con-giap]/nam-[year]`, `/phong-thuy/menh-[ngu-hanh]`
-- [ ] Blog system (MDX) — blog pages đã build nhưng chưa tích hợp hoàn toàn
-- [ ] hreflang tags (vi-VN)
-- [ ] Canonical URLs
-- [ ] Breadcrumb navigation
+- [x] `metadataBase` + hreflang (vi, vi-VN, x-default) trong root layout
+- [x] Canonical URLs — `alternates.canonical` trong blog + dynamic pages
+- [x] `/phong-thuy/menh-[nguhanh]` — 5 trang tĩnh (Kim/Mộc/Thủy/Hỏa/Thổ) + FAQ JSON-LD
+- [x] `/lich/[year]/[month]/[day]` — ISR page với Can Chi, Hoàng Đạo, Trực, 28 Sao
+- [x] `/tu-vi/[congiap]/nam-[year]` — 48 trang SSG (12 con giáp × 4 năm) + dự báo 5 lĩnh vực
+- [x] Blog `/blog/[slug]` — Article JSON-LD + BreadcrumbList schema + canonical
+- [x] `<Breadcrumb />` component (JSON-LD inline) dùng trong các dynamic pages
+- [x] Sitemap cập nhật: +48 tu-vi pages, +5 menh pages, +30 lich pages
 
 ---
 
@@ -178,12 +180,12 @@
 - [x] `ngu-hanh-engine.test.ts` — 15+ tests  
 - [x] `tuvi-engine.test.ts` — 40+ tests
 - [x] `pricing.test.ts` — 45+ tests
-- **Tổng: 85+ tests**
+- [x] `date-selection-engine.test.ts` — Tam Nương, Nguyệt Kỵ, Sát Chủ (35+ tests)
+- [x] `bat-trach-engine.test.ts` — 8 cung mệnh, hướng tốt/xấu (30+ tests)
+- [x] `cuu-cung-engine.test.ts` — flying star grid, year/month center (32+ tests)
+- **Tổng: 182+ tests**
 
 **Còn thiếu:**
-- [ ] `date-selection-engine.test.ts` — Tam Nương, Nguyệt Kỵ, Sát Chủ
-- [ ] `bat-trach-engine.test.ts` — 8 cung mệnh
-- [ ] `cuu-cung-engine.test.ts` — flying star pattern
 - [ ] Integration tests (API routes)
 - [ ] E2E tests (Playwright)
 - [ ] Load testing

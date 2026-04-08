@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation'
 import { getAllPostsMeta, getAllSlugs, getPostBySlug } from '@/lib/blog'
 import { CtaBanner } from '@/components/blog/CtaBanner'
 import { RelatedPosts } from '@/components/blog/RelatedPosts'
+import { generateArticleSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvi.vutera.net'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -21,12 +24,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: 'article',
       publishedTime: post.date,
       tags: post.tags,
+      url: `${BASE_URL}/blog/${slug}`,
     },
   }
 }
@@ -39,8 +46,21 @@ export default async function BlogPostPage({ params }: Props) {
   const allPosts = getAllPostsMeta()
   const htmlParts = splitHtmlForCta(post.content)
 
+  const articleSchema = generateArticleSchema(
+    { title: post.title, description: post.excerpt, datePublished: post.date, author: 'Harmony Tử Vi' },
+    BASE_URL,
+    slug
+  )
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Trang chủ', item: BASE_URL },
+    { name: 'Blog', item: `${BASE_URL}/blog` },
+    { name: post.title, item: `${BASE_URL}/blog/${slug}` },
+  ])
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <article className="mx-auto max-w-3xl px-4 py-16">
 
         {/* Breadcrumb */}

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllPostsMeta } from '@/lib/blog'
+import { ConditionalAdSlot } from '@/components/common/ConditionalAdSlot'
 
 export const metadata: Metadata = {
   title: 'Blog Tử Vi & Phong Thủy',
@@ -73,6 +74,11 @@ export default async function BlogPage({ searchParams }: Props) {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Ad slot - free tier only */}
+      <div className="flex justify-center py-4">
+        <ConditionalAdSlot size="leaderboard" />
       </div>
 
       {/* Posts grid */}

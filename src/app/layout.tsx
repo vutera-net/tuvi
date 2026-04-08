@@ -21,7 +21,10 @@ const notoSerif = Noto_Serif({
   weight: ['400', '700'],
 })
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvi.vutera.net'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: {
     default: 'Harmony Tử Vi - Phong Thủy, Tử Vi & Xem Ngày',
     template: '%s | Harmony Tử Vi',
@@ -30,10 +33,24 @@ export const metadata: Metadata = {
     'Nền tảng phong thủy, tử vi và xem ngày tốt xấu toàn diện nhất cho người Việt. Luận mệnh Ngũ Hành, lá số Tử Vi, chọn ngày đẹp, phong thủy nhà ở.',
   keywords: ['phong thủy', 'tử vi', 'xem ngày tốt xấu', 'lịch vạn niên', 'luận mệnh', 'ngũ hành'],
   authors: [{ name: 'Harmony Tử Vi' }],
+  alternates: {
+    canonical: '/',
+    languages: {
+      'vi': BASE_URL,
+      'vi-VN': BASE_URL,
+      'x-default': BASE_URL,
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'vi_VN',
     siteName: 'Harmony Tử Vi',
+    url: BASE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
   },
 }
 
