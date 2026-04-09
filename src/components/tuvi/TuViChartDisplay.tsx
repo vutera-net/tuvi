@@ -47,9 +47,28 @@ const RATING_LABEL: Record<string, string> = {
   excellent: 'Rất tốt', good: 'Tốt', average: 'Trung bình', bad: 'Xấu',
 }
 
+const DAI_VAN_NOTES: Record<string, string> = {
+  'Mệnh': 'Vận bản mệnh — định hình lại tính cách và hướng đi cuộc đời, cơ hội khởi đầu lớn.',
+  'Huynh Đệ': 'Vận huynh đệ — mối quan hệ xã hội đóng vai trò quan trọng, dễ được quý nhân hỗ trợ.',
+  'Phu Thê': 'Vận hôn nhân — tình duyên và hôn nhân nổi bật, cần chú ý quan hệ đôi lứa.',
+  'Tử Tức': 'Vận tử tức — con cái mang lại niềm vui hoặc lo lắng, phúc lộc qua gia đình.',
+  'Tài Bạch': 'Vận tài lộc — tài chính biến động mạnh, cơ hội làm giàu hoặc thất thoát đáng kể.',
+  'Tật Ách': 'Vận tật ách — cần chú ý sức khỏe thể chất và tinh thần, tránh các rủi ro không đáng.',
+  'Thiên Di': 'Vận thiên di — thích hợp di chuyển, thay đổi môi trường hoặc hợp tác với người xa.',
+  'Nô Bộc': 'Vận nô bộc — quan hệ đồng nghiệp và cấp dưới nổi bật, thận trọng với kẻ tiểu nhân.',
+  'Quan Lộc': 'Vận quan lộc — thăng tiến công danh, phù hợp phát triển sự nghiệp và địa vị xã hội.',
+  'Điền Trạch': 'Vận điền trạch — bất động sản và ổn định gia đình nổi bật, phù hợp an cư lạc nghiệp.',
+  'Phúc Đức': 'Vận phúc đức — hưởng thụ và tinh thần thịnh vượng, phúc lộc đến từ căn phần.',
+  'Phụ Mẫu': 'Vận phụ mẫu — cha mẹ và bề trên ảnh hưởng lớn, nhận được sự hỗ trợ hoặc gánh nặng từ gia đình.',
+}
+
 export function TuViChartDisplay({ chart, userTier }: Props) {
   const [selectedPalace, setSelectedPalace] = useState<Palace | null>(null)
-  const [selectedDaiHan, setSelectedDaiHan] = useState<DaiHan | null>(null)
+  const [selectedDaiHan, setSelectedDaiHan] = useState<DaiHan | null>(() =>
+    chart.daiHan.find(
+      (dh) => CURRENT_YEAR >= dh.startYear && CURRENT_YEAR <= dh.startYear + chart.cucNumber - 1,
+    ) ?? null,
+  )
   const elColor = NGU_HANH_COLOR_HEX[chart.menh]
   const forward = getDaiHanDirection(chart.gender, chart.cungMenhIndex)
 
@@ -104,16 +123,32 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
           <TuViPdfExportButton chart={chart} userTier={userTier} />
         </div>
 
-        {currentDaiHan && (
-          <div className="relative mt-4 flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm backdrop-blur-sm">
-            <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-red-200">Đại Hạn hiện tại:</span>{' '}
-            <strong className="text-white">{currentDaiHan.palaceName}</strong>
-            <span className="text-red-200">
-              · {currentDaiHan.startAge}–{currentDaiHan.endAge} tuổi · Từ {currentDaiHan.startYear}
-            </span>
-          </div>
-        )}
+        {currentDaiHan && (() => {
+          const elapsed = CURRENT_YEAR - currentDaiHan.startYear + 1
+          const pct = Math.min(100, Math.round((elapsed / chart.cucNumber) * 100))
+          return (
+            <div className="relative mt-4 rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-amber-400" />
+                <span className="text-red-200">Đại Vận hiện tại:</span>{' '}
+                <strong className="text-white">{currentDaiHan.palaceName}</strong>
+                <span className="text-red-200">({currentDaiHan.diaChi})</span>
+                <span className="ml-auto shrink-0 rounded-full bg-amber-400/20 px-2 py-0.5 text-[11px] font-semibold text-amber-300">
+                  Năm {elapsed}/{chart.cucNumber}
+                </span>
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full bg-amber-400 transition-all"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <div className="mt-1.5 text-[11px] text-red-200/80">
+                {currentDaiHan.startAge}–{currentDaiHan.endAge} tuổi · {currentDaiHan.startYear}–{currentDaiHan.startYear + chart.cucNumber - 1}
+              </div>
+            </div>
+          )
+        })()}
       </div>
 
       {/* ── Chart Grid ── */}
@@ -191,7 +226,7 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
           </span>
           <span className="flex items-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-            Đại Hạn hiện tại
+            Đại Vận hiện tại
           </span>
         </div>
       </div>
@@ -201,13 +236,13 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
         <PalaceDetail palace={selectedPalace} onClose={() => setSelectedPalace(null)} />
       )}
 
-      {/* ── Đại Hạn section ── */}
+      {/* ── Đại Vận section ── */}
       <div className="rounded-2xl bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
           <div>
-            <h3 className="font-semibold text-gray-800">Đại Hạn</h3>
+            <h3 className="font-semibold text-gray-800">Đại Vận</h3>
             <p className="mt-0.5 text-xs text-gray-400">
-              Mỗi vận {chart.cucNumber} năm · Bấm vào vận để xem Tiểu Hạn từng năm
+              Mỗi vận {chart.cucNumber} năm · Bấm vào vận để xem Tiểu Vận từng năm
             </p>
           </div>
         </div>
@@ -218,6 +253,9 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
               CURRENT_YEAR >= dh.startYear &&
               CURRENT_YEAR <= dh.startYear + chart.cucNumber - 1
             const isSelected = selectedDaiHan?.startAge === dh.startAge
+            const note = DAI_VAN_NOTES[dh.palaceName]
+            const elapsed = CURRENT_YEAR - dh.startYear + 1
+            const pct = Math.min(100, Math.round((elapsed / chart.cucNumber) * 100))
 
             return (
               <div key={i}>
@@ -231,17 +269,17 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
                         : 'border-gray-100 bg-gray-50 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
                       {/* Age badge */}
                       <div
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold mt-0.5 ${
                           isActive ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-600'
                         }`}
                       >
                         {dh.startAge}
                       </div>
-                      <div>
+                      <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <span className="text-sm font-semibold text-gray-800">{dh.palaceName}</span>
                           <span className="text-xs text-gray-500">{dh.diaChi}</span>
@@ -252,19 +290,39 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
                           )}
                         </div>
                         <div className="mt-0.5 text-xs text-gray-400">
-                          {dh.startAge}–{dh.endAge} tuổi · Từ năm {dh.startYear}
+                          {dh.startAge}–{dh.endAge} tuổi · {dh.startYear}–{dh.startYear + chart.cucNumber - 1}
                         </div>
+                        {note && (
+                          <div className="mt-1.5 text-xs leading-snug text-gray-500 line-clamp-2">
+                            {note}
+                          </div>
+                        )}
+                        {isActive && (
+                          <div className="mt-2">
+                            <div className="mb-0.5 flex justify-between text-[10px] text-red-400">
+                              <span>Năm {elapsed}/{chart.cucNumber} trong đại vận</span>
+                              <span>{pct}%</span>
+                            </div>
+                            <div className="h-1 w-full overflow-hidden rounded-full bg-red-100">
+                              <div
+                                className="h-full rounded-full bg-red-400 transition-all"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <span className="shrink-0 text-xs text-gray-400">{isSelected ? '▲' : '▼'}</span>
+                    <span className="shrink-0 text-xs text-gray-400 mt-1">{isSelected ? '▲' : '▼'}</span>
                   </div>
                 </button>
 
                 {isSelected && (
-                  <TieuHanPanel
+                  <TieuVanPanel
                     daiHan={dh}
                     forward={forward}
                     menhCungChi={chart.cungMenhIndex}
+                    cucNumber={chart.cucNumber}
                   />
                 )}
               </div>
@@ -306,7 +364,7 @@ function PalaceCell({
             : 'border-gray-200 bg-white hover:bg-gray-50'
       } ${isSelected ? 'ring-2 ring-amber-400 ring-offset-1 shadow-md' : ''}`}
     >
-      {/* Current Đại Hạn dot */}
+      {/* Current Đại Vận dot */}
       {isCurrentDaiHan && (
         <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-red-500" />
       )}
@@ -522,24 +580,45 @@ function PalaceDetail({ palace, onClose }: { palace: Palace; onClose: () => void
   )
 }
 
-// ─── Tiểu Hạn Panel ───────────────────────────────────────────
+// ─── Tiểu Vận Panel ───────────────────────────────────────────
 
-function TieuHanPanel({
+function TieuVanPanel({
   daiHan,
   forward,
   menhCungChi,
+  cucNumber,
 }: {
   daiHan: DaiHan
   forward: boolean
   menhCungChi: number
+  cucNumber: number
 }) {
   const rows = calculateTieuHan(daiHan, forward, menhCungChi)
+  const currentRow = rows.find((r) => r.year === CURRENT_YEAR)
 
   return (
     <div className="ml-12 mt-1.5 rounded-xl border border-amber-200 bg-amber-50 p-4">
       <h4 className="mb-3 text-sm font-semibold text-amber-900">
-        Tiểu Hạn — {daiHan.startAge}–{daiHan.endAge} tuổi (cung {daiHan.palaceName})
+        Tiểu Vận — {daiHan.startAge}–{daiHan.endAge} tuổi (Đại Vận cung {daiHan.palaceName})
       </h4>
+
+      {/* Tiểu Vận hiện tại callout */}
+      {currentRow && (
+        <div className="mb-3 flex items-start gap-2.5 rounded-lg bg-amber-200/60 px-3 py-2.5">
+          <span className="mt-0.5 shrink-0 text-amber-600">✦</span>
+          <div className="text-xs leading-relaxed text-amber-900">
+            <span className="font-semibold">Tiểu Vận {CURRENT_YEAR}:</span> Cung{' '}
+            <span className="font-semibold">{currentRow.palaceName}</span> ({currentRow.diaChi}) ·{' '}
+            {currentRow.canChi} · {currentRow.age} tuổi
+            {DAI_VAN_NOTES[currentRow.palaceName] && (
+              <span className="block mt-0.5 text-amber-800/80">
+                {DAI_VAN_NOTES[currentRow.palaceName]}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -552,27 +631,27 @@ function TieuHanPanel({
             </tr>
           </thead>
           <tbody>
-            {rows.map((th) => {
-              const isCurrent = th.year === CURRENT_YEAR
+            {rows.map((tv) => {
+              const isCurrent = tv.year === CURRENT_YEAR
               return (
                 <tr
-                  key={th.age}
+                  key={tv.age}
                   className={`border-b border-amber-100 last:border-0 ${
                     isCurrent ? 'bg-amber-200/60 font-semibold' : ''
                   }`}
                 >
                   <td className="py-1.5 pr-3">
-                    {th.age}
+                    {tv.age}
                     {isCurrent && (
                       <span className="ml-1.5 rounded-full bg-amber-600 px-1.5 py-0.5 text-[10px] text-white">
                         nay
                       </span>
                     )}
                   </td>
-                  <td className="py-1.5 pr-3 text-amber-800">{th.year}</td>
-                  <td className="py-1.5 pr-3 text-amber-800">{th.canChi}</td>
-                  <td className="py-1.5 pr-3 font-medium text-gray-800">{th.palaceName}</td>
-                  <td className="py-1.5 text-gray-600">{th.diaChi}</td>
+                  <td className="py-1.5 pr-3 text-amber-800">{tv.year}</td>
+                  <td className="py-1.5 pr-3 text-amber-800">{tv.canChi}</td>
+                  <td className="py-1.5 pr-3 font-medium text-gray-800">{tv.palaceName}</td>
+                  <td className="py-1.5 text-gray-600">{tv.diaChi}</td>
                 </tr>
               )
             })}

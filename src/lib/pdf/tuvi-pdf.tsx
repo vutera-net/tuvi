@@ -272,8 +272,8 @@ export function TuViPdfDocument({ chart, generatedAt }: Props) {
           ))}
         </View>
 
-        {/* Dai Han table */}
-        <Text style={styles.sectionTitle}>Dai Han ({chart.cucNumber} nam/van)</Text>
+        {/* Dai Van table */}
+        <Text style={styles.sectionTitle}>Dai Van ({chart.cucNumber} nam/van)</Text>
         <View style={styles.table}>
           <View style={styles.tableHeader}>
             <Text style={[styles.th, styles.col1]}>Tuoi</Text>

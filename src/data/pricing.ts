@@ -93,8 +93,8 @@ const features: PricingFeature[] = [
     vip: true,
   },
   {
-    name: 'Tieu Han (Yearly) Analysis',
-    nameVi: 'Phân Tích Tiểu Hạn (Năm)',
+    name: 'Tieu Van (Yearly) Analysis',
+    nameVi: 'Phân Tích Tiểu Vận (Năm)',
     free: false,
     premium: false,
     vip: true,
