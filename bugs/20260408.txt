@@ -1,0 +1,13 @@
+- khi deploy lên vercel, thì sẽ lấy giờ của server để tính ngày hiện tại, đoạn này có cần lấy giờ theo trình duyệt để chính xác ngày ko?
+- khi load lịch vạn niên load rất lâu, ux ui xấu ko tiện lợi(ko biết ngày hiện tại là ngày nào)
+- trang tu-vi thuật toán an sao đang ko đúng dẫn đến lá sổ tử vi ko đúng, 
+- trang tu-vi, đại hạn, tiểu hạn có phải là đại vận tiểu vận ko? Nếu vậy thường tính đại vận 10 năm một phải ko?
+- trang tu-vi này quá sơ sài chưa có luận giải
+
+
+---
+cập nhật bug:
+1. trang tu-vi
+- thuật toán an sao có vẻ vẫn chưa đúng, các sao chính đang sai
+- hãy chú ý thêm việc sắp xếp các cung từ cung mệnh có thể đi theo chiều xuôi hoặc ngược kim đồng hồ
+- chưa có các phụ tinh

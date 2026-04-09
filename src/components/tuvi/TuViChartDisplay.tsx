@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { TuViChart, Palace, Star, DaiHan } from '@/types'
 import { NGU_HANH_COLOR_HEX, NGU_HANH_VI } from '@/data/ngu-hanh'
 import { calculateTieuHan, getDaiHanDirection } from '@/lib/engines/tuvi-engine'
+import { interpretPalace, getStarInterpretation } from '@/lib/engines/tuvi-interpreter'
 import { TuViPdfExportButton } from './TuViPdfExportButton'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -13,26 +14,26 @@ interface Props {
   userTier?: string
 }
 
-// Layout of 12 palaces in a 4x4 grid (outer ring, center is empty)
-// Palace indices arranged clockwise from top-left
-const PALACE_GRID_POSITIONS: Array<{ row: number; col: number; palaceOffset: number }> = [
-  // Top row (left to right): palaces at DiaChi index 10,11,0,1
-  { row: 0, col: 0, palaceOffset: 10 },
-  { row: 0, col: 1, palaceOffset: 11 },
-  { row: 0, col: 2, palaceOffset: 0 },
-  { row: 0, col: 3, palaceOffset: 1 },
-  // Right column (top to bottom): 2,3
-  { row: 1, col: 3, palaceOffset: 2 },
-  { row: 2, col: 3, palaceOffset: 3 },
-  // Bottom row (right to left): 4,5,6,7
-  { row: 3, col: 3, palaceOffset: 4 },
-  { row: 3, col: 2, palaceOffset: 5 },
-  { row: 3, col: 1, palaceOffset: 6 },
-  { row: 3, col: 0, palaceOffset: 7 },
-  // Left column (bottom to top): 8,9
-  { row: 2, col: 0, palaceOffset: 8 },
-  { row: 1, col: 0, palaceOffset: 9 },
-]
+// Fixed DiaChi index → [row, col] in 4×4 grid (outer ring only)
+// Traditional Tử Vi layout: Tỵ top-left, clockwise
+//   Tỵ(5)  Ngọ(6) Mùi(7)  Thân(8)
+//   Thìn(4)  [center 2×2]  Dậu(9)
+//   Mão(3)   [center 2×2]  Tuất(10)
+//   Dần(2)  Sửu(1) Tý(0)   Hợi(11)
+const DIACHI_GRID: Record<number, [number, number]> = {
+  5: [0, 0], 6: [0, 1], 7: [0, 2], 8: [0, 3],
+  4: [1, 0],                        9: [1, 3],
+  3: [2, 0],                        10: [2, 3],
+  2: [3, 0], 1: [3, 1], 0: [3, 2], 11: [3, 3],
+}
+
+// Minor stars worth showing on the cell (hung tinh + notable helpers)
+const NOTABLE_MINOR = new Set([
+  'Lộc Tồn', 'Kình Dương', 'Đà La',
+  'Văn Xương', 'Văn Khúc', 'Tả Phù', 'Hữu Bật',
+  'Thiên Khôi', 'Thiên Việt', 'Thiên Mã',
+  'Hỏa Tinh', 'Linh Tinh', 'Địa Không', 'Địa Kiếp',
+])
 
 export function TuViChartDisplay({ chart, userTier }: Props) {
   const [selectedPalace, setSelectedPalace] = useState<Palace | null>(null)
@@ -40,8 +41,9 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
   const elColor = NGU_HANH_COLOR_HEX[chart.menh]
   const forward = getDaiHanDirection(chart.gender, chart.cungMenhIndex)
 
-  // Build grid: position -> palace
+  // Build DiaChi → palace map and DiaChi → DaiHan age-range map
   const palacesByDiaChi = Object.fromEntries(chart.palaces.map((p) => [p.index, p]))
+  const daiHanByPalace = Object.fromEntries(chart.daiHan.map((dh) => [dh.palaceIndex, dh]))
 
   return (
     <div className="space-y-6">
@@ -78,23 +80,32 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
       {/* Chart grid */}
       <div className="rounded-2xl bg-white p-4 shadow-sm">
         <h3 className="mb-4 font-semibold text-gray-800">Lá Số Tử Vi - 12 Cung</h3>
-        <div className="relative grid grid-cols-4 gap-1">
-          {PALACE_GRID_POSITIONS.map(({ row, col, palaceOffset }) => {
-            const chiIdx = (chart.cungMenhIndex + palaceOffset) % 12
-            const palace = palacesByDiaChi[chiIdx]
-            if (!palace) return null
+        <div
+          className="grid gap-1"
+          style={{ gridTemplateColumns: 'repeat(4, 1fr)', gridTemplateRows: 'repeat(4, auto)' }}
+        >
+          {chart.palaces.map((palace) => {
+            const pos = DIACHI_GRID[palace.index]
+            if (!pos) return null
+            const [row, col] = pos
+            const dh = daiHanByPalace[palace.index]
             return (
-              <PalaceCell
-                key={chiIdx}
-                palace={palace}
-                isSelected={selectedPalace?.index === palace.index}
-                onClick={() => setSelectedPalace(palace)}
-              />
+              <div key={palace.index} style={{ gridRow: row + 1, gridColumn: col + 1 }}>
+                <PalaceCell
+                  palace={palace}
+                  isSelected={selectedPalace?.index === palace.index}
+                  daiHanRange={dh ? `${dh.startAge}–${dh.endAge}` : undefined}
+                  onClick={() => setSelectedPalace(palace)}
+                />
+              </div>
             )
           })}
 
           {/* Center info */}
-          <div className="col-start-2 row-start-2 col-span-2 row-span-2 flex flex-col items-center justify-center rounded-lg bg-red-50 p-2 text-center text-xs">
+          <div
+            style={{ gridRow: '2 / 4', gridColumn: '2 / 4' }}
+            className="flex flex-col items-center justify-center rounded-lg bg-red-50 p-2 text-center text-xs"
+          >
             <div className="font-bold text-red-800">{chart.label}</div>
             <div className="text-gray-600">
               {chart.birthDate.day}/{chart.birthDate.month}/{chart.birthDate.year}
@@ -173,38 +184,91 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
   )
 }
 
-function PalaceCell({ palace, isSelected, onClick }: {
-  palace: Palace; isSelected: boolean; onClick: () => void
+function PalaceCell({ palace, isSelected, daiHanRange, onClick }: {
+  palace: Palace; isSelected: boolean; daiHanRange?: string; onClick: () => void
 }) {
+  // Notable minor stars to show: NOTABLE_MINOR set + any Tứ Hóa star
+  const notableMinor = palace.minorStars.filter(
+    (s) => NOTABLE_MINOR.has(s.name) || s.shortMeaning,
+  )
+
   return (
     <button
       onClick={onClick}
-      className={`rounded-lg border p-1.5 text-left transition ${
+      className={`h-full w-full rounded-lg border p-1 text-left transition ${
         palace.isLifePalace ? 'border-red-400 bg-red-50' :
         palace.isSoulPalace ? 'border-purple-400 bg-purple-50' :
         'border-gray-200 bg-white hover:bg-gray-50'
       } ${isSelected ? 'ring-2 ring-yellow-400' : ''}`}
     >
-      <div className="mb-0.5 text-xs font-bold text-gray-700">
-        {palace.name} {palace.isLifePalace ? '(M)' : palace.isSoulPalace ? '(T)' : ''}
+      {/* Palace header: name + Chi + Mệnh/Thân badge */}
+      <div className="flex items-center justify-between gap-0.5">
+        <span className="truncate text-[11px] font-bold text-gray-700">{palace.name}</span>
+        {palace.isLifePalace && (
+          <span className="shrink-0 rounded bg-red-500 px-0.5 text-[9px] font-bold text-white">M</span>
+        )}
+        {palace.isSoulPalace && (
+          <span className="shrink-0 rounded bg-purple-500 px-0.5 text-[9px] font-bold text-white">T</span>
+        )}
       </div>
-      <div className="text-xs text-gray-400">{palace.diaChi}</div>
-      {palace.mainStars.slice(0, 2).map((star) => (
-        <div
-          key={star.name}
-          className={`truncate text-xs ${
-            star.brightness === 'mieu' || star.brightness === 'vuong'
-              ? 'font-semibold text-red-700'
-              : star.brightness === 'hamDia'
-              ? 'italic text-gray-400'
-              : 'text-gray-600'
-          }`}
-        >
-          {star.name}
+
+      {/* DiaChi + Đại Hạn age range */}
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] text-gray-400">{palace.diaChi}</span>
+        {daiHanRange && (
+          <span className="text-[9px] text-amber-600">{daiHanRange}</span>
+        )}
+      </div>
+
+      {/* All main stars */}
+      {palace.mainStars.length === 0 ? (
+        <div className="mt-0.5 text-[10px] italic text-gray-300">trống</div>
+      ) : (
+        <div className="mt-0.5 space-y-0.5">
+          {palace.mainStars.map((star) => (
+            <div key={star.name} className="flex items-center gap-0.5">
+              <span
+                className={`truncate text-[11px] leading-tight ${
+                  star.brightness === 'mieu'
+                    ? 'font-bold text-red-700'
+                    : star.brightness === 'vuong'
+                    ? 'font-semibold text-orange-600'
+                    : star.brightness === 'hamDia'
+                    ? 'italic text-gray-400'
+                    : 'text-gray-600'
+                }`}
+              >
+                {star.name}
+              </span>
+              {star.shortMeaning && (
+                <span className="shrink-0 rounded bg-amber-100 px-0.5 text-[8px] font-medium text-amber-700">
+                  {star.shortMeaning.replace('Hóa ', '')}
+                </span>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
-      {palace.mainStars.length > 2 && (
-        <div className="text-xs text-gray-400">+{palace.mainStars.length - 2}</div>
+      )}
+
+      {/* Notable minor stars */}
+      {notableMinor.length > 0 && (
+        <div className="mt-1 flex flex-wrap gap-0.5">
+          {notableMinor.map((star) => (
+            <span
+              key={star.name}
+              className={`rounded px-0.5 text-[9px] leading-tight ${
+                !star.isGood
+                  ? 'bg-red-100 text-red-600'
+                  : star.shortMeaning
+                  ? 'bg-amber-100 text-amber-700'
+                  : 'bg-blue-50 text-blue-600'
+              }`}
+            >
+              {star.name}
+              {star.shortMeaning ? ` ${star.shortMeaning.replace('Hóa ', '')}` : ''}
+            </span>
+          ))}
+        </div>
       )}
     </button>
   )
@@ -267,42 +331,104 @@ function TieuHanPanel({
   )
 }
 
+const BRIGHTNESS_LABEL: Record<string, string> = {
+  mieu: 'Miếu', vuong: 'Vượng', dacDia: 'Đắc Địa', binhHoa: 'Bình Hòa', hamDia: 'Hãm Địa',
+}
+
+const RATING_COLOR: Record<string, string> = {
+  excellent: 'text-red-600', good: 'text-amber-600', average: 'text-gray-500', bad: 'text-gray-400',
+}
+
+const RATING_LABEL: Record<string, string> = {
+  excellent: 'Rất tốt', good: 'Tốt', average: 'Trung bình', bad: 'Xấu',
+}
+
 function PalaceDetail({ palace }: { palace: Palace }) {
+  const interp = interpretPalace(palace)
+
   return (
     <div className="rounded-2xl bg-white p-6 shadow-sm">
-      <h3 className="mb-4 font-semibold text-gray-800">
-        Cung {palace.name} - {palace.diaChi}
-        {palace.isLifePalace && ' (Mệnh)'}
-        {palace.isSoulPalace && ' (Thân)'}
-      </h3>
+      {/* Header */}
+      <div className="mb-4 flex items-start justify-between gap-2">
+        <div>
+          <h3 className="font-semibold text-gray-800">
+            Cung {palace.name} — {palace.diaChi}
+            {palace.isLifePalace && <span className="ml-1.5 rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">Mệnh</span>}
+            {palace.isSoulPalace && <span className="ml-1.5 rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700">Thân</span>}
+          </h3>
+          <p className="mt-1 text-xs text-gray-500">{interp.overview}</p>
+        </div>
+        <span className={`shrink-0 text-xs font-semibold ${RATING_COLOR[interp.rating]}`}>
+          {RATING_LABEL[interp.rating]}
+        </span>
+      </div>
+
+      {/* Chính tinh */}
       {palace.mainStars.length === 0 ? (
-        <p className="text-sm text-gray-500">Cung trống - không có chính tinh</p>
+        <p className="text-sm text-gray-400 italic">Cung trống — không có chính tinh</p>
       ) : (
-        <div className="space-y-3">
-          {palace.mainStars.map((star) => (
-            <div key={star.name} className="flex items-start gap-3 rounded-lg bg-gray-50 p-3">
-              <div
-                className={`rounded px-2 py-0.5 text-xs font-medium ${
-                  star.brightness === 'mieu' ? 'star-mieu bg-red-50' :
-                  star.brightness === 'vuong' ? 'star-vuong bg-yellow-50' :
-                  star.brightness === 'hamDia' ? 'star-hamDia bg-gray-100' :
-                  'bg-blue-50 text-blue-700'
+        <div className="space-y-2">
+          {palace.mainStars.map((star) => {
+            const meaning = getStarInterpretation(star.name, palace.name)
+            return (
+              <div key={star.name} className="flex items-start gap-3 rounded-lg bg-gray-50 p-3">
+                <div className="shrink-0 flex flex-col items-center gap-0.5">
+                  <span
+                    className={`rounded px-2 py-0.5 text-xs font-bold ${
+                      star.brightness === 'mieu' ? 'bg-red-100 text-red-700' :
+                      star.brightness === 'vuong' ? 'bg-yellow-100 text-yellow-700' :
+                      star.brightness === 'hamDia' ? 'bg-gray-200 text-gray-500' :
+                      'bg-blue-50 text-blue-700'
+                    }`}
+                  >
+                    {star.name}
+                  </span>
+                  <span className="text-[10px] text-gray-400">
+                    {BRIGHTNESS_LABEL[star.brightness] ?? star.brightness}
+                  </span>
+                  {star.shortMeaning && (
+                    <span className="rounded bg-amber-100 px-1 py-0.5 text-[10px] font-medium text-amber-700">
+                      {star.shortMeaning}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm leading-relaxed text-gray-700">{meaning}</p>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Phụ tinh đáng chú ý */}
+      {palace.minorStars.length > 0 && (
+        <div className="mt-4">
+          <p className="mb-2 text-xs font-medium text-gray-500">Phụ tinh</p>
+          <div className="flex flex-wrap gap-1.5">
+            {palace.minorStars.slice(0, 8).map((star) => (
+              <span
+                key={star.name}
+                className={`rounded-full px-2 py-0.5 text-xs ${
+                  !star.isGood
+                    ? 'bg-red-50 text-red-600'
+                    : star.shortMeaning
+                    ? 'bg-amber-50 text-amber-700'
+                    : 'bg-gray-100 text-gray-600'
                 }`}
+                title={star.shortMeaning || (star.isGood ? 'Cát tinh' : 'Hung tinh')}
               >
                 {star.name}
-              </div>
-              <div>
-                <div className="text-xs text-gray-500">
-                  {star.brightness === 'mieu' ? 'Miếu' :
-                   star.brightness === 'vuong' ? 'Vượng' :
-                   star.brightness === 'dacDia' ? 'Đắc Địa' :
-                   star.brightness === 'binhHoa' ? 'Bình Hòa' : 'Hãm Địa'}
-                </div>
-                <div className="text-sm text-gray-700">{star.shortMeaning}</div>
-              </div>
-            </div>
-          ))}
+                {star.shortMeaning ? ` (${star.shortMeaning})` : ''}
+              </span>
+            ))}
+          </div>
         </div>
+      )}
+
+      {/* Tóm tắt cung */}
+      {interp.summary && (
+        <p className="mt-4 rounded-lg bg-amber-50 p-3 text-xs text-amber-800">
+          {interp.summary}
+        </p>
       )}
     </div>
   )
