@@ -9,6 +9,9 @@ import {
 } from '@/data/ngu-hanh'
 import { generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo/structured-data'
 import { Breadcrumb } from '@/components/common/Breadcrumb'
+import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
+import { ContentLock } from '@/components/funnel/ContentLock'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvi.vutera.net'
 
@@ -276,6 +279,21 @@ export default async function PhongThuyMenhPage({ params }: Props) {
           </ul>
         </section>
 
+        {/* Accuracy note */}
+        <PersonalDoubtTrigger variant="prominent" context="phongthuy" />
+
+        {/* Locked detail content */}
+        <ContentLock
+          context="phongthuy"
+          buttonText="Xem bố trí chi tiết →"
+          items={[
+            `Cửu Cung Phi Tinh năm nay cho mệnh ${menhVi} — sao bay vào cung nào`,
+            'Bố trí phòng ngủ theo hướng Sinh Khí cá nhân của bạn',
+            'Vị trí đặt bàn làm việc và bếp tránh Tuyệt Mệnh',
+            'Màu sơn từng phòng phù hợp với cung mệnh thực tế',
+          ]}
+        />
+
         {/* Other elements */}
         <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
           <h2 className="mb-4 font-serif text-xl font-bold text-gray-900">Xem phong thủy theo mệnh khác</h2>
@@ -301,17 +319,30 @@ export default async function PhongThuyMenhPage({ params }: Props) {
           </div>
         </section>
 
-        {/* CTA */}
-        <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--color-primary)' }}>
-          <p className="mb-2 font-serif text-xl font-bold text-white">Xem phong thủy chi tiết hơn?</p>
-          <p className="mb-5 text-sm text-red-100">Tính Bát Trạch theo năm sinh và giới tính — chính xác hơn chỉ dùng mệnh</p>
-          <Link
-            href="/phong-thuy"
-            className="inline-block rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-red-700 shadow transition hover:bg-red-50"
-          >
-            Tính Bát Trạch ngay →
-          </Link>
-        </div>
+        {/* Related articles */}
+        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <h2 className="mb-4 font-serif text-xl font-bold text-gray-900">Xem thêm</h2>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/phong-thuy" className="font-medium text-red-700 hover:underline">
+                Tính Bát Trạch theo năm sinh và giới tính — chính xác hơn
+              </Link>
+            </li>
+            <li>
+              <Link href="/tu-vi" className="font-medium text-red-700 hover:underline">
+                Lập lá số Tử Vi Đẩu Số cá nhân
+              </Link>
+            </li>
+            <li>
+              <Link href="/xem-ngay" className="font-medium text-red-700 hover:underline">
+                Xem ngày tốt xấu — lọc theo tuổi
+              </Link>
+            </li>
+          </ul>
+        </section>
+
+        {/* AnMenh CTA */}
+        <AnMenhCTA variant="banner" context="phongthuy" />
       </div>
     </div>
   )

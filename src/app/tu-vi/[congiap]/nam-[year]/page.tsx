@@ -7,6 +7,9 @@ import { TUONG_SINH, TUONG_KHAC, NGU_HANH_VI, NGU_HANH_COLOR_HEX } from '@/data/
 import type { NguHanh } from '@/types'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { Breadcrumb } from '@/components/common/Breadcrumb'
+import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
+import { ContentLock } from '@/components/funnel/ContentLock'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://tuvi.vutera.net'
 
@@ -28,6 +31,10 @@ const CONGIAP = [
 
 const CURRENT_YEAR = 2026
 const YEARS = [CURRENT_YEAR - 1, CURRENT_YEAR, CURRENT_YEAR + 1, CURRENT_YEAR + 2]
+
+const MENH_SLUG: Record<NguHanh, string> = {
+  Kim: 'kim', Moc: 'moc', Thuy: 'thuy', Hoa: 'hoa', Tho: 'tho',
+}
 
 // Forecast templates based on Nguhanh compatibility
 type CompatType = 'excellent' | 'good' | 'neutral' | 'challenging'
@@ -211,6 +218,21 @@ export default async function TuViConGiapNamPage({ params }: Props) {
           ))}
         </div>
 
+        {/* Accuracy note */}
+        <PersonalDoubtTrigger variant="prominent" context="tuvi" />
+
+        {/* Locked detail content */}
+        <ContentLock
+          context="tuvi"
+          buttonText="Xem Tiểu Vận cá nhân →"
+          items={[
+            `Vận từng tháng trong năm ${y} cho tuổi ${zodiac.name}`,
+            'Tiểu Vận — giai đoạn may mắn và khó khăn chi tiết',
+            'Cảnh báo tháng cần thận trọng riêng theo mệnh của bạn',
+            'Ngày tốt để xuất hành, ký hợp đồng theo tuổi',
+          ]}
+        />
+
         {/* Birth years */}
         <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
           <h2 className="mb-3 font-serif text-lg font-bold text-gray-900">Tuổi {zodiac.name} sinh năm nào?</h2>
@@ -262,17 +284,30 @@ export default async function TuViConGiapNamPage({ params }: Props) {
           </div>
         </section>
 
-        {/* CTA */}
-        <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--color-primary)' }}>
-          <p className="mb-1 font-serif text-xl font-bold text-white">Muốn xem lá số Tử Vi chi tiết?</p>
-          <p className="mb-5 text-sm text-red-100">Lập lá số đầy đủ 14 chính tinh, 12 cung và Đại Vận cá nhân hóa</p>
-          <Link
-            href="/tu-vi"
-            className="inline-block rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-red-700 shadow transition hover:bg-red-50"
-          >
-            Lập Lá Số Tử Vi →
-          </Link>
-        </div>
+        {/* Related articles */}
+        <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <h2 className="mb-4 font-serif text-xl font-bold text-gray-900">Xem thêm</h2>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href={`/phong-thuy/menh-${MENH_SLUG[zodiac.nguHanhElement]}`} className="font-medium text-red-700 hover:underline">
+                Phong thủy mệnh {NGU_HANH_VI[zodiac.nguHanhElement]} — màu sắc &amp; hướng nhà tốt
+              </Link>
+            </li>
+            <li>
+              <Link href="/tu-vi" className="font-medium text-red-700 hover:underline">
+                Lập lá số Tử Vi Đẩu Số chi tiết (14 chính tinh, 12 cung)
+              </Link>
+            </li>
+            <li>
+              <Link href="/xem-ngay" className="font-medium text-red-700 hover:underline">
+                Xem ngày tốt xấu — lọc theo tuổi
+              </Link>
+            </li>
+          </ul>
+        </section>
+
+        {/* AnMenh CTA */}
+        <AnMenhCTA variant="banner" context="tuvi" />
       </div>
     </div>
   )
