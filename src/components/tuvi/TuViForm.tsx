@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { TuViChart } from '@/types'
 import { TuViChartDisplay } from './TuViChartDisplay'
-
+import { useSessionMemory } from '@/hooks/useSessionMemory'
 const HOURS = [
   { name: 'Tý', time: '23–1h' },
   { name: 'Sửu', time: '1–3h' },
@@ -29,9 +29,24 @@ export function TuViForm() {
     birthHour: '0',
     isLunar: false,
   })
+  const { memory, isLoaded, updateMemory } = useSessionMemory()
   const [chart, setChart] = useState<TuViChart | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (isLoaded && memory) {
+      setForm((prev) => ({
+        ...prev,
+        label: memory.name || prev.label,
+        gender: memory.gender || prev.gender,
+        birthYear: memory.birthYear?.toString() || prev.birthYear,
+        birthMonth: memory.birthMonth?.toString() || prev.birthMonth,
+        birthDay: memory.birthDay?.toString() || prev.birthDay,
+        birthHour: memory.birthHour?.toString() || prev.birthHour,
+      }))
+    }
+  }, [isLoaded, memory])
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value, type } = e.target
@@ -46,6 +61,14 @@ export function TuViForm() {
     setLoading(true)
     setError('')
     try {
+      updateMemory({
+        name: form.label,
+        gender: form.gender as 'male' | 'female',
+        birthYear: parseInt(form.birthYear) || undefined,
+        birthMonth: parseInt(form.birthMonth) || undefined,
+        birthDay: parseInt(form.birthDay) || undefined,
+        birthHour: parseInt(form.birthHour) || 0,
+      })
       const res = await fetch('/api/tuvi/chart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

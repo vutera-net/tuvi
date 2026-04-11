@@ -1,12 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { BatTrachResult } from '@/types'
 import { ContentLock } from '@/components/funnel/ContentLock'
+import { useSessionMemory } from '@/hooks/useSessionMemory'
 
 export function PhongThuyForm() {
+  const { memory, isLoaded, updateMemory } = useSessionMemory()
   const [birthYear, setBirthYear] = useState('')
   const [gender, setGender] = useState<'male' | 'female'>('male')
+
+  useEffect(() => {
+    if (isLoaded && memory) {
+      if (memory.birthYear) setBirthYear(memory.birthYear.toString())
+      if (memory.gender) setGender(memory.gender)
+    }
+  }, [isLoaded, memory])
   const [batTrach, setBatTrach] = useState<BatTrachResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -22,6 +31,10 @@ export function PhongThuyForm() {
     setError('')
 
     try {
+      updateMemory({
+        birthYear: year,
+        gender
+      })
       const res = await fetch('/api/phongthuy/battrach', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

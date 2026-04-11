@@ -25,12 +25,23 @@ function trackLockClick(context: string) {
   }
 }
 
+import { useSessionMemory } from '@/hooks/useSessionMemory'
+
 export function ContentLock({
   items,
   context = 'default',
   buttonText = 'Tạo hồ sơ để xem',
   className = '',
 }: ContentLockProps) {
+  const { memory } = useSessionMemory()
+  
+  const hrefParams = new URLSearchParams()
+  hrefParams.set('source', 'tuvi_lock')
+  hrefParams.set('intent', context)
+  if (memory?.birthYear) hrefParams.set('birthYear', memory.birthYear.toString())
+  if (memory?.gender) hrefParams.set('gender', memory.gender)
+
+  const href = `${ANMENH_URL}/bridge?${hrefParams.toString()}`
   return (
     <div
       className={`relative overflow-hidden rounded-2xl border border-purple-100 bg-white ${className}`}
@@ -64,7 +75,7 @@ export function ContentLock({
       {/* CTA */}
       <div className="border-t border-purple-50 bg-purple-50/50 px-5 py-4 text-center">
         <a
-          href={ANMENH_URL}
+          href={href}
           onClick={() => trackLockClick(context)}
           className="inline-block rounded-full px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
           style={{ background: 'linear-gradient(135deg, #7C3AED, #C41E3A)' }}

@@ -56,8 +56,19 @@ function trackCTAClick(variant: CTAVariant, context: CTAContext) {
   }
 }
 
+import { useSessionMemory } from '@/hooks/useSessionMemory'
+
 export function AnMenhCTA({ variant = 'banner', context = 'default', className = '' }: AnMenhCTAProps) {
   const content = CONTEXT_CONTENT[context]
+  const { memory } = useSessionMemory()
+  
+  const hrefParams = new URLSearchParams()
+  hrefParams.set('source', 'tuvi')
+  hrefParams.set('intent', context)
+  if (memory?.birthYear) hrefParams.set('birthYear', memory.birthYear.toString())
+  if (memory?.gender) hrefParams.set('gender', memory.gender)
+
+  const href = `${ANMENH_URL}/bridge?${hrefParams.toString()}`
 
   if (variant === 'inline') {
     return (
@@ -65,7 +76,7 @@ export function AnMenhCTA({ variant = 'banner', context = 'default', className =
         <p className="text-sm font-semibold text-purple-900">{content.headline}</p>
         <p className="mt-1 text-xs text-purple-700">{content.sub}</p>
         <a
-          href={ANMENH_URL}
+          href={href}
           onClick={() => trackCTAClick('inline', context)}
           className="mt-3 inline-block rounded-full px-4 py-1.5 text-xs font-semibold text-white transition hover:opacity-90"
           style={{ background: 'linear-gradient(135deg, #7C3AED, #C41E3A)' }}
@@ -93,7 +104,7 @@ export function AnMenhCTA({ variant = 'banner', context = 'default', className =
           <li>✓ Cảnh báo và gợi ý riêng</li>
         </ul>
         <a
-          href={ANMENH_URL}
+          href={href}
           onClick={() => trackCTAClick('card', context)}
           className="mt-5 inline-block rounded-full bg-white px-6 py-2.5 text-sm font-semibold transition hover:bg-yellow-50"
           style={{ color: '#7C3AED' }}

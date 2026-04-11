@@ -20,12 +20,23 @@ const CONTEXT_TEXT = {
   default: 'Kết quả này mang tính tổng quan theo năm sinh. Để chính xác hơn, cần thêm giờ sinh và thông tin cá nhân của bạn.',
 }
 
+import { useSessionMemory } from '@/hooks/useSessionMemory'
+
 export function PersonalDoubtTrigger({
   variant = 'subtle',
   context = 'default',
   className = '',
 }: PersonalDoubtTriggerProps) {
   const text = CONTEXT_TEXT[context]
+  const { memory } = useSessionMemory()
+  
+  const hrefParams = new URLSearchParams()
+  hrefParams.set('source', 'tuvi_doubt')
+  hrefParams.set('intent', context)
+  if (memory?.birthYear) hrefParams.set('birthYear', memory.birthYear.toString())
+  if (memory?.gender) hrefParams.set('gender', memory.gender)
+
+  const href = `${ANMENH_URL}/bridge?${hrefParams.toString()}`
 
   if (variant === 'prominent') {
     return (
@@ -35,7 +46,7 @@ export function PersonalDoubtTrigger({
           <p className="text-sm font-semibold text-amber-900">Lưu ý về độ chính xác</p>
           <p className="mt-1 text-sm text-amber-800">{text}</p>
           <a
-            href={ANMENH_URL}
+            href={href}
             onClick={() => trackCTAClick('doubt_trigger_prominent', context)}
             className="mt-2 inline-block text-xs font-semibold text-amber-700 underline hover:text-amber-900"
           >
@@ -51,7 +62,7 @@ export function PersonalDoubtTrigger({
     <p className={`text-xs text-gray-400 italic ${className}`}>
       * {text}{' '}
       <a 
-        href={ANMENH_URL} 
+        href={href} 
         onClick={() => trackCTAClick('doubt_trigger_subtle', context)}
         className="font-medium text-purple-500 not-italic hover:text-purple-700"
       >
