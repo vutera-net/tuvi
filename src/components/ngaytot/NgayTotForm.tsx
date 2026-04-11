@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import type { DateSelectionResult, EventType } from '@/types'
 import { DIA_CHI, THIEN_CAN } from '@/data/can-chi'
+import { ContentLock } from '@/components/funnel/ContentLock'
+
+const FREE_RESULTS_LIMIT = 3
 
 const EVENT_TYPES: Array<{ value: EventType; label: string; icon: string }> = [
   { value: 'cuoiHoi', label: 'Cưới hỏi', icon: '💒' },
@@ -102,15 +105,39 @@ export function NgayTotForm() {
         </form>
       </div>
 
+      {/* Age filter — premium locked */}
+      <ContentLock
+        context="ngaytot_age_filter"
+        buttonText="Lọc ngày theo tuổi của bạn"
+        items={[
+          'Loại bỏ ngày Tam Nương, Sát Chủ, Thời Địa theo tuổi sinh',
+          'Hiển thị mức độ tương hợp giữa ngày và tuổi',
+          'Cảnh báo ngày kỵ riêng cho từng tuổi',
+        ]}
+      />
+
       {/* Results */}
       {results.length > 0 && (
         <div className="space-y-3">
           <h3 className="font-semibold text-gray-800">
-            Tìm thấy {results.length} ngày tốt ({EVENT_TYPES.find(e => e.value === eventType)?.label})
+            {results.length > FREE_RESULTS_LIMIT
+              ? `Top ${FREE_RESULTS_LIMIT} ngày tốt nhất — ${EVENT_TYPES.find(e => e.value === eventType)?.label}`
+              : `${results.length} ngày tốt — ${EVENT_TYPES.find(e => e.value === eventType)?.label}`}
           </h3>
-          {results.slice(0, 20).map((result, i) => (
+          {results.slice(0, FREE_RESULTS_LIMIT).map((result, i) => (
             <DateResultCard key={i} result={result} />
           ))}
+
+          {results.length > FREE_RESULTS_LIMIT && (
+            <ContentLock
+              context="ngaytot_more_results"
+              buttonText="Xem tất cả ngày tốt"
+              items={results.slice(FREE_RESULTS_LIMIT).map((r) => {
+                const weekdays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
+                return `${weekdays[r.solar.dayOfWeek]} ${r.solar.day}/${r.solar.month}/${r.solar.year} · ${r.score}/100 điểm · ${r.truc} · ${r.sao28}`
+              })}
+            />
+          )}
         </div>
       )}
 
