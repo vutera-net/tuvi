@@ -1,6 +1,7 @@
 'use client'
 
 import { trackCTAClick } from '@/lib/analytics'
+import { getCanChiYear } from '@/data/can-chi'
 
 const ANMENH_URL = 'https://anmenh.vutera.net'
 
@@ -27,8 +28,11 @@ export function PersonalDoubtTrigger({
   context = 'default',
   className = '',
 }: PersonalDoubtTriggerProps) {
-  const text = CONTEXT_TEXT[context]
   const { memory } = useSessionMemory()
+  const canChi = memory?.birthYear ? getCanChiYear(memory.birthYear).full : null
+  const yearText = canChi ? `Với tuổi ${canChi} (${memory?.birthYear}), ` : ''
+  
+  const text = `${yearText}${CONTEXT_TEXT[context]}`
   
   const hrefParams = new URLSearchParams()
   hrefParams.set('source', 'tuvi_doubt')

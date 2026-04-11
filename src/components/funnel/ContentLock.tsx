@@ -26,14 +26,16 @@ function trackLockClick(context: string) {
 }
 
 import { useSessionMemory } from '@/hooks/useSessionMemory'
+import { getCanChiYear } from '@/data/can-chi'
 
 export function ContentLock({
   items,
   context = 'default',
-  buttonText = 'Tạo hồ sơ để xem',
+  buttonText = 'Mở khóa luận giải cá nhân',
   className = '',
 }: ContentLockProps) {
   const { memory } = useSessionMemory()
+  const canChi = memory?.birthYear ? getCanChiYear(memory.birthYear).full : null
   
   const hrefParams = new URLSearchParams()
   hrefParams.set('source', 'tuvi_lock')
@@ -50,10 +52,12 @@ export function ContentLock({
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-purple-100 bg-purple-50 px-5 py-3">
-        <span className="text-base">🔒</span>
-        <span className="text-sm font-semibold text-purple-900">Phần dành riêng cho bạn</span>
-        <span className="ml-auto rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700">
-          AnMenh
+        <span className="text-base animate-pulse">🔒</span>
+        <span className="text-sm font-semibold text-purple-900">
+          {canChi ? `Luận giải riêng cho tuổi ${canChi}` : 'Phần dành riêng cho bạn'}
+        </span>
+        <span className="ml-auto rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-purple-700">
+          Premium
         </span>
       </div>
 

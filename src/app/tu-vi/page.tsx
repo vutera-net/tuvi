@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { TuViForm } from '@/components/tuvi/TuViForm'
 import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
 import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
+import { MiniFunnel } from '@/components/funnel/MiniFunnel'
 
 export const metadata: Metadata = {
   title: 'Lập Lá Số Tử Vi Đẩu Số',
@@ -27,6 +28,9 @@ export default function TuViPage() {
         </Link>
       </div>
       <TuViForm />
+      <div className="mt-12">
+        <MiniFunnel />
+      </div>
       <div className="mt-8 space-y-4">
         <PersonalDoubtTrigger context="tuvi" variant="prominent" />
         <AnMenhCTA context="tuvi" variant="banner" />

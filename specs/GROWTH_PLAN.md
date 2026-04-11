@@ -8,7 +8,8 @@ Bản theo dõi tiến độ chi tiết dựa trên phân tích ở `product_eva
 *Mục tiêu: Đưa user sang AnMệnh một cách tự nhiên, liên tục mạch suy nghĩ.*
 
 - [x] **[TuVi]** Bổ sung Query Parameters (`?source`, `?intent`, `?birthYear`) vào tất cả Component chốt sale (`AnMenhCTA`, `ContentLock`, `PersonalDoubtTrigger`).
-- [ ] **[AnMenh]** Thiết kế & Lập trình một trang Dynamic Bridge Page trên nhánh `anmenh.vutera.net/bridge` để đón lõng và xử lý các tham số được bắn sang.
+- [ ] **[AnMenh]** Thiết kế & Lập trình một trang Dynamic Bridge Page trên nhánh `anmenh.vutera.net/bridge` để đón lõng và xử lý các tham số được bắn sang.  
+  *(Lưu ý: Việc này cần thực hiện bên phía dự án AnMệnh, đảm bảo nhận diện các tham số: source, intent, birthYear, gender)*
 - [ ] **[Vutera]** Setup tracking chéo (Cross-domain tracking GA4) để biết click ở TuVi có convert thật sự ra đăng ký ở AnMenh không.
 
 ## 2. Trí nhớ Ẩn (Cookieless Memory)

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import type { TuViChart, Palace, DaiHan } from '@/types'
 import { NGU_HANH_COLOR_HEX, NGU_HANH_VI } from '@/data/ngu-hanh'
 import { TuViPdfExportButton } from './TuViPdfExportButton'
@@ -416,8 +417,9 @@ function PalaceCell({
         <div className="space-y-0.5">
           {palace.mainStars.map((star) => (
             <div key={star.name} className="flex items-center gap-0.5">
-              <span
-                className={`truncate text-[11px] leading-tight font-medium ${
+              <Link
+                href={`/y-nghia-sao/${star.name.toLowerCase().replace(/ /g, '-')}-tai-cung-${palace.name.toLowerCase().replace(/ /g, '-')}`}
+                className={`truncate text-[11px] leading-tight font-medium hover:underline ${
                   star.brightness === 'mieu'
                     ? 'text-red-700'
                     : star.brightness === 'vuong'
@@ -429,7 +431,7 @@ function PalaceCell({
               >
                 {star.brightness === 'mieu' ? '● ' : star.brightness === 'vuong' ? '◉ ' : ''}
                 {star.name}
-              </span>
+              </Link>
               {star.shortMeaning && (
                 <span className="shrink-0 rounded bg-amber-100 px-0.5 text-[8px] font-bold text-amber-700">
                   {star.shortMeaning.replace('Hóa ', '')}

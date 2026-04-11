@@ -287,14 +287,16 @@ export function lunarToSolar(
   }
 }
 
-// ============================================================
-// DAY INFO AGGREGATION
-// ============================================================
+// Simple in-memory cache for getDayInfo to prevent duplicate math within similar periods
+const dayInfoCache = new Map<string, DayInfo>();
 
 /**
  * Get full day information for a solar date
  */
 export function getDayInfo(dd: number, mm: number, yy: number): DayInfo {
+  const cacheKey = `${dd}-${mm}-${yy}`;
+  if (dayInfoCache.has(cacheKey)) return dayInfoCache.get(cacheKey)!;
+
   const jd = jdFromDate(dd, mm, yy)
   const lunar = solarToLunar(dd, mm, yy)
   const solar: SolarDate = {
@@ -326,7 +328,7 @@ export function getDayInfo(dd: number, mm: number, yy: number): DayInfo {
     rating = 'xau'
   }
 
-  return {
+  const result: DayInfo = {
     solar,
     lunar,
     canGio,
@@ -341,6 +343,12 @@ export function getDayInfo(dd: number, mm: number, yy: number): DayInfo {
     festivals,
     rating,
   }
+
+  // Limited cache size management
+  if (dayInfoCache.size > 1000) dayInfoCache.clear();
+  dayInfoCache.set(cacheKey, result);
+
+  return result
 }
 
 /**

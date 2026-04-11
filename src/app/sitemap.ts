@@ -11,6 +11,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const CURRENT_YEAR = today.getFullYear()
   const tuViYears = [CURRENT_YEAR - 1, CURRENT_YEAR, CURRENT_YEAR + 1, CURRENT_YEAR + 2]
 
+  const stars = [
+    'tu-vi', 'liem-trinh', 'thien-dong', 'vu-khuc', 'thai-duong', 'thien-co', 
+    'thien-phu', 'thai-am', 'tham-lang', 'cu-mon', 'thien-tuong', 'thien-luong', 
+    'that-sat', 'pha-quan'
+  ]
+  const palaces = [
+    'menh', 'phu-mau', 'phuc-duc', 'dien-trach', 'quan-loc', 'no-boc', 
+    'thien-di', 'tat-ach', 'tai-bach', 'tu-tuc', 'phu-the', 'huynh-de'
+  ]
+
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: today, changeFrequency: 'daily', priority: 1 },
     { url: `${BASE_URL}/lich`, lastModified: today, changeFrequency: 'daily', priority: 0.9 },
@@ -67,5 +77,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...zodiacPages, ...tuViNamPages, ...menhPages, ...lichPages, ...blogPosts]
+  // Programmatic SEO: Star x Palace matrix
+  const seoMatrixPages: MetadataRoute.Sitemap = stars.flatMap((s) =>
+    palaces.map((p) => ({
+      url: `${BASE_URL}/y-nghia-sao/${s}-tai-cung-${p}`,
+      lastModified: today,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5, // Long-tail pages have slightly lower priority than main feature pages
+    }))
+  )
+
+  return [...staticPages, ...zodiacPages, ...tuViNamPages, ...menhPages, ...lichPages, ...blogPosts, ...seoMatrixPages]
 }

@@ -82,6 +82,17 @@ export function SiteFooter() {
 
           {/* Hỗ trợ */}
           <div>
+            <h3 className="mb-3 text-sm font-semibold text-gray-900">Tra cứu Tử Vi</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li><Link href="/y-nghia-sao/tu-vi-tai-cung-menh" className="hover:text-red-700">Sao Tử Vi tại cung Mệnh</Link></li>
+              <li><Link href="/y-nghia-sao/thai-duong-tai-cung-quan-loc" className="hover:text-red-700">Sao Thái Dương tại Quan Lộc</Link></li>
+              <li><Link href="/y-nghia-sao/thien-phu-tai-cung-tai-bach" className="hover:text-red-700">Sao Thiên Phủ tại Tài Bạch</Link></li>
+              <li><Link href="/y-nghia-sao/tham-lang-tai-cung-dao-hoa" className="hover:text-red-700">Giải mã bộ sao Đào Hoa</Link></li>
+            </ul>
+          </div>
+
+          {/* Hỗ trợ */}
+          <div>
             <h3 className="mb-3 text-sm font-semibold text-gray-900">Hỗ trợ</h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li>
