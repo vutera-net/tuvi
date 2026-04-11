@@ -17,7 +17,7 @@ export function StickyCTA() {
 
     const handleScroll = () => {
       const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
-      setVisible(scrollPct > 0.3)
+      setVisible(scrollPct > 0.3 && scrollPct < 0.85)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
