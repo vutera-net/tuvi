@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import type { BatTrachResult, CuuCungResult } from '@/types'
+import type { BatTrachResult } from '@/types'
+import { ContentLock } from '@/components/funnel/ContentLock'
 
 export function PhongThuyForm() {
   const [birthYear, setBirthYear] = useState('')
   const [gender, setGender] = useState<'male' | 'female'>('male')
   const [batTrach, setBatTrach] = useState<BatTrachResult | null>(null)
-  const [cuuCung, setCuuCung] = useState<CuuCungResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -22,18 +22,14 @@ export function PhongThuyForm() {
     setError('')
 
     try {
-      const [batTrachRes, cuuCungRes] = await Promise.all([
-        fetch('/api/phongthuy/battrach', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ birthYear: year, gender }),
-        }).then((r) => r.json()),
-        fetch(`/api/phongthuy/cuucung?year=${new Date().getFullYear()}`).then((r) => r.json()),
-      ])
+      const res = await fetch('/api/phongthuy/battrach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ birthYear: year, gender }),
+      }).then((r) => r.json())
 
-      if (batTrachRes.error) throw new Error(batTrachRes.error)
-      setBatTrach(batTrachRes.data)
-      setCuuCung(cuuCungRes.data)
+      if (res.error) throw new Error(res.error)
+      setBatTrach(res.data)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Có lỗi xảy ra')
     } finally {
@@ -126,31 +122,16 @@ export function PhongThuyForm() {
             </div>
           </div>
 
-          {/* Cuu Cung */}
-          {cuuCung && (
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <h3 className="mb-4 font-semibold text-gray-800">
-                Cửu Cung Phi Tinh Năm {cuuCung.year}
-              </h3>
-              <p className="mb-4 text-sm text-gray-600">{cuuCung.analysis}</p>
-              <div className="grid grid-cols-3 gap-2">
-                {cuuCung.grid.flat().map((cell, i) => (
-                  <div
-                    key={i}
-                    className={`rounded-lg p-3 text-center ${
-                      cell.isTot ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
-                    }`}
-                  >
-                    <div className={`text-2xl font-bold ${cell.isTot ? 'text-green-700' : 'text-red-700'}`}>
-                      {cell.star}
-                    </div>
-                    <div className="text-xs text-gray-500">{cell.direction}</div>
-                    <div className="text-xs font-medium text-gray-700 truncate">{cell.meaning.split(' - ')[0]}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <ContentLock
+            context="phongthuy_cuucung"
+            buttonText="Xem phân tích chi tiết"
+            items={[
+              `Cửu Cung Phi Tinh năm ${new Date().getFullYear()} — sao nào bay vào hướng nhà bạn`,
+              'Bố trí phòng ngủ, phòng khách, bếp theo hướng cung mệnh',
+              'Vị trí đặt bàn làm việc, giường ngủ tốt nhất',
+              'Màu sắc & vật phẩm phong thủy phù hợp từng khu vực',
+            ]}
+          />
         </>
       )}
     </div>
