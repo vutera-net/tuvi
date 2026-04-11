@@ -1,7 +1,0 @@
-Ở cuối mỗi tính năng chính (Lá Số Tử Vi, Xem Ngày, Phong Thủy, Tử Vi Hàng Ngày) thêm đoạn text + link:
-“Bạn vừa xem kết quả chung. Muốn nhận Tử Vi hôm nay + lời khuyên cá nhân hóa theo ngày sinh của riêng bạn? → Sang An Mệnh tạo hồ sơ miễn phí”
-
-Thêm một banner nhỏ ở đầu hoặc sidebar: “Muốn trải nghiệm sâu hơn? Tạo hồ sơ tại An Mệnh”
-
-Thêm header/footer đơn giản trên cả 3 trang với link:
-Harmony (www.vutera.net/harmony) ↔ Tu Vi ↔ An Mệnh

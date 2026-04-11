@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { AuthButton } from './AuthButton'
 
 const ANMENH_URL = 'https://anmenh.vutera.net'
 
@@ -61,7 +60,6 @@ export function SiteHeader() {
 
           {/* CTA */}
           <div className="hidden items-center gap-2 md:flex">
-            <AuthButton />
             <a
               href={ANMENH_URL}
               className="rounded-full px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
@@ -97,7 +95,6 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="mt-3 space-y-2 border-t pt-3">
-              <AuthButton />
               <a
                 href={ANMENH_URL}
                 className="block w-full rounded-full py-2.5 text-center text-sm font-semibold text-white"

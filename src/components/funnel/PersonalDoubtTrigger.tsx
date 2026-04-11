@@ -1,3 +1,7 @@
+'use client'
+
+import { trackCTAClick } from '@/lib/analytics'
+
 const ANMENH_URL = 'https://anmenh.vutera.net'
 
 type TriggerVariant = 'subtle' | 'prominent'
@@ -32,6 +36,7 @@ export function PersonalDoubtTrigger({
           <p className="mt-1 text-sm text-amber-800">{text}</p>
           <a
             href={ANMENH_URL}
+            onClick={() => trackCTAClick('doubt_trigger_prominent', context)}
             className="mt-2 inline-block text-xs font-semibold text-amber-700 underline hover:text-amber-900"
           >
             Xem kết quả chính xác hơn tại AnMenh →
@@ -45,7 +50,11 @@ export function PersonalDoubtTrigger({
   return (
     <p className={`text-xs text-gray-400 italic ${className}`}>
       * {text}{' '}
-      <a href={ANMENH_URL} className="font-medium text-purple-500 not-italic hover:text-purple-700">
+      <a 
+        href={ANMENH_URL} 
+        onClick={() => trackCTAClick('doubt_trigger_subtle', context)}
+        className="font-medium text-purple-500 not-italic hover:text-purple-700"
+      >
         Xem tại AnMenh →
       </a>
     </p>

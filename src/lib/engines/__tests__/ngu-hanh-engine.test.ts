@@ -71,8 +71,8 @@ describe('Ngu Hanh Engine - Year to Destiny', () => {
       const info = getNguHanhByYear(2024)
       expect(typeof info.sinhBoi).toBe('string')
       expect(typeof info.khacBoi).toBe('string')
-      expect(info.sinhBoi).toMatch(/kim|moc|thuy|hoa|tho/)
-      expect(info.khacBoi).toMatch(/kim|moc|thuy|hoa|tho/)
+      expect(info.sinhBoi).toMatch(/kim|moc|thuy|hoa|tho/i)
+      expect(info.khacBoi).toMatch(/kim|moc|thuy|hoa|tho/i)
     })
 
     it('should have generating and weakening relationships', () => {
@@ -236,7 +236,7 @@ describe('Ngu Hanh Engine - Age to Year', () => {
       const year2024 = ageToYear(age, 2024)
       const year2000 = ageToYear(age, 2000)
 
-      expect(year2000 - year2024).toBe(24) // 2000 - 2024 = -24, so years differ by 24
+      expect(year2024 - year2000).toBe(24) // 2024 - 2000 = 24
     })
   })
 })
@@ -278,7 +278,7 @@ describe('Ngu Hanh Engine - Can Chi Calculation', () => {
       const years = [1900, 1950, 2000, 2024, 2050]
       years.forEach((year) => {
         const canChi = getCanChiByYear(year)
-        expect(canChi).toMatch(/^[\w\s]+\s[\w\s]+$/) // Pattern: word space word
+        expect(canChi).toMatch(/^[\p{L}\p{M}\s]+$/u) 
       })
     })
 

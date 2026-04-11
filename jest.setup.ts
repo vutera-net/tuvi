@@ -19,19 +19,6 @@ jest.mock('next/navigation', () => ({
   },
 }));
 
-// Mock next-auth
-jest.mock('next-auth', () => ({
-  auth: jest.fn(),
-}));
-
-jest.mock('next-auth/react', () => ({
-  useSession: jest.fn(() => ({
-    data: null,
-    status: 'unauthenticated',
-  })),
-  SessionProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
-
 // Suppress console errors in tests
 const originalError = console.error;
 beforeAll(() => {

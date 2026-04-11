@@ -3,8 +3,8 @@ import { Geist, Geist_Mono, Noto_Serif } from 'next/font/google'
 import './globals.css'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
-import { Providers } from '@/components/layout/Providers'
 import { StickyCTA } from '@/components/funnel/StickyCTA'
+import { EcosystemBanner } from '@/components/funnel/EcosystemBanner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -63,12 +63,11 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${geistSans.variable} ${geistMono.variable} ${notoSerif.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <Providers>
           <SiteHeader />
+          <EcosystemBanner />
           <main className="flex-1">{children}</main>
           <SiteFooter />
           <StickyCTA />
-        </Providers>
       </body>
     </html>
   )
