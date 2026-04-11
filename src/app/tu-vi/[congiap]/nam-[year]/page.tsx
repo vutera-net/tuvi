@@ -265,7 +265,7 @@ export default async function TuViConGiapNamPage({ params }: Props) {
         {/* CTA */}
         <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--color-primary)' }}>
           <p className="mb-1 font-serif text-xl font-bold text-white">Muốn xem lá số Tử Vi chi tiết?</p>
-          <p className="mb-5 text-sm text-red-100">Lập lá số đầy đủ 14 chính tinh, 12 cung và Đại Hạn cá nhân hóa</p>
+          <p className="mb-5 text-sm text-red-100">Lập lá số đầy đủ 14 chính tinh, 12 cung và Đại Vận cá nhân hóa</p>
           <Link
             href="/tu-vi"
             className="inline-block rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-red-700 shadow transition hover:bg-red-50"

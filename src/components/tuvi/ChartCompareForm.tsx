@@ -252,10 +252,10 @@ function CompareResult({ chart1, chart2 }: { chart1: TuViChart; chart2: TuViChar
         </div>
       </div>
 
-      {/* Đại Hạn hiện tại */}
+      {/* Đại Vận hiện tại */}
       <div className="rounded-2xl bg-white p-6 shadow-sm">
         <h3 className="mb-4 font-semibold text-gray-800">
-          Đại Hạn Hiện Tại <span className="text-xs font-normal text-gray-400">({CURRENT_YEAR})</span>
+          Đại Vận Hiện Tại <span className="text-xs font-normal text-gray-400">({CURRENT_YEAR})</span>
         </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <DaiHanCard label={chart1.label} daiHan={daiHan1} cucNumber={chart1.cucNumber} />
@@ -341,7 +341,7 @@ function DaiHanCard({
     <div className="rounded-xl border border-gray-100 p-4">
       <p className="mb-2 text-sm font-medium text-gray-700">{label}</p>
       {!daiHan ? (
-        <p className="text-sm text-gray-400 italic">Chưa bắt đầu Đại Hạn</p>
+        <p className="text-sm text-gray-400 italic">Chưa bắt đầu Đại Vận</p>
       ) : (
         <div className="space-y-1 text-sm">
           <p className="font-semibold text-gray-800">

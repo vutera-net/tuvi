@@ -163,7 +163,7 @@ export default async function TaiKhoanPage() {
                     </span>
                   </div>
                   <p className="mb-4 text-xs text-gray-600">
-                    Tất cả Premium + Tiểu Hạn, so sánh lá số, xuất PDF, hỗ trợ ưu tiên.
+                    Tất cả Premium + Tiểu Vận, so sánh lá số, xuất PDF, hỗ trợ ưu tiên.
                   </p>
                   <div className="mb-3 text-center">
                     <span className="text-2xl font-bold text-gray-900">199.000đ</span>
@@ -178,7 +178,7 @@ export default async function TaiKhoanPage() {
               <div className="rounded-2xl border-2 p-5" style={{ borderColor: 'var(--color-primary)', background: '#fff8f0' }}>
                 <h3 className="mb-1 font-semibold text-gray-900">Nâng lên VIP</h3>
                 <p className="mb-4 text-xs text-gray-600">
-                  Mở thêm Tiểu Hạn, so sánh lá số, xuất PDF và hỗ trợ ưu tiên.
+                  Mở thêm Tiểu Vận, so sánh lá số, xuất PDF và hỗ trợ ưu tiên.
                 </p>
                 <div className="mb-3 text-center">
                   <span className="text-2xl font-bold text-gray-900">199.000đ</span>

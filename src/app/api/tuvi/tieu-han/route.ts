@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         (dh) => age >= dh.startAge && age <= dh.endAge,
       )
       if (!daiHan) {
-        return errorResponse(`Năm ${targetYear} nằm ngoài phạm vi Đại Hạn`)
+        return errorResponse(`Năm ${targetYear} nằm ngoài phạm vi Đại Vận`)
       }
       const tieuHanList = calculateTieuHan(daiHan, forward, chart.cungMenhIndex)
       const tieuHan = tieuHanList.find((t) => t.year === targetYear)

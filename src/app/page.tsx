@@ -21,7 +21,7 @@ const FEATURES = [
   {
     icon: '⭐',
     title: 'Lá Số Tử Vi',
-    description: 'Tử Vi Đẩu Số với 14 chính tinh, 12 cung và Đại Hạn chi tiết',
+    description: 'Tử Vi Đẩu Số với 14 chính tinh, 12 cung và Đại Vận chi tiết',
     href: '/tu-vi',
     color: '#9333EA',
   },
