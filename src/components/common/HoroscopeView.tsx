@@ -5,6 +5,7 @@ import type { ZodiacSign } from '@/types'
 import { getDayInfo } from '@/lib/engines/lunar-engine'
 import { getYearCenterStar } from '@/data/phongthuy/cuu-cung'
 import { DIA_CHI, THIEN_CAN } from '@/data/can-chi'
+import { ContentLock } from '@/components/funnel/ContentLock'
 
 const ZODIACS: Array<{ sign: ZodiacSign; name: string; emoji: string; chiIndex: number }> = [
   { sign: 'ty', name: 'Tý', emoji: '🐭', chiIndex: 0 },
@@ -21,8 +22,8 @@ const ZODIACS: Array<{ sign: ZodiacSign; name: string; emoji: string; chiIndex: 
   { sign: 'hoi', name: 'Hợi', emoji: '🐗', chiIndex: 11 },
 ]
 
-const ASPECTS = [
-  { key: 'tongQuan', label: 'Tổng quan', icon: '⭐' },
+const ASPECT_TONG_QUAN = { key: 'tongQuan', label: 'Tổng quan', icon: '⭐' }
+const ASPECTS_OTHER = [
   { key: 'suNghiep', label: 'Sự nghiệp', icon: '💼' },
   { key: 'taiChinh', label: 'Tài chính', icon: '💰' },
   { key: 'tinhCam', label: 'Tình cảm', icon: '❤️' },
@@ -59,12 +60,37 @@ function generateHoroscope(zodiac: (typeof ZODIACS)[0]) {
   }
 }
 
+function ScoreBar({ aspect, score }: { aspect: { key: string; label: string; icon: string }; score: number }) {
+  const pct = (score / 10) * 100
+  const color = score >= 7 ? '#16a34a' : score >= 5 ? '#d97706' : '#dc2626'
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between text-sm">
+        <span className="font-medium text-gray-700">{aspect.icon} {aspect.label}</span>
+        <span className="font-bold" style={{ color }}>{score}/10</span>
+      </div>
+      <div className="h-2 rounded-full bg-gray-100">
+        <div
+          className="h-2 rounded-full transition-all"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        />
+      </div>
+    </div>
+  )
+}
+
 export function HoroscopeView() {
   const [selected, setSelected] = useState<(typeof ZODIACS)[0]>(ZODIACS[0])
   const horoscope = generateHoroscope(selected)
 
   const today = new Date()
   const dateStr = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`
+
+  // Pick 1 unlocked aspect deterministically (stable per zodiac + day)
+  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000)
+  const unlockedIdx = (selected.chiIndex + dayOfYear) % ASPECTS_OTHER.length
+  const unlockedAspect = ASPECTS_OTHER[unlockedIdx]
+  const lockedAspects = ASPECTS_OTHER.filter((_, i) => i !== unlockedIdx)
 
   return (
     <div className="space-y-6">
@@ -101,27 +127,16 @@ export function HoroscopeView() {
           <div className="text-sm text-gray-500">Ngày Can Chi: {horoscope.canChiDay}</div>
         </div>
 
-        {/* Scores */}
+        {/* Visible scores: Tổng Quan + 1 unlocked */}
         <div className="space-y-4">
-          {ASPECTS.map((aspect) => {
-            const score = horoscope.scores[aspect.key as keyof typeof horoscope.scores] as number
-            const pct = (score / 10) * 100
-            const color = score >= 7 ? '#16a34a' : score >= 5 ? '#d97706' : '#dc2626'
-            return (
-              <div key={aspect.key}>
-                <div className="mb-1 flex items-center justify-between text-sm">
-                  <span className="font-medium text-gray-700">{aspect.icon} {aspect.label}</span>
-                  <span className="font-bold" style={{ color }}>{score}/10</span>
-                </div>
-                <div className="h-2 rounded-full bg-gray-100">
-                  <div
-                    className="h-2 rounded-full transition-all"
-                    style={{ width: `${pct}%`, backgroundColor: color }}
-                  />
-                </div>
-              </div>
-            )
-          })}
+          <ScoreBar
+            aspect={ASPECT_TONG_QUAN}
+            score={horoscope.scores[ASPECT_TONG_QUAN.key as keyof typeof horoscope.scores] as number}
+          />
+          <ScoreBar
+            aspect={unlockedAspect}
+            score={horoscope.scores[unlockedAspect.key as keyof typeof horoscope.scores] as number}
+          />
         </div>
 
         {/* Lucky info */}
@@ -144,6 +159,13 @@ export function HoroscopeView() {
           </div>
         </div>
       </div>
+
+      {/* Locked aspects */}
+      <ContentLock
+        items={lockedAspects.map((a) => `${a.icon} ${a.label}: Luận giải chi tiết cho tuổi ${selected.name} hôm nay`)}
+        context="horoscope_daily"
+        buttonText="Xem đầy đủ tử vi hôm nay"
+      />
     </div>
   )
 }
