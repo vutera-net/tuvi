@@ -128,7 +128,7 @@ export default function LienHePage() {
                 Trước khi gửi, hãy xem thử câu hỏi thường gặp — có thể bạn sẽ tìm được câu trả lời ngay.
               </p>
               <a
-                href="/pricing#faq"
+                href="https://anmenh.vutera.net/faq"
                 className="inline-block rounded-full border px-4 py-2 text-sm font-medium transition hover:bg-white"
                 style={{ borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}
               >
