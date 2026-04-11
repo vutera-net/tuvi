@@ -1,11 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import type { TuViChart, Palace, Star, DaiHan } from '@/types'
+import type { TuViChart, Palace, DaiHan } from '@/types'
 import { NGU_HANH_COLOR_HEX, NGU_HANH_VI } from '@/data/ngu-hanh'
-import { calculateTieuHan, getDaiHanDirection } from '@/lib/engines/tuvi-engine'
-import { interpretPalace, getStarInterpretation } from '@/lib/engines/tuvi-interpreter'
 import { TuViPdfExportButton } from './TuViPdfExportButton'
+import { ContentLock } from '@/components/funnel/ContentLock'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
@@ -34,18 +33,6 @@ const NOTABLE_MINOR = new Set([
   'Hỏa Tinh', 'Linh Tinh', 'Địa Không', 'Địa Kiếp',
 ])
 
-const BRIGHTNESS_LABEL: Record<string, string> = {
-  mieu: 'Miếu', vuong: 'Vượng', dacDia: 'Đắc Địa', binhHoa: 'Bình Hòa', hamDia: 'Hãm Địa',
-}
-
-const RATING_COLOR: Record<string, string> = {
-  excellent: 'text-red-600', good: 'text-amber-600', average: 'text-gray-500', bad: 'text-gray-400',
-}
-
-const RATING_LABEL: Record<string, string> = {
-  excellent: 'Rất tốt', good: 'Tốt', average: 'Trung bình', bad: 'Xấu',
-}
-
 const DAI_VAN_NOTES: Record<string, string> = {
   'Mệnh': 'Vận bản mệnh — định hình lại tính cách và hướng đi cuộc đời, cơ hội khởi đầu lớn.',
   'Huynh Đệ': 'Vận huynh đệ — mối quan hệ xã hội đóng vai trò quan trọng, dễ được quý nhân hỗ trợ.',
@@ -69,7 +56,6 @@ export function TuViChartDisplay({ chart }: Props) {
     ) ?? null,
   )
   const elColor = NGU_HANH_COLOR_HEX[chart.menh]
-  const forward = getDaiHanDirection(chart.gender, chart.cungMenhIndex)
 
   const daiHanByPalace = Object.fromEntries(chart.daiHan.map((dh) => [dh.palaceIndex, dh]))
 
@@ -230,9 +216,22 @@ export function TuViChartDisplay({ chart }: Props) {
         </div>
       </div>
 
-      {/* ── Palace Detail ── */}
+      {/* ── Palace Detail (locked) ── */}
       {selectedPalace && (
-        <PalaceDetail palace={selectedPalace} onClose={() => setSelectedPalace(null)} />
+        <ContentLock
+          items={[
+            `Giải nghĩa cung ${selectedPalace.name} (${selectedPalace.diaChi}): ${
+              selectedPalace.mainStars.length > 0
+                ? selectedPalace.mainStars.map((s) => s.name).join(', ')
+                : 'cung trống'
+            }`,
+            'Ý nghĩa từng chính tinh theo vị trí cụ thể trong lá số',
+            'Phân tích phụ tinh và tổ hợp sao ảnh hưởng lên cung',
+            'Đánh giá tổng quan và lời khuyên chi tiết',
+          ]}
+          context="tuvi_palace_detail"
+          buttonText="Xem giải nghĩa chi tiết"
+        />
       )}
 
       {/* ── Đại Vận section ── */}
@@ -317,11 +316,15 @@ export function TuViChartDisplay({ chart }: Props) {
                 </button>
 
                 {isSelected && (
-                  <TieuVanPanel
-                    daiHan={dh}
-                    forward={forward}
-                    menhCungChi={chart.cungMenhIndex}
-                    cucNumber={chart.cucNumber}
+                  <ContentLock
+                    items={[
+                      `Tiểu Vận từng năm trong Đại Vận ${dh.palaceName} (${dh.startAge}–${dh.endAge} tuổi)`,
+                      'Can Chi và cung tiểu vận chi tiết theo từng năm',
+                      'Phân tích vận khí và lời khuyên theo từng tuổi',
+                    ]}
+                    context="tuvi_tieu_van"
+                    buttonText="Xem Tiểu Vận chi tiết"
+                    className="ml-12 mt-1.5"
                   />
                 )}
               </div>
@@ -461,202 +464,3 @@ function PalaceCell({
   )
 }
 
-// ─── Palace Detail ────────────────────────────────────────────
-
-function PalaceDetail({ palace, onClose }: { palace: Palace; onClose: () => void }) {
-  const interp = interpretPalace(palace)
-
-  return (
-    <div className="rounded-2xl border-t-4 border-amber-400 bg-white p-6 shadow-sm">
-      {/* Header */}
-      <div className="mb-5 flex items-start justify-between gap-2">
-        <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-lg font-bold text-gray-800">Cung {palace.name}</h3>
-            <span className="text-gray-400">·</span>
-            <span className="text-base text-gray-600">{palace.diaChi}</span>
-            {palace.isLifePalace && (
-              <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-700">
-                Cung Mệnh
-              </span>
-            )}
-            {palace.isSoulPalace && (
-              <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-semibold text-purple-700">
-                Cung Thân
-              </span>
-            )}
-          </div>
-          <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">{interp.overview}</p>
-        </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <span className={`text-sm font-semibold ${RATING_COLOR[interp.rating]}`}>
-            {RATING_LABEL[interp.rating]}
-          </span>
-          <button
-            onClick={onClose}
-            className="rounded-full p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
-            aria-label="Đóng"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
-
-      {/* Main stars */}
-      {palace.mainStars.length === 0 ? (
-        <p className="text-sm italic text-gray-400">Cung trống — không có chính tinh</p>
-      ) : (
-        <div className="space-y-2">
-          {palace.mainStars.map((star) => {
-            const meaning = getStarInterpretation(star.name, palace.name)
-            return (
-              <div key={star.name} className="flex items-start gap-3 rounded-xl bg-gray-50 p-3">
-                <div className="shrink-0 flex flex-col items-center gap-1 w-16 text-center">
-                  <span
-                    className={`rounded-lg px-2 py-1 text-xs font-bold ${
-                      star.brightness === 'mieu'
-                        ? 'bg-red-100 text-red-700'
-                        : star.brightness === 'vuong'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : star.brightness === 'hamDia'
-                            ? 'bg-gray-200 text-gray-500'
-                            : 'bg-blue-50 text-blue-700'
-                    }`}
-                  >
-                    {star.name}
-                  </span>
-                  <span className="text-[10px] text-gray-400">
-                    {BRIGHTNESS_LABEL[star.brightness] ?? star.brightness}
-                  </span>
-                  {star.shortMeaning && (
-                    <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
-                      {star.shortMeaning}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm leading-relaxed text-gray-700">{meaning}</p>
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Minor stars */}
-      {palace.minorStars.length > 0 && (
-        <div className="mt-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
-            Phụ Tinh
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {palace.minorStars.slice(0, 12).map((star) => (
-              <span
-                key={star.name}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                  !star.isGood
-                    ? 'bg-red-50 text-red-600 ring-1 ring-red-200'
-                    : star.shortMeaning
-                      ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200'
-                      : 'bg-gray-100 text-gray-600'
-                }`}
-                title={star.shortMeaning || (star.isGood ? 'Cát tinh' : 'Hung tinh')}
-              >
-                {star.name}
-                {star.shortMeaning ? ` (${star.shortMeaning})` : ''}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Summary */}
-      {interp.summary && (
-        <div className="mt-5 flex items-start gap-3 rounded-xl bg-amber-50 p-4">
-          <span className="mt-0.5 shrink-0 text-amber-500">✦</span>
-          <p className="text-sm leading-relaxed text-amber-800">{interp.summary}</p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ─── Tiểu Vận Panel ───────────────────────────────────────────
-
-function TieuVanPanel({
-  daiHan,
-  forward,
-  menhCungChi,
-  cucNumber,
-}: {
-  daiHan: DaiHan
-  forward: boolean
-  menhCungChi: number
-  cucNumber: number
-}) {
-  const rows = calculateTieuHan(daiHan, forward, menhCungChi)
-  const currentRow = rows.find((r) => r.year === CURRENT_YEAR)
-
-  return (
-    <div className="ml-12 mt-1.5 rounded-xl border border-amber-200 bg-amber-50 p-4">
-      <h4 className="mb-3 text-sm font-semibold text-amber-900">
-        Tiểu Vận — {daiHan.startAge}–{daiHan.endAge} tuổi (Đại Vận cung {daiHan.palaceName})
-      </h4>
-
-      {/* Tiểu Vận hiện tại callout */}
-      {currentRow && (
-        <div className="mb-3 flex items-start gap-2.5 rounded-lg bg-amber-200/60 px-3 py-2.5">
-          <span className="mt-0.5 shrink-0 text-amber-600">✦</span>
-          <div className="text-xs leading-relaxed text-amber-900">
-            <span className="font-semibold">Tiểu Vận {CURRENT_YEAR}:</span> Cung{' '}
-            <span className="font-semibold">{currentRow.palaceName}</span> ({currentRow.diaChi}) ·{' '}
-            {currentRow.canChi} · {currentRow.age} tuổi
-            {DAI_VAN_NOTES[currentRow.palaceName] && (
-              <span className="block mt-0.5 text-amber-800/80">
-                {DAI_VAN_NOTES[currentRow.palaceName]}
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-amber-200 text-left text-xs text-amber-700">
-              <th className="pb-2 pr-3">Tuổi</th>
-              <th className="pb-2 pr-3">Năm</th>
-              <th className="pb-2 pr-3">Can Chi</th>
-              <th className="pb-2 pr-3">Cung</th>
-              <th className="pb-2">Địa Chi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((tv) => {
-              const isCurrent = tv.year === CURRENT_YEAR
-              return (
-                <tr
-                  key={tv.age}
-                  className={`border-b border-amber-100 last:border-0 ${
-                    isCurrent ? 'bg-amber-200/60 font-semibold' : ''
-                  }`}
-                >
-                  <td className="py-1.5 pr-3">
-                    {tv.age}
-                    {isCurrent && (
-                      <span className="ml-1.5 rounded-full bg-amber-600 px-1.5 py-0.5 text-[10px] text-white">
-                        nay
-                      </span>
-                    )}
-                  </td>
-                  <td className="py-1.5 pr-3 text-amber-800">{tv.year}</td>
-                  <td className="py-1.5 pr-3 text-amber-800">{tv.canChi}</td>
-                  <td className="py-1.5 pr-3 font-medium text-gray-800">{tv.palaceName}</td>
-                  <td className="py-1.5 text-gray-600">{tv.diaChi}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )
-}
