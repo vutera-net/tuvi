@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { HoroscopeView } from '@/components/common/HoroscopeView'
-import { ConditionalAdSlot } from '@/components/common/ConditionalAdSlot'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
+import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
 
 export const metadata: Metadata = {
   title: 'Tử Vi Hàng Ngày - 12 Con Giáp',
@@ -16,8 +17,9 @@ export default function TuViHangNgayPage() {
         <p className="mt-2 text-gray-600">Dự báo vận hàng ngày cho 12 con giáp</p>
       </div>
       <HoroscopeView />
-      <div className="mt-8 flex justify-center">
-        <ConditionalAdSlot size="leaderboard" />
+      <div className="mt-8 space-y-4">
+        <PersonalDoubtTrigger context="horoscope" variant="prominent" />
+        <AnMenhCTA context="horoscope" variant="banner" />
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { XemMenhForm } from '@/components/common/XemMenhForm'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
 
 export const metadata: Metadata = {
   title: 'Xem Mệnh Ngũ Hành',
@@ -17,6 +18,9 @@ export default function XemMenhPage() {
         </p>
       </div>
       <XemMenhForm />
+      <div className="mt-8">
+        <AnMenhCTA context="xemmenh" variant="banner" />
+      </div>
     </div>
   )
 }

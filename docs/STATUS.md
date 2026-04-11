@@ -1,104 +1,88 @@
-# Harmony Tử Vi - Project Status
+# Harmony Tử Vi — Project Status
 
-**Cập nhật:** 8 tháng 4, 2026  
-**Trạng thái:** ✅ Sẵn sàng deploy production (~97% hoàn thành)
+**Cập nhật:** 11 tháng 4, 2026  
+**Phiên bản:** 2.0 — Funnel Pivot  
+**Trạng thái:** 🔄 Đang chuyển đổi sang free traffic engine + funnel sang AnMenh
 
----
-
-## Build hiện tại
-
-| Hạng mục | Trạng thái | Chi tiết |
-|----------|------------|---------|
-| Dev server | ✅ | Khởi động 198ms |
-| Production build | ✅ | Compile 1.9s, 0 lỗi |
-| TypeScript | ✅ | 0 errors, 100% type-safe |
-| Database | ✅ | Connected, 3 migrations applied |
-| API routes | ✅ | 31 endpoints hoạt động |
-| Unit tests | ✅ | 85+ tests passing |
-| Cảnh báo | ⚠️ | 1 deprecation warning (middleware → proxy, non-blocking) |
+> Xem chiến lược: [PRD.md](PRD.md) | Kế hoạch chi tiết: [PLAN.md](PLAN.md)
 
 ---
 
-## Tiến độ theo phase
+## Tổng quan pivot
 
-| Phase | Tên | % |
-|-------|-----|---|
-| 1 | Project Setup | 100% ✅ |
-| 2 | Lunar Calendar & Ngũ Hành | 100% ✅ |
-| 3 | Tử Vi Đẩu Số Engine | 100% ✅ |
-| 4 | Xem Ngày Tốt | 100% ✅ |
-| 5 | Phong Thủy Engine | 100% ✅ |
-| 6 | UI/UX | 100% ✅ |
-| 7 | API Routes | 100% ✅ |
-| 8 | Tử Vi Hàng Ngày | 100% ✅ |
-| 9 | Monetization | 90% ✅ |
-| 10 | SEO | 45% ⏳ |
-| 11 | Testing | 50% ⏳ |
-| 12 | Deployment | 100% ✅ |
+| Trước (v1.0) | Sau (v2.0) |
+|-------------|-----------|
+| Subscription product (Free/Premium/VIP) | Free traffic engine |
+| Monetize trực tiếp qua Stripe | Funnel sang AnMenh |
+| Feature gating nội bộ | Content lock → drive AnMenh |
+| CTA → /dang-ky TuVi | CTA → anmenh.vutera.net |
 
 ---
 
-## Đã hoàn thành
+## Tiến độ v2.0
 
-### Engines (business logic)
-- **Lunar Engine:** Chuyển đổi âm-dương lịch (1900–2100), Can Chi, 24 tiết khí, Hoàng Đạo/Hắc Đạo
-- **Ngũ Hành Engine:** Nạp Âm, tương sinh/khắc, màu sắc/hướng/số may mắn, kiểm tra hợp mệnh 2 người
-- **Tử Vi Engine:** 14 chính tinh, 12 phu tinh, 504+ giải nghĩa cung, độ sáng sao, tính Đại Hạn
-- **Date Selection Engine:** 12 Trực, 28 Sao, Hoàng Đạo, Tam Nương, Nguyệt Kỵ, Sát Chủ, 15 loại sự kiện
-- **Bát Trạch Engine:** 8 Cung Mệnh, Đông/Tây Tứ Mệnh, 8 hướng tốt/xấu
-- **Cửu Cung Engine:** Phi Tinh năm/tháng, lưới Lạc Thư
-- **Horoscope Generator:** Dự báo 5 lĩnh vực (tổng quan, tình cảm, sự nghiệp, tài chính, sức khỏe)
-
-### Pages (12 trang chính)
-`/` · `/lich` · `/xem-menh` · `/tu-vi` · `/xem-ngay` · `/phong-thuy` · `/tu-vi-hang-ngay` · `/pricing` · `/blog` · `/dang-ky` · `/dang-nhap` · error/404 pages
-
-### API (31 endpoints)
-- Calendar: `GET /api/calendar`, `/api/calendar/month`, `/api/calendar/convert`
-- Tu Vi: `POST /api/tuvi/chart`, `GET /api/tuvi/daily`
-- Ngày Tốt: `POST /api/ngaytot/search`, `GET /api/ngaytot/check`
-- Phong Thủy: `POST /api/phongthuy/battrach`, `POST /api/phongthuy/cuucung`
-- User: `GET/PUT /api/user/profile`, `GET/DELETE /api/user/charts`
-- Payments: `POST /api/checkout`, `GET/POST/PUT/DELETE /api/subscription`
-- Webhooks: `POST /api/webhooks/stripe`
-- Cron: `POST /api/cron/daily-horoscope`
-
-### Infrastructure
-- **Auth:** NextAuth.js v5 (email/password + Google OAuth ready)
-- **Payment:** Stripe integration (checkout, webhook, subscription management)
-- **Feature Gating:** 25+ gates theo tier Free/Premium/VIP
-- **Caching:** Upstash Redis (calendar 24h, Tu Vi chart 30 ngày)
-- **Database:** Prisma ORM, 5 models, 3 migrations applied
-- **SEO:** sitemap.xml, robots.txt, Open Graph, Twitter Cards, JSON-LD schemas
+| Phase | Nội dung | % |
+|-------|----------|---|
+| A | CTA Pivot + Ecosystem Nav | ⏳ 0% |
+| B | Funnel Components | ⏳ 0% |
+| C | Content Restructure | ⏳ 0% |
+| D | Analytics | ⏳ 0% |
+| E | Cleanup (Stripe/Subscription) | ⏳ 0% |
 
 ---
 
-## Còn thiếu
+## Nền tảng kỹ thuật (v1.0 — giữ lại)
 
-### Phase 6 - UI (hoàn thành ✅)
-- ✅ Tiểu Hạn (yearly) visualization
-- ✅ Chart comparison view (2 người) — trang /so-sanh-la-so
-- ✅ Trang /lien-he (contact page)
-- ✅ Trang /chinh-sach (privacy & terms)
-- ✅ Fix footer link /gia-ca → /pricing
+### Engines (business logic) ✅
 
-### Phase 9 - Monetization (10%)
-- ✅ Trang quản lý subscription `/tai-khoan` (xem gói, upgrade, cancel)
-- ⚠️ **BUG:** Stripe webhook không cập nhật DB (`src/lib/stripe.ts` lines 114–159)
-- PDF export lá số Tử Vi — `@react-pdf/renderer` (VIP)
-- AdSense placeholder component `<AdSlot />` (Free tier)
+- **Lunar Engine** — Chuyển đổi âm-dương lịch (1900–2100), Can Chi, 24 tiết khí, Hoàng Đạo
+- **Ngũ Hành Engine** — Nạp Âm, tương sinh/khắc, màu sắc/hướng may mắn
+- **Tử Vi Engine** — 14 chính tinh, 12 cung, phụ tinh, Đại Hạn, Tiểu Hạn (via iztro)
+- **Date Selection Engine** — 12 Trực, 28 Sao, Hoàng Đạo, ngày kỵ, 15 loại sự kiện
+- **Bát Trạch Engine** — 8 Cung Mệnh, 8 hướng tốt/xấu
+- **Cửu Cung Engine** — Phi Tinh năm/tháng, lưới Lạc Thư
+- **Horoscope Generator** — Dự báo 5 lĩnh vực, điểm 1-10
 
-### Phase 10 - SEO (55%)
-- Blog system (MDX integration) — *blog pages đã build, chưa tích hợp MDX hoàn toàn*
-- Dynamic SEO pages: `/lich/[year]/[month]/[day]`, `/tu-vi/[con-giap]/nam-[year]`
-- hreflang tags (vi-VN)
+### Pages ✅ (12 trang, giữ lại content, điều chỉnh funnel)
 
-### Phase 11 - Testing (50%)
-- Integration tests (API routes)
-- E2E tests (Playwright)
-- Load testing
+`/` · `/lich` · `/lich/[year]/[month]/[day]`  
+`/xem-menh` · `/tu-vi` · `/tu-vi/[congiap]/nam-[year]`  
+`/xem-ngay` · `/phong-thuy` · `/phong-thuy/menh-[nguhanh]`  
+`/tu-vi-hang-ngay` · `/blog` · `/blog/[slug]`
 
-### Phase 12 - Deployment (0%)
-- Chưa thực thi — xem [DEPLOYMENT.md](DEPLOYMENT.md) để bắt đầu
+### API ✅ (31 endpoints — giữ lại)
+
+- Calendar: `/api/calendar`, `/api/calendar/month`, `/api/calendar/convert`
+- Tu Vi: `/api/tuvi/chart`, `/api/tuvi/daily`, `/api/tuvi/tieu-han`
+- Ngày Tốt: `/api/ngaytot/search`, `/api/ngaytot/check`
+- Phong Thủy: `/api/phongthuy/battrach`, `/api/phongthuy/cuucung`
+- Cron: `/api/cron/daily-horoscope`
+
+### SEO ✅
+
+- sitemap.xml, robots.txt, Open Graph, Twitter Cards
+- JSON-LD schemas (FAQPage, Article, WebApplication, BreadcrumbList)
+- 48 Tu Vi SEO pages (12 con giáp × 4 năm)
+- 5 Phong Thủy SEO pages (theo mệnh)
+- ISR daily calendar pages
+
+### Tests ✅ (182+ tests)
+
+`lunar-engine` · `ngu-hanh-engine` · `tuvi-engine` · `date-selection-engine`  
+`bat-trach-engine` · `cuu-cung-engine` · `pricing` (cần update)
+
+---
+
+## Sẽ bị xóa (Phase E)
+
+| Thành phần | Lý do |
+|-----------|-------|
+| Stripe integration | Không còn subscription |
+| `/pricing` page | Không còn tiers |
+| `/tai-khoan` (subscription) | Redirect AnMenh |
+| `feature-gating.ts` | Thay bằng ContentLock component |
+| `ConditionalAdSlot` | Không còn free/premium split |
+| `/api/checkout`, `/api/subscription`, `/api/webhooks/stripe` | Không còn dùng |
 
 ---
 
@@ -108,32 +92,10 @@
 |-------|-----------|
 | Frontend | Next.js 16.2.1, React 19.2.4, TypeScript 5 |
 | Styling | TailwindCSS 4, shadcn/ui, Framer Motion |
-| State | Zustand 5 |
 | Backend | Next.js API Routes, Prisma 7.5.0 |
 | Database | PostgreSQL (Neon) |
 | Cache | Upstash Redis |
-| Auth | NextAuth.js v5 |
-| Payment | Stripe SDK |
-| Astrology libs | `iztro` (Tử Vi), `amlich` (âm lịch), `lunar-calendar-ts-vi` |
+| Auth | NextAuth.js v5 (giữ lại cho lưu lá số) |
+| Astrology | `iztro` (Tử Vi), `amlich` (âm lịch), `lunar-calendar-ts-vi` |
+| Analytics | GA4 (funnel tracking) |
 | Hosting | Vercel (target) |
-
----
-
-## Database (5 models)
-
-```
-User           — tài khoản, subscription, birth info
-TuViChart      — lá số đã tạo (userId FK, chartData JSON)
-SearchHistory  — lịch sử tra cứu (calendar/tuvi/ngaytot/phongthuy)
-DailyHoroscope — dự báo hàng ngày theo zodiac (unique: date+zodiac)
-DailyCalendar  — thông tin ngày âm lịch (unique: date)
-```
-
----
-
-## Test Users
-
-```
-Email: demo@tuvi.local  / Password: password123  (Subscription: Premium)
-Email: test@tuvi.local  / Password: password123  (Subscription: Free)
-```

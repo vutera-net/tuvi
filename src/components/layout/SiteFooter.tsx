@@ -1,9 +1,47 @@
 import Link from 'next/link'
 
+const ANMENH_URL = 'https://anmenh.vutera.net'
+const HARMONY_URL = 'https://www.vutera.net/harmony'
+
 export function SiteFooter() {
   return (
     <footer className="border-t border-gray-200 bg-gray-50 py-12">
       <div className="mx-auto max-w-7xl px-4">
+        {/* Ecosystem section */}
+        <div className="mb-10 rounded-2xl border border-purple-100 bg-gradient-to-r from-purple-50 to-red-50 p-6">
+          <p className="mb-4 text-center text-sm font-semibold text-gray-700">
+            Hệ sinh thái Harmony — Nền tảng phong thủy & tử vi toàn diện cho người Việt
+          </p>
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href={HARMONY_URL}
+              className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:border-gray-300 hover:shadow"
+            >
+              <span>🌐</span>
+              <span>Harmony</span>
+              <span className="text-xs text-gray-400">vutera.net/harmony</span>
+            </a>
+            <span className="hidden text-gray-300 sm:block">·</span>
+            <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-medium shadow-sm"
+              style={{ color: 'var(--color-primary)' }}>
+              <span>⭐</span>
+              <span>TuVi</span>
+              <span className="text-xs text-red-300">tuvi.vutera.net</span>
+              <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-xs text-red-600">Bạn đang ở đây</span>
+            </div>
+            <span className="hidden text-gray-300 sm:block">·</span>
+            <a
+              href={ANMENH_URL}
+              className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #7C3AED, #C41E3A)' }}
+            >
+              <span>🔮</span>
+              <span>AnMenh</span>
+              <span className="text-xs opacity-75">Cá nhân hóa sâu hơn →</span>
+            </a>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
@@ -46,7 +84,11 @@ export function SiteFooter() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-gray-900">Hỗ trợ</h3>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/pricing" className="hover:text-red-700">Bảng giá</Link></li>
+              <li>
+                <a href={ANMENH_URL} className="hover:text-purple-700">
+                  🔮 AnMenh — Cá nhân hóa
+                </a>
+              </li>
               <li><Link href="/lien-he" className="hover:text-red-700">Liên hệ</Link></li>
               <li><Link href="/chinh-sach" className="hover:text-red-700">Chính sách</Link></li>
             </ul>

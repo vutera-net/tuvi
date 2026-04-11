@@ -1,216 +1,340 @@
-# Kế hoạch triển khai - Harmony Tử Vi
+# Kế hoạch triển khai — TuVi v2.0 (Funnel Pivot)
 
-**Cập nhật:** 8 tháng 4, 2026 | **Tổng tiến độ:** ~97%
+**Cập nhật:** 11 tháng 4, 2026  
+**Tổng tiến độ:** ~15% (pivot mới)  
+**Mục tiêu:** Chuyển TuVi từ subscription product → free traffic engine + funnel sang AnMenh
+
+> Xem chiến lược đầy đủ tại [PRD.md](PRD.md)
+
+---
 
 ## Tóm tắt phase
 
-| Phase | Nội dung | Tiến độ |
-|-------|----------|---------|
-| 1 | Project Setup | ✅ 100% |
-| 2 | Âm lịch & Ngũ Hành | ✅ 100% |
-| 3 | Tử Vi Engine | ✅ 100% ✔ |
-| 4 | Xem Ngày Tốt | ✅ 100% |
-| 5 | Phong Thủy | ✅ 100% |
-| 6 | UI/UX | ✅ 95% |
-| 7 | API Routes | ✅ 100% |
-| 8 | Tử Vi Hàng Ngày | ✅ 100% |
-| 9 | Monetization | ✅ 100% |
-| 10 | SEO | ✅ 100% |
-| 11 | Testing | ⏳ 75% |
-| 12 | Deployment | ⏳ 0% |
+| Phase | Nội dung | Ưu tiên | Tiến độ |
+|-------|----------|---------|---------|
+| A | Chuyển đổi CTA + Ecosystem Nav | 🔴 P0 | ✅ 100% |
+| B | Funnel Mechanics (Content Lock + CTA Components) | 🔴 P0 | ✅ 90% |
+| C | Content Restructure (Partial insight, template) | 🟠 P1 | ⏳ 0% |
+| D | Analytics & Optimization | 🟠 P1 | ⏳ 0% |
+| E | Cleanup (xóa subscription/stripe code) | 🟡 P2 | ⏳ 0% |
 
 ---
 
-## Phase 1: Project Setup ✅
+## Phase A — Chuyển đổi CTA + Ecosystem Nav 🔴
 
-- [x] Next.js 16 + TypeScript + App Router
-- [x] TailwindCSS 4 + shadcn/ui
-- [x] ESLint + Prettier
-- [x] Path aliases (`@/` → `src/`)
-- [x] `.env.local` template
-- [x] PostgreSQL + Prisma ORM (schema, migrations, seed)
-- [x] NextAuth.js v5 (email/password + Google OAuth ready)
-- [x] Upstash Redis client + caching helpers
-- [x] Zustand stores
-- [x] Sentry error tracking
+**Mục tiêu:** Thay đổi hướng đi của tất cả CTAs, thêm ecosystem navigation.  
+**Impact:** Cao / Effort: Thấp — làm ngay.
 
----
+### A1 — Update Header (SiteHeader.tsx)
 
-## Phase 2: Âm lịch & Ngũ Hành ✅
+- [ ] Thêm nút "→ AnMenh" nổi bật ở header (thay thế hoặc cạnh "Dùng miễn phí")
+- [ ] Nút point đến `https://anmenh.vutera.net/`
+- [ ] Style: nổi bật, khác màu so với nav links
+- [ ] Mobile: hiện trong hamburger menu
 
-- [x] `src/data/can-chi.ts` — Thiên Can, Địa Chi
-- [x] `src/data/nap-am.ts` — Lục Thập Hoa Giáp (60 entries)
-- [x] `src/data/ngu-hanh.ts` — Quan hệ Ngũ Hành
-- [x] `src/data/tiet-khi.ts` — 24 tiết khí
-- [x] `src/data/festivals.ts` — Ngày lễ âm/dương lịch VN
-- [x] `src/data/ngay-ky.ts` — Tam Nương, Nguyệt Kỵ, Sát Chủ
-- [x] Lunar Engine: chuyển đổi âm-dương, Can Chi ngày/tháng/năm/giờ, Hoàng Đạo
-- [x] Ngũ Hành Engine: mệnh Nạp Âm, tương sinh/khắc, màu/hướng/số, hợp mệnh 2 người
+### A2 — Update Footer (SiteFooter.tsx)
 
----
+- [ ] Thêm section "Hệ sinh thái Harmony":
+  - 🌐 Harmony → `https://www.vutera.net/harmony`
+  - ⭐ TuVi → (trang hiện tại)
+  - 🔮 AnMenh → `https://anmenh.vutera.net/`
+- [ ] Giữ lại các links hiện tại, chỉ bổ sung
 
-## Phase 3: Tử Vi Đẩu Số Engine ✅
+### A3 — Redirect Auth Pages
 
-- [x] `src/data/tuvi/chinh-tinh.ts` — 14 chính tinh
-- [x] `src/data/tuvi/phu-tinh.ts` — 12 phụ tinh
-- [x] `src/data/tuvi/cung.ts` — 12 cung
-- [x] `src/data/tuvi/cuc.ts` — 5 Cục (Thủy/Mộc/Kim/Thổ/Hỏa)
-- [x] `src/data/tuvi/star-meanings.ts` — 504+ giải nghĩa sao × cung
-- [x] Tính Cục từ Mệnh + Nạp Âm
-- [x] An Mệnh cung, Thân cung, Tử Vi tinh, 14 chính tinh
-- [x] Đánh giá độ sáng sao (Miếu/Vượng/Đắc Địa/Bình Hòa/Hãm Địa)
-- [x] Tính Đại Hạn (10-year periods)
-- [x] Giải nghĩa cung Mệnh, tổ hợp sao
-- [x] Tích hợp thư viện `iztro` — `iztro-adapter.ts` xử lý toàn bộ: 14 chính tinh, Mệnh/Thân cung, Cục, Đại Hạn, phụ tinh (vi-VN); chỉ giữ Nạp Âm từ custom data
-- [x] An phụ tinh đầy đủ (Lộc Tồn, Kình Dương, Đà La, Văn Xương, Văn Khúc, Tả Phù, Hữu Bật, Thiên Khôi, Thiên Việt, Hỏa Tinh, Linh Tinh, Địa Không, Địa Kiếp, Thiên Mã, Hồng Loan, Thiên Hỷ, v.v.)
-- [x] Tính Tiểu Hạn (yearly) — `calculateTieuHan` + endpoint `POST /api/tuvi/tieu-han`
+- [ ] `/dang-ky` → redirect `https://anmenh.vutera.net/dang-ky`
+- [ ] `/dang-nhap` → redirect `https://anmenh.vutera.net/dang-nhap`
 
----
+### A4 — Ẩn trang Pricing & Tài khoản
 
-## Phase 4: Xem Ngày Tốt ✅
+- [ ] `/pricing` → redirect về trang chủ hoặc AnMenh
+- [ ] `/tai-khoan` → redirect `https://anmenh.vutera.net/tai-khoan`
+- [ ] Xóa link pricing khỏi nav và footer
 
-- [x] `src/data/truc.ts` — 12 Trực (Kiến, Trừ, Mãn...)
-- [x] `src/data/sao28.ts` — 28 Sao phân loại tốt/xấu
-- [x] `src/data/hoang-dao.ts` — Hoàng Đạo/Hắc Đạo theo ngày
-- [x] `src/data/events.ts` — 15 loại sự kiện với yêu cầu Trực
-- [x] Tính Trực, 28 Sao, Hoàng Đạo cho bất kỳ ngày nào
-- [x] Check Tam Nương, Nguyệt Kỵ, Sát Chủ, Thời Địa
-- [x] Tính điểm ngày theo loại sự kiện (cưới hỏi, khai trương, động thổ, nhập trạch, xuất hành)
-- [x] Search ngày tốt theo khoảng thời gian + filter tuổi
+### A5 — Rewrite CTA text toàn bộ
+
+Tìm và thay thế trong tất cả components:
+
+| Cũ | Mới |
+|----|-----|
+| "Dùng miễn phí" | "→ AnMenh" |
+| "Nâng cấp Premium" | "Xem bản cá nhân hóa" |
+| "Đăng ký ngay" | "Tạo hồ sơ tại AnMenh" |
+| "Xem thêm" (CTA) | "Xem kết quả của riêng bạn" |
+| Link /dang-ky | https://anmenh.vutera.net/ |
+
+**Files cần check:**
+- `src/components/layout/SiteHeader.tsx`
+- `src/components/layout/SiteFooter.tsx`
+- `src/components/layout/AuthButton.tsx`
+- `src/app/page.tsx` (hero section)
+- `src/app/tu-vi/page.tsx`
+- `src/app/xem-ngay/page.tsx`
+- `src/app/phong-thuy/page.tsx`
+- `src/app/tu-vi-hang-ngay/page.tsx`
+- `src/app/xem-menh/page.tsx`
 
 ---
 
-## Phase 5: Phong Thủy Engine ✅
+## Phase B — Funnel Mechanics 🔴
 
-- [x] `src/data/phongthuy/bat-trach.ts` — 8 Cung Mệnh + hướng mappings
-- [x] `src/data/phongthuy/cuu-cung.ts` — Lạc Thư + dữ liệu phi tinh
-- [x] `src/data/phongthuy/noi-that.ts` — 6 loại phòng, 40+ quy tắc bố trí
-- [x] Bát Trạch: Cung Mệnh (công thức Nam/Nữ), Đông/Tây Tứ Mệnh, 8 hướng
-- [x] Cửu Cung: Phi Tinh năm/tháng, lưới Lạc Thư 3×3, phân tích & gợi ý
-- [ ] Tính Phi Tinh theo ngày
-- [ ] Gợi ý bố trí phòng cụ thể
+**Mục tiêu:** Build các components tạo ra "cảm giác thiếu" và drive conversion.
 
----
+### B1 — AnMenhCTA Component
 
-## Phase 6: UI/UX ✅ (95%)
+File: `src/components/funnel/AnMenhCTA.tsx`
 
-- [x] Layout: Header, Footer, navigation responsive
-- [x] 12 trang chính với design mobile-first
-- [x] Loading skeletons, error boundary, 404/500 pages
-- [x] Dark/Light theme
-- [x] **Trang Chủ:** Hero, công cụ nhanh, widget ngày hôm nay, 12 con giáp preview
-- [x] **Lịch Vạn Niên:** Grid tháng, chi tiết ngày, đánh dấu ngày lễ
-- [x] **Xem Mệnh:** Kết quả Ngũ Hành, màu sắc, hướng tốt
-- [x] **Lá Số Tử Vi:** Form input, chart visualization, chi tiết cung, timeline Đại Hạn
-- [x] **Xem Ngày Tốt:** Date range picker, filter sự kiện/tuổi, kết quả color-coded
-- [x] **Phong Thủy:** Kết quả Bát Trạch, lưới Cửu Cung 3×3
-- [x] **Tử Vi Hàng Ngày:** 12 tab con giáp, 5 lĩnh vực + điểm số
+Variants:
+```typescript
+type CTAVariant = 
+  | 'banner'    // Banner ngang, cuối trang kết quả
+  | 'inline'    // Inline trong nội dung
+  | 'sticky'    // Nút nổi khi scroll
+  | 'card'      // Card với feature list
+```
 
-**Còn thiếu:**
-- [ ] Tiểu Hạn visualization
-- [ ] Chart comparison (2 người)
+- [ ] Build component với 4 variants
+- [ ] Props: `variant`, `context` (tuvi/phongthuy/ngaytot/horoscope), `className`
+- [ ] Text theo context (mỗi tính năng có message phù hợp)
+- [ ] Track click event (GA4)
 
----
+**Nội dung CTA theo context:**
 
-## Phase 7: API Routes ✅
+```
+Tử Vi:    "Lá số này dựa trên ngày sinh. Thêm giờ sinh để xem chính xác hơn → AnMenh"
+Phong Thủy: "Xem hướng bố trí cụ thể theo mệnh của bạn → AnMenh"
+Xem Ngày: "Lọc ngày tốt theo tuổi của bạn → AnMenh"  
+Hàng Ngày: "Xem đầy đủ 5 lĩnh vực + điểm số của riêng bạn → AnMenh"
+```
 
-31 endpoints hoạt động. Xem danh sách đầy đủ ở [STATUS.md](STATUS.md).
+### B2 — ContentLock Component
 
-**Còn thiếu:**
-- [ ] `POST /api/tuvi/compatibility` (hợp cách 2 lá số)
-- [ ] `GET /api/ngaytot/month` (overview cả tháng)
-- [ ] `GET /api/user/history` (lịch sử tra cứu)
+File: `src/components/funnel/ContentLock.tsx`
 
----
+- [ ] Build component hiển thị locked section
+- [ ] Layout:
+  ```
+  [Phần miễn phí — đã xem ở trên]
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔒 Phần dành riêng cho bạn:
+  • [item 1 — mờ/blur]
+  • [item 2 — mờ/blur]
+  • [item 3 — mờ/blur]
+  
+  → [Tạo hồ sơ tại AnMenh — miễn phí]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ```
+- [ ] Props: `items: string[]` (danh sách nội dung bị lock), `context`
+- [ ] Animation: items bị blur gradient
 
-## Phase 8: Tử Vi Hàng Ngày ✅
+### B3 — PersonalDoubtTrigger Component
 
-- [x] Horoscope Generator kết hợp Cửu Cung + 28 Sao + Trực + Can Chi
-- [x] Điểm 1-10 cho 5 lĩnh vực, màu/hướng/giờ may mắn
-- [x] Cron endpoint tạo horoscope cho 12 con giáp mỗi ngày
-- [x] Lưu vào `DailyHoroscope` table
+File: `src/components/funnel/PersonalDoubtTrigger.tsx`
 
-**Còn thiếu:**
-- [ ] Push notifications (VIP — Web Push API)
-- [ ] Invalidate ISR cache sau khi cron chạy
+- [ ] Build inline component
+- [ ] Style: subtle callout box (không quá intrusive)
+- [ ] Variants:
+  ```
+  A: "Kết quả này chỉ mang tính tổng quan theo năm sinh.
+      Để chính xác hơn, cần thêm giờ sinh của bạn."
+  
+  B: "Kết quả có thể khác đáng kể tùy theo giờ sinh.
+      Xem phiên bản cá nhân hóa tại AnMenh."
+  ```
 
----
+### B4 — Sticky CTA
 
-## Phase 9: Monetization ✅ (100%)
+File: `src/components/funnel/StickyCTA.tsx`
 
-**Đã xong:**
-- [x] Pricing: Free / Premium (99k/tháng, 799k/năm) / VIP (199k/tháng, 1,499k/năm)
-- [x] Trang `/pricing` với feature comparison table
-- [x] Stripe checkout + subscription endpoints
-- [x] Stripe webhook handler route (signature verification, event routing)
-- [x] Feature gating: 25+ gates theo tier, middleware bảo vệ API
-- [x] Giới hạn Free: 3 lá số Tử Vi/tháng
-- [x] Trang `/tai-khoan` — view gói hiện tại, upgrade (monthly/yearly toggle), cancel với confirmation modal
+- [ ] Nút nổi ở góc phải/dưới màn hình
+- [ ] Xuất hiện sau khi scroll qua 40% trang
+- [ ] Ẩn khi user ở gần footer
+- [ ] Text: "Xem bản cá nhân →"
+- [ ] Dismiss button (lưu vào localStorage, không hiện lại)
 
-**Đã xong (vừa hoàn thành):**
-- [x] **Fix webhook:** `handleSubscriptionChange` + `handleSubscriptionCancellation` + `handlePaymentFailed` trong `src/lib/stripe.ts` — cập nhật DB đúng
-- [x] PDF export lá số Tử Vi (VIP) — `@react-pdf/renderer`, API `POST /api/tuvi/export-pdf`, nút trong header lá số
-- [x] AdSense placeholder — `<AdSlot />` + `<ConditionalAdSlot />` (server, gate free-only), đã chèn vào `/`, `/blog`, `/tu-vi-hang-ngay`
+### B5 — Gắn components vào các trang kết quả
 
----
-
-## Phase 10: SEO ✅ (100%)
-
-**Đã xong:**
-- [x] `sitemap.xml` tự động generate
-- [x] `robots.txt`
-- [x] Open Graph + Twitter Card meta tags
-- [x] JSON-LD schema generators (FAQPage, Article, WebApplication, BreadcrumbList)
-- [x] `metadataBase` + hreflang (vi, vi-VN, x-default) trong root layout
-- [x] Canonical URLs — `alternates.canonical` trong blog + dynamic pages
-- [x] `/phong-thuy/menh-[nguhanh]` — 5 trang tĩnh (Kim/Mộc/Thủy/Hỏa/Thổ) + FAQ JSON-LD
-- [x] `/lich/[year]/[month]/[day]` — ISR page với Can Chi, Hoàng Đạo, Trực, 28 Sao
-- [x] `/tu-vi/[congiap]/nam-[year]` — 48 trang SSG (12 con giáp × 4 năm) + dự báo 5 lĩnh vực
-- [x] Blog `/blog/[slug]` — Article JSON-LD + BreadcrumbList schema + canonical
-- [x] `<Breadcrumb />` component (JSON-LD inline) dùng trong các dynamic pages
-- [x] Sitemap cập nhật: +48 tu-vi pages, +5 menh pages, +30 lich pages
+- [ ] `src/app/tu-vi/page.tsx` — Thêm ContentLock + PersonalDoubtTrigger + AnMenhCTA
+- [ ] `src/app/tu-vi-hang-ngay/page.tsx` — Thêm ContentLock + AnMenhCTA
+- [ ] `src/app/xem-ngay/page.tsx` — Thêm ContentLock + AnMenhCTA
+- [ ] `src/app/phong-thuy/page.tsx` — Thêm ContentLock + AnMenhCTA
+- [ ] `src/app/xem-menh/page.tsx` — Thêm AnMenhCTA (end-of-page)
+- [ ] Layout root — Thêm StickyCTA (hiện trên các result pages)
 
 ---
 
-## Phase 11: Testing ⏳ (50%)
+## Phase C — Content Restructure 🟠
 
-**Đã xong:**
-- [x] Jest setup (jest.config.ts, jest.setup.ts)
-- [x] `lunar-engine.test.ts` — 20+ tests
-- [x] `ngu-hanh-engine.test.ts` — 15+ tests  
-- [x] `tuvi-engine.test.ts` — 40+ tests
-- [x] `pricing.test.ts` — 45+ tests
-- [x] `date-selection-engine.test.ts` — Tam Nương, Nguyệt Kỵ, Sát Chủ (35+ tests)
-- [x] `bat-trach-engine.test.ts` — 8 cung mệnh, hướng tốt/xấu (30+ tests)
-- [x] `cuu-cung-engine.test.ts` — flying star grid, year/month center (32+ tests)
-- **Tổng: 182+ tests**
+**Mục tiêu:** Giảm nội dung hiển thị, viết lại theo tone "partial insight".
 
-**Còn thiếu:**
-- [ ] Integration tests (API routes)
-- [ ] E2E tests (Playwright)
-- [ ] Load testing
+### C1 — Giảm nội dung Tử Vi Hàng Ngày
+
+File: `src/components/common/HoroscopeView.tsx`
+
+- [ ] Hiện tại: hiện 5 lĩnh vực + điểm số đầy đủ
+- [ ] Mới: hiện 2 lĩnh vực (Tổng Quan + 1 random), lock 3 lĩnh vực còn lại
+- [ ] Lock section gồm tên lĩnh vực + điểm số bị ẩn
+
+### C2 — Giảm nội dung Phong Thủy
+
+File: `src/components/phongthuy/PhongThuyForm.tsx`
+
+- [ ] Hiện tại: hiện đầy đủ Bát Trạch + Cửu Cung + gợi ý nội thất
+- [ ] Mới: hiện Bát Trạch (4 hướng tốt, 4 hướng xấu), lock Cửu Cung + bố trí chi tiết
+
+### C3 — Giảm nội dung Xem Ngày Tốt
+
+- [ ] Hiện tại: hiện full danh sách ngày tốt + điểm số
+- [ ] Mới: hiện top 3 ngày tốt nhất, lock filter theo tuổi + giải nghĩa chi tiết
+
+### C4 — Giảm nội dung Tử Vi Đẩu Số
+
+File: `src/components/tuvi/TuViChartDisplay.tsx`
+
+- [ ] Hiện tại: hiện đầy đủ lá số + giải nghĩa từng cung + Đại Hạn
+- [ ] Mới: hiện lá số + tên sao (50%), lock giải nghĩa sâu và Đại Hạn chi tiết
+
+### C5 — Chuẩn hóa template SEO pages
+
+Pages: `/tu-vi/[congiap]/nam-[year]`, `/phong-thuy/menh-[nguhanh]`
+
+- [ ] Thêm ContentLock vào tất cả SEO pages
+- [ ] Thêm PersonalDoubtTrigger vào giữa bài
+- [ ] Thêm AnMenhCTA (banner variant) cuối bài
+- [ ] Đảm bảo có related articles section
 
 ---
 
-## Phase 12: Deployment ⏳
+## Phase D — Analytics & Optimization 🟠
 
-Chưa thực thi. Xem [DEPLOYMENT.md](DEPLOYMENT.md) để thực hiện.
+### D1 — GA4 Funnel Events
 
-**Cần làm:**
-- [ ] Tạo Vercel project, kết nối GitHub repo
-- [ ] Provision Neon PostgreSQL (production)
-- [ ] Setup Upstash Redis (production)
-- [ ] Cấu hình environment variables trên Vercel
-- [ ] Tạo Stripe products & prices (production keys)
-- [ ] Custom domain + SSL
-- [ ] Chạy Prisma migrations trên production DB
-- [ ] Kiểm tra toàn bộ flow trên production
+File: `src/lib/analytics.ts`
+
+- [ ] Helper functions:
+  ```typescript
+  trackContentView(feature: string, page: string)
+  trackCTAClick(variant: string, position: string, page: string)
+  trackContentLockView(feature: string)
+  trackAnMenhClick(source: string)
+  ```
+- [ ] Gắn vào: AnMenhCTA, ContentLock, StickyCTA components
+
+### D2 — A/B Test CTA Text
+
+- [ ] Implement đơn giản (random seed theo userId hoặc sessionStorage)
+- [ ] 3 variants: A / B / C (xem PRD.md)
+- [ ] Track variant trong GA4 event
+
+### D3 — EcosystemBanner Component
+
+File: `src/components/funnel/EcosystemBanner.tsx`
+
+- [ ] Banner nhỏ xuất hiện ở top trang (dismissible)
+- [ ] Text: "TuVi là một phần của hệ Harmony — [Xem thêm]"
+- [ ] Hoặc banner trong sidebar cho desktop
 
 ---
 
-## Ưu tiên tiếp theo
+## Phase E — Cleanup 🟡
 
-1. **Phase 12** — Deploy ngay (infrastructure sẵn sàng)
-2. **Phase 9** — Subscription management UI
-3. **Phase 10** — Blog MDX + dynamic SEO pages
-4. **Phase 11** — Mở rộng test coverage
+**Mục tiêu:** Dọn dẹp code không còn cần thiết.
+
+### E1 — Xóa Stripe & Payment
+
+- [ ] Xóa `src/lib/stripe.ts`
+- [ ] Xóa `src/app/api/checkout/`
+- [ ] Xóa `src/app/api/subscription/`
+- [ ] Xóa `src/app/api/webhooks/stripe/`
+- [ ] Xóa `stripe` dependency từ package.json
+
+### E2 — Xóa Feature Gating
+
+- [ ] Xóa `src/lib/feature-gating.ts`
+- [ ] Remove tất cả import/usage của feature gating
+- [ ] Xóa `src/components/common/ConditionalAdSlot.tsx`
+- [ ] Xóa `src/data/pricing.ts` (hoặc archive)
+
+### E3 — Xóa Subscription UI
+
+- [ ] Xóa `src/app/pricing/`
+- [ ] Xóa `src/app/tai-khoan/` (subscription management parts)
+- [ ] Xóa pricing-related components
+
+### E4 — Simplify Auth
+
+- [ ] Quyết định: giữ auth cho analytics tracking, hay bỏ hoàn toàn?
+- [ ] Nếu giữ: chỉ dùng cho lưu lá số, không gate content
+- [ ] Nếu bỏ: xóa toàn bộ auth flow
+
+### E5 — Update DB Schema
+
+- [ ] Xóa `subscription`, `subExpiresAt` fields từ User model
+- [ ] Xóa `SearchHistory` model
+- [ ] Tạo migration mới
+- [ ] Update types
+
+### E6 — Update Tests
+
+- [ ] Xóa/skip tests liên quan đến pricing, feature gating, subscription
+- [ ] Update `pricing.test.ts` hoặc xóa
+
+---
+
+## Thứ tự thực hiện khuyến nghị
+
+```
+Phase A (1-2 ngày)   → Impact ngay, ít risk
+Phase B (3-5 ngày)   → Core funnel mechanics
+Phase C (3-4 ngày)   → Content restructure
+Phase D (1-2 ngày)   → Analytics (có thể song song C)
+Phase E (2-3 ngày)   → Cleanup (làm sau khi test A+B+C xong)
+```
+
+**Deploy sau Phase A+B** để test conversion sớm, tiếp tục C/D/E sau.
+
+---
+
+## Files chính cần thay đổi
+
+### Thêm mới
+```
+src/components/funnel/
+  AnMenhCTA.tsx
+  ContentLock.tsx
+  PersonalDoubtTrigger.tsx
+  StickyCTA.tsx
+  EcosystemBanner.tsx
+src/lib/analytics.ts
+```
+
+### Update
+```
+src/components/layout/SiteHeader.tsx
+src/components/layout/SiteFooter.tsx
+src/components/layout/AuthButton.tsx
+src/app/page.tsx
+src/app/tu-vi/page.tsx
+src/app/tu-vi-hang-ngay/page.tsx
+src/app/xem-ngay/page.tsx
+src/app/phong-thuy/page.tsx
+src/app/xem-menh/page.tsx
+src/components/common/HoroscopeView.tsx
+src/components/tuvi/TuViChartDisplay.tsx
+src/components/phongthuy/PhongThuyForm.tsx
+```
+
+### Xóa / Redirect
+```
+src/app/pricing/            → redirect
+src/app/tai-khoan/          → redirect AnMenh
+src/app/dang-ky/            → redirect AnMenh
+src/app/dang-nhap/          → redirect AnMenh
+src/lib/stripe.ts           → xóa
+src/lib/feature-gating.ts   → xóa
+src/data/pricing.ts         → xóa
+src/app/api/checkout/       → xóa
+src/app/api/subscription/   → xóa
+src/app/api/webhooks/stripe → xóa
+```

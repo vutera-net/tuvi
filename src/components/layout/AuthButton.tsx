@@ -20,10 +20,9 @@ export function AuthButton() {
         </Link>
         <Link
           href="/dang-ky"
-          className="rounded-full px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: 'var(--color-primary)' }}
+          className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50"
         >
-          Dùng miễn phí
+          Lưu lá số
         </Link>
       </>
     )

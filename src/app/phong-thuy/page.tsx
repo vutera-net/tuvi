@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { PhongThuyForm } from '@/components/phongthuy/PhongThuyForm'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
+import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
 
 export const metadata: Metadata = {
   title: 'Phong Thủy Nhà Ở - Bát Trạch & Cửu Cung',
@@ -17,6 +19,10 @@ export default function PhongThuyPage() {
         </p>
       </div>
       <PhongThuyForm />
+      <div className="mt-8 space-y-4">
+        <PersonalDoubtTrigger context="phongthuy" variant="prominent" />
+        <AnMenhCTA context="phongthuy" variant="banner" />
+      </div>
     </div>
   )
 }

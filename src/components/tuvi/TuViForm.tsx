@@ -19,7 +19,7 @@ const HOURS = [
   { name: 'Hợi', time: '21–23h' },
 ]
 
-export function TuViForm({ userTier }: { userTier?: string }) {
+export function TuViForm() {
   const [form, setForm] = useState({
     label: '',
     gender: 'male',
@@ -238,7 +238,7 @@ export function TuViForm({ userTier }: { userTier?: string }) {
         </form>
       </div>
 
-      {chart && <TuViChartDisplay chart={chart} userTier={userTier} />}
+      {chart && <TuViChartDisplay chart={chart} />}
     </div>
   )
 }

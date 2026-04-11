@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { AuthButton } from './AuthButton'
 
+const ANMENH_URL = 'https://anmenh.vutera.net'
+
 const NAV_LINKS = [
   { href: '/lich', label: 'Lịch Vạn Niên' },
   { href: '/xem-menh', label: 'Xem Mệnh' },
@@ -19,6 +21,18 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-red-100 bg-white shadow-sm">
+      {/* Ecosystem banner */}
+      <div className="border-b border-amber-100 bg-amber-50 py-1.5 text-center text-xs text-amber-800">
+        TuVi là một phần của hệ{' '}
+        <a href="https://www.vutera.net/harmony" className="font-semibold underline hover:text-amber-900">
+          Harmony
+        </a>
+        {' '}—{' '}
+        <a href={ANMENH_URL} className="font-semibold underline hover:text-amber-900">
+          Trải nghiệm sâu hơn tại AnMenh →
+        </a>
+      </div>
+
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -33,7 +47,7 @@ export function SiteHeader() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-6 md:flex">
+          <nav className="hidden items-center gap-5 lg:flex">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -46,8 +60,15 @@ export function SiteHeader() {
           </nav>
 
           {/* CTA */}
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-2 md:flex">
             <AuthButton />
+            <a
+              href={ANMENH_URL}
+              className="rounded-full px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #7C3AED, #C41E3A)' }}
+            >
+              AnMenh →
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -75,17 +96,15 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <div className="mt-3 flex gap-3 border-t pt-3">
-              <Link href="/dang-nhap" className="flex-1 text-center text-sm text-gray-600">
-                Đăng nhập
-              </Link>
-              <Link
-                href="/dang-ky"
-                className="flex-1 rounded-full py-2 text-center text-sm font-medium text-white"
-                style={{ backgroundColor: 'var(--color-primary)' }}
+            <div className="mt-3 space-y-2 border-t pt-3">
+              <AuthButton />
+              <a
+                href={ANMENH_URL}
+                className="block w-full rounded-full py-2.5 text-center text-sm font-semibold text-white"
+                style={{ background: 'linear-gradient(135deg, #7C3AED, #C41E3A)' }}
               >
-                Dùng miễn phí
-              </Link>
+                🔮 Trải nghiệm cá nhân hóa tại AnMenh →
+              </a>
             </div>
           </div>
         </div>

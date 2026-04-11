@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
 import { TuViForm } from '@/components/tuvi/TuViForm'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
+import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
 
 export const metadata: Metadata = {
   title: 'Lập Lá Số Tử Vi Đẩu Số',
@@ -10,21 +10,7 @@ export const metadata: Metadata = {
     'Lập lá số Tử Vi Đẩu Số đầy đủ với 14 chính tinh, 12 cung và Đại Vận. Giải nghĩa chi tiết từng cung, từng sao.',
 }
 
-export default async function TuViPage() {
-  const session = await auth()
-  let userTier: string | undefined
-
-  if (session?.user?.email) {
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { subscription: true, subExpiresAt: true },
-    })
-    if (user) {
-      const isExpired = user.subExpiresAt && user.subExpiresAt < new Date()
-      userTier = isExpired ? 'free' : user.subscription
-    }
-  }
-
+export default function TuViPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-6 text-center">
@@ -40,7 +26,11 @@ export default async function TuViPage() {
           ☯ So sánh 2 lá số →
         </Link>
       </div>
-      <TuViForm userTier={userTier} />
+      <TuViForm />
+      <div className="mt-8 space-y-4">
+        <PersonalDoubtTrigger context="tuvi" variant="prominent" />
+        <AnMenhCTA context="tuvi" variant="banner" />
+      </div>
     </div>
   )
 }

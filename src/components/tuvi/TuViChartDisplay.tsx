@@ -11,7 +11,6 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 interface Props {
   chart: TuViChart
-  userTier?: string
 }
 
 // Fixed DiaChi index → [row, col] in 4×4 grid (outer ring only)
@@ -62,7 +61,7 @@ const DAI_VAN_NOTES: Record<string, string> = {
   'Phụ Mẫu': 'Vận phụ mẫu — cha mẹ và bề trên ảnh hưởng lớn, nhận được sự hỗ trợ hoặc gánh nặng từ gia đình.',
 }
 
-export function TuViChartDisplay({ chart, userTier }: Props) {
+export function TuViChartDisplay({ chart }: Props) {
   const [selectedPalace, setSelectedPalace] = useState<Palace | null>(null)
   const [selectedDaiHan, setSelectedDaiHan] = useState<DaiHan | null>(() =>
     chart.daiHan.find(
@@ -120,7 +119,7 @@ export function TuViChartDisplay({ chart, userTier }: Props) {
               </div>
             </div>
           </div>
-          <TuViPdfExportButton chart={chart} userTier={userTier} />
+          <TuViPdfExportButton chart={chart} />
         </div>
 
         {currentDaiHan && (() => {

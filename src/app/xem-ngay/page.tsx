@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { NgayTotForm } from '@/components/ngaytot/NgayTotForm'
 import { QuickDateCheck } from '@/components/ngaytot/QuickDateCheck'
-import { TuoiFilter } from '@/components/ngaytot/TuoiFilter'
+import { AnMenhCTA } from '@/components/funnel/AnMenhCTA'
+import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
 
 export const metadata: Metadata = {
   title: 'Xem Ngày Tốt Xấu',
@@ -28,7 +29,12 @@ export default function XemNgayPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           <QuickDateCheck />
+          <AnMenhCTA context="ngaytot" variant="card" />
         </div>
+      </div>
+
+      <div className="mt-8">
+        <PersonalDoubtTrigger context="ngaytot" variant="subtle" />
       </div>
     </div>
   )

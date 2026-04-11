@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { getDayInfo } from '@/lib/engines/lunar-engine'
 import { THIEN_CAN, DIA_CHI } from '@/data/can-chi'
-import { ConditionalAdSlot } from '@/components/common/ConditionalAdSlot'
+
+const ANMENH_URL = 'https://anmenh.vutera.net'
 
 const FEATURES = [
   {
@@ -86,7 +87,7 @@ export default function HomePage() {
               href="/xem-menh"
               className="rounded-full bg-yellow-400 px-8 py-3 font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
             >
-              Xem Mệnh Ngũ Hành Miễn Phí
+              Xem Mệnh Ngũ Hành
             </Link>
             <Link
               href="/tu-vi"
@@ -94,6 +95,12 @@ export default function HomePage() {
             >
               Lập Lá Số Tử Vi
             </Link>
+            <a
+              href={ANMENH_URL}
+              className="rounded-full border-2 border-yellow-300 bg-transparent px-8 py-3 font-semibold text-yellow-200 transition hover:bg-yellow-400 hover:text-gray-900"
+            >
+              🔮 AnMenh — Cá nhân hóa
+            </a>
           </div>
         </div>
       </section>
@@ -171,10 +178,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Ad slot - free tier only */}
-      <div className="flex justify-center py-2">
-        <ConditionalAdSlot size="leaderboard" />
-      </div>
+      {/* AnMenh CTA Banner */}
+      <section className="mx-auto max-w-7xl px-4 py-4">
+        <a
+          href={ANMENH_URL}
+          className="group flex flex-col items-center justify-between gap-4 rounded-2xl p-6 text-white transition hover:opacity-95 sm:flex-row"
+          style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #C41E3A 100%)' }}
+        >
+          <div>
+            <p className="text-sm font-medium opacity-80">Bạn muốn kết quả chính xác hơn?</p>
+            <p className="mt-0.5 text-lg font-bold">
+              Xem bản cá nhân hóa theo giờ sinh tại AnMenh
+            </p>
+            <p className="mt-1 text-sm opacity-75">
+              Phân tích sâu theo mệnh · Chu kỳ cá nhân · Cảnh báo riêng cho bạn
+            </p>
+          </div>
+          <span className="shrink-0 rounded-full bg-white px-6 py-2.5 text-sm font-semibold transition group-hover:bg-yellow-50"
+            style={{ color: '#7C3AED' }}>
+            Tạo hồ sơ miễn phí →
+          </span>
+        </a>
+      </section>
 
       {/* Daily Horoscope preview */}
       <section className="mx-auto max-w-7xl px-4 py-8">
