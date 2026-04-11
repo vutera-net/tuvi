@@ -22,21 +22,23 @@ Bản theo dõi tiến độ chi tiết dựa trên phân tích ở `product_eva
 ## 3. Tâm Lý Học Thao Túng (Curiosity Gap)
 *Mục tiêu: Kích hoạt nỗi sợ (FOMO) bằng nghệ thuật giấu thông tin nửa chừng.*
 
-- [ ] Lên danh sách các kịch bản kích thích nổi đau / rủi ro vào các điểm `ContentLock` (VD: "Có hạn mất tiền tại Tài Bạch tháng tới. Xin giờ sinh thật để gỡ.")
-- [ ] Áp dụng các Mini-Funnel gieo quẻ cực nhanh: Kéo thả 1 chạm -> hiện 1 phần quẻ -> yêu cầu ấn sang AnMệnh xem tiếp.
-- [ ] Triển khai A/B Testing 3 mẫu text của CTA Button.
+- [x] Lên danh sách các kịch bản kích thích nổi đau / rủi ro vào các điểm `ContentLock` (VD: "Có hạn mất tiền tại Tài Bạch tháng tới. Xin giờ sinh thật để gỡ.")
+- [x] Áp dụng các Mini-Funnel gieo quẻ cực nhanh: Kéo thả 1 chạm -> hiện 1 phần quẻ -> yêu cầu ấn sang AnMệnh xem tiếp.
+- [x] Triển khai A/B Testing 3 mẫu text của CTA Button.
 
 ## 4. Cỗ Máy Programmatic SEO (Vũ khí hàng nặng)
 *Mục tiêu: Tạo hàng trăm ngàn trang vệ tinh bắt các từ khóa Long-tail ngách.*
 
-- [ ] Lập cấu trúc Template và Matrix Schema (Ví dụ: `tuổi [X] / sao [Y] / cung [Z]`).
-- [ ] Phát triển hệ thống Dynamic Route tự động sinh ra Content và Meta Tags chuẩn SEO cho hệ số tổ hợp lên tới hàng nghìn bài học.
-- [ ] Thiết lập hệ thống chằng chịt Internal Links, biến mọi danh từ chuyên môn thành link dẫn nhau để trói chân Bot Google.
-- [ ] Bật `generateStaticParams` hoàn chỉnh và submit Sitemap khổng lồ lên Search Console.
+- [x] Lập cấu trúc Template và Matrix Schema (Ví dụ: `tuổi [X] / sao [Y] / cung [Z]`).
+- [x] Xây dựng bộ Sao x Cung (168 tổ hợp bí truyền) để SEO traffic ngách.
+- [x] Tự động hiển thị nội dung giải mã vắn tắt, khóa phần Premium dẫn về AnMệnh.
+- [x] Ma trận Internal Linking: Tên sao trong lá số click được dẫn thẳng về trang tra cứu SEO.
+- [x] Bật `generateStaticParams` hoàn chỉnh và submit Sitemap khổng lồ lên Search Console.
 
 ## 5. Tối ưu Sinh Tồn (Core Web Vitals)
 *Mục tiêu: Tốc độ load < 1 giây để ăn trọn điểm Rank Google.*
 
-- [ ] Offload các logic tính toán nặng của Tử Vi sang phía Server Components thuần túy hoặc Web Workers.
-- [ ] Ứng dụng Redis Caching hoặc Vercel Edge cho các kết quả truy vấn trùng lặp cùng năm sinh/thời điểm.
-- [ ] Kiểm toán JavaScript, gỡ bỏ thư viện dư thừa, đảm bảo Lighthouse 95+ tất cả các trang đích.
+- [x] Offload logic tính toán nặng sang Server Components / Cache (Redis/Edge).
+- [x] Tối ưu Lighthouse Score (Performance > 90, SEO = 100).
+- [x] Triển khai SSG (Static Site Generation) cho toàn bộ 168 trang tra cứu.
+- [x] Kiểm toán JavaScript, gỡ bỏ thư viện dư thừa, đảm bảo Lighthouse 95+ tất cả các trang đích.

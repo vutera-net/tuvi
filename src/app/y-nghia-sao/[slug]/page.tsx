@@ -5,10 +5,7 @@ import { ContentLock } from '@/components/funnel/ContentLock'
 import { PersonalDoubtTrigger } from '@/components/funnel/PersonalDoubtTrigger'
 
 interface PageProps {
-  params: {
-    sao: string
-    cung: string
-  }
+  params: Promise<{ slug: string }>
 }
 
 const SLUG_TO_STAR: Record<string, string> = {
@@ -24,21 +21,33 @@ const SLUG_TO_PALACE: Record<string, string> = {
   'tai-bach': 'Tài Bạch', 'tu-tuc': 'Tử Tức', 'phu-the': 'Phu Thê', 'huynh-de': 'Huynh Đệ'
 }
 
+/**
+ * Utility to parse the slug back into sao and cung
+ * Format: [sao]-tai-cung-[cung]
+ */
+function parseSlug(slug: string): { saoSlug: string; cungSlug: string } | null {
+  const parts = slug.split('-tai-cung-')
+  if (parts.length !== 2) return null
+  return { saoSlug: parts[0], cungSlug: parts[1] }
+}
+
 export function generateStaticParams() {
   const stars = Object.keys(SLUG_TO_STAR)
   const palaces = Object.keys(SLUG_TO_PALACE)
   const params = []
   for (const sao of stars) {
     for (const cung of palaces) {
-      params.push({ sao, cung })
+      params.push({ slug: `${sao}-tai-cung-${cung}` })
     }
   }
   return params
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const sao = SLUG_TO_STAR[params.sao] || params.sao
-  const cung = SLUG_TO_PALACE[params.cung] || params.cung
+  const { slug } = await params
+  const parsed = parseSlug(slug)
+  const sao = parsed ? (SLUG_TO_STAR[parsed.saoSlug] || parsed.saoSlug) : 'Sao'
+  const cung = parsed ? (SLUG_TO_PALACE[parsed.cungSlug] || parsed.cungSlug) : 'Cung'
   
   return {
     title: `Ý nghĩa sao ${sao} tại cung ${cung} | Harmony Tử Vi`,
@@ -46,26 +55,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default function SaoCungPage({ params }: PageProps) {
-  const sao = SLUG_TO_STAR[params.sao] || params.sao
-  const cung = SLUG_TO_PALACE[params.cung] || params.cung
+export default async function SaoCungPage({ params }: PageProps) {
+  const { slug } = await params
+  const parsed = parseSlug(slug)
+  
+  if (!parsed) {
+    return <div className="p-12 text-center">Đường dẫn không hợp lệ</div>
+  }
+
+  const sao = SLUG_TO_STAR[parsed.saoSlug] || parsed.saoSlug
+  const cung = SLUG_TO_PALACE[parsed.cungSlug] || parsed.cungSlug
 
   const baseSummary = getViStarSummary(sao, cung) || `Sao ${sao} mang nhiều tính chất đặc biệt khi đóng tại cung ${cung}.`
   const expanded = getExpandedSEOContent(sao, cung, baseSummary)
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <nav className="mb-8 text-sm text-gray-500">
-        <a href="/" className="hover:text-purple-600">Trang chủ</a>
-        <span className="mx-2">/</span>
-        <a href="/tu-vi" className="hover:text-purple-600">Tử Vi</a>
-        <span className="mx-2">/</span>
-        <span className="text-gray-900">Sao {sao} tại cung {cung}</span>
-      </nav>
-
-      <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
-        Ý nghĩa sao <span className="text-purple-600">{sao}</span> tại cung <span className="text-purple-600">{cung}</span>
-      </h1>
+    <div className="mx-auto max-w-4xl px-4 py-12 text-gray-900">
+      <header className="mb-10 text-center">
+        <h1 className="font-serif text-3xl font-bold md:text-4xl">
+          Ý nghĩa sao <span className="text-red-700">{sao}</span> tại cung <span className="text-red-700">{cung}</span>
+        </h1>
+        <div className="mt-4 flex justify-center gap-2">
+          <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700">Tra cứu Tử Vi</span>
+          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">Kiến thức bách khoa</span>
+        </div>
+      </header>
 
       <div className="mt-8 prose prose-purple max-w-none">
         <p className="text-lg leading-relaxed text-gray-700">
@@ -94,12 +108,11 @@ export default function SaoCungPage({ params }: PageProps) {
 
         <div className="mt-12">
           <ContentLock 
-            context={`seo_${params.sao}_${params.cung}`}
+            context="tuvi_library" 
             items={[
-               `Tác động của Triệt/Tuần lên bộ sao ${sao}`,
-               `Vận hạn chi tiết tháng này cho tuổi của bạn`,
-               `Cách hóa giải nếu sao ${sao} hãm địa tại {cung}`,
-               `Lời khuyên từ chuyên gia cho cách cục này`
+              `Vận trình đại hạn 10 năm của sao ${sao} tại cung ${cung}`,
+              `Ảnh hưởng của các bộ sao phụ chiếu về cung ${cung}`,
+              `Lời khuyên chi tiết về ngày lành tháng tốt để kích hoạt cung ${cung}`
             ]}
           />
         </div>
